@@ -30,7 +30,7 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd,z=FALSE) {
   print(paste("There are ",length(sd.exp[sd.exp>sd])," genes in you gene-set with sd > ",sd,".",sep=""))
 
   scale <- 'none'
-  if(z) { scale <- 'rows' }
+  if(z) { scale <- 'row' }
 
   if (!is.null(a1) & is.null(a2)) {
     df <- data.frame(Var1 = factor(a1))
