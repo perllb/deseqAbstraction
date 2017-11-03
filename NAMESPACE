@@ -3,6 +3,7 @@
 export(PCAplotter)
 export(getSign)
 export(getSignName)
+export(heatGenes)
 export(maPlot)
 export(mostVariableHeat)
 export(sampleToSample)

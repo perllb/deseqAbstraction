@@ -10,7 +10,7 @@
 #' @export mostVariableHeat
 #' @example
 #' vst <- varianceStabilizingTransformation(dds)
-#' mostVariableHeat(data = vst,ntop = 100, a1 = colData$cellLine, a2 = colData$treatment,n1="Cell Line",n2="Treatment")
+#' mostVariableHeat(data = assay(vst),ntop = 100, a1 = colData$cellLine, a2 = colData$treatment,n1="Cell Line",n2="Treatment")
 
 mostVariableHeat <- function(data,ntop=50,a1=NULL,a2=NULL,n1=NULL,n2=NULL) {
 
