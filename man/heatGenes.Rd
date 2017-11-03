@@ -4,7 +4,8 @@
 \alias{heatGenes}
 \title{HeatGenes: Heatmap of your genes of interest!}
 \usage{
-heatGenes(data, genes, a1 = NULL, a2 = NULL, n1 = NULL, n2 = NULL, sd)
+heatGenes(data, genes, a1 = NULL, a2 = NULL, n1 = NULL, n2 = NULL, sd,
+  z = FALSE)
 }
 \arguments{
 \item{data:}{deseq matrix data (with varianceStablizing, rlog etc - eg. assay(vsd)}
@@ -20,6 +21,8 @@ heatGenes(data, genes, a1 = NULL, a2 = NULL, n1 = NULL, n2 = NULL, sd)
 \item{n2:}{name of annotation in a2}
 
 \item{sd:}{standard deviation cutoff for heatmap}
+
+\item{z:}{logical operator. if TRUE, normalize by row (z-score). if FALSE (default), then plot normalized expression values}
 }
 \description{
 Plots heatmap showing the expression of the genes of given gene-list and having sd above given value
