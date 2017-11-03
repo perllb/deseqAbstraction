@@ -13,7 +13,7 @@ sampleToSample <- function(data) {
   sampleDist <- dist(t(assay(data)))
   library("RColorBrewer")
   sampleDistMatrix <- as.matrix(sampleDist)
-  rownames(sampleDistMatrix) <- vsd$condition
+  rownames(sampleDistMatrix) <- data$condition
   colnames(sampleDistMatrix) <- NULL
 
   colors <- colorRampPalette(colors = c("red","white","Blue"))(25)
