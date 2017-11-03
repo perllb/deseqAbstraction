@@ -8,7 +8,7 @@
 #' @param n2: name of annotation in a2
 #' @param sd: standard deviation cutoff for heatmap
 #' @param z: logical operator. if TRUE, normalize by row (z-score). if FALSE (default), then plot normalized expression values
-#' @param cluster_col: logical operator: if TRUE, cluster columns, if FALSE (default) do not cluster columns
+#' @param cluster_col: logical operator: if TRUE (default), cluster columns, if FALSE do not cluster columns
 #' @title HeatGenes: Heatmap of your genes of interest!
 #' @export heatGenes
 #' @example
@@ -17,7 +17,7 @@
 #' mostVariableHeat(data = assay(vst),genes = genes, sd = 1, a1 = colData$cellLine, a2 = colData$treatment,n1 = "Cell Line",n2 = "Treatment",z = T)
 
 
-heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd,z=FALSE,cluster_col=F) {
+heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd,z=FALSE,cluster_col=T) {
 
   match <- paste(genes,collapse = "|")
   genes.exp <- data[grep(match,rownames(data)),]
