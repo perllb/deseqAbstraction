@@ -8,7 +8,7 @@ mostVariableHeat(data, ntop = 50, a1 = NULL, a2 = NULL, n1 = NULL,
   n2 = NULL)
 }
 \arguments{
-\item{data:}{normalized deseq data (with varianceStablizing, rlog etc)}
+\item{data:}{normalized deseq matrix data (with varianceStablizing, rlog etc - eg. assay(vsd)}
 
 \item{ntop:}{how many genes to display (the <ntop> most variable genes)}
 

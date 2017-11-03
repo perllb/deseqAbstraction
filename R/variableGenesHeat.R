@@ -1,6 +1,6 @@
 #' @name mostVariableHeat
 #' @description Plots heatmap showing the expression of most variable genes
-#' @param data: normalized deseq data (with varianceStablizing, rlog etc)
+#' @param data: normalized deseq matrix data (with varianceStablizing, rlog etc - eg. assay(vsd)
 #' @param ntop: how many genes to display (the <ntop> most variable genes)
 #' @param a1: annotation of the samples
 #' @param a2: annotation of the samples
@@ -14,6 +14,8 @@
 
 mostVariableHeat <- function(data,ntop=50,a1=NULL,a2=NULL,n1=NULL,n2=NULL) {
 
+  sd <- data[order(-apply(data,1,sd)),]
+  head(sd)
   #show rownames if 40 or less genes are plotted
   rowShow <- T
   if(ntop>40) { rowShow <- F }
