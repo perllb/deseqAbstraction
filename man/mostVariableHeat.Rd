@@ -4,7 +4,8 @@
 \alias{mostVariableHeat}
 \title{mostVariableHeat - heatmap of variable genes}
 \usage{
-mostVariableHeat(data, ntop = 50, a1 = NULL, a2 = NULL)
+mostVariableHeat(data, ntop = 50, a1 = NULL, a2 = NULL, n1 = NULL,
+  n2 = NULL)
 }
 \arguments{
 \item{data:}{normalized deseq data (with varianceStablizing, rlog etc)}
@@ -14,6 +15,10 @@ mostVariableHeat(data, ntop = 50, a1 = NULL, a2 = NULL)
 \item{a1:}{annotation of the samples}
 
 \item{a2:}{annotation of the samples}
+
+\item{n1:}{name of annotation in a1}
+
+\item{n2:}{name of annotation in a2}
 }
 \description{
 Plots heatmap showing the expression of most variable genes
