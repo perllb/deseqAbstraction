@@ -19,7 +19,7 @@
 
 heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd,z=FALSE,cluster_col=T) {
 
-  match <- paste(genes,collapse = "|")
+  match <- paste(genes,collapse = "&|^")
   genes.exp <- data[grep(match,rownames(data)),]
 
   ## get standard deviation of each gene
