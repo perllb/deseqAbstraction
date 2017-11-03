@@ -38,6 +38,7 @@ PCAplotter <- function(dat,ntop=500,color,shape,title,label=NULL) {
 
     p + xlab(paste0("PC1: ",percentVar[1],"% variance")) +
       ylab(paste0("PC2: ",percentVar[2],"% variance")) +
-      ggtitle(title)
+      ggtitle(title) +
+      geom_point(size=5)
   }
 }
