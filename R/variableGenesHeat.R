@@ -16,9 +16,24 @@ mostVariableHeat <- function(data,ntop=50,a1=NULL,a2=NULL) {
   sd <- assay(data)[order(-apply(assay(data),1,sd)),]
   head(sd)
 
-  df <- as.data.frame(a1=a1,a2=a2)
+  if(!is.na(a1) & is.na(a2)) {
 
-  pheatmap(sd[1:ntop,],annotation_col = df,cluster_rows = T,show_rownames = T,
-           cluster_cols = T)
+    df <- as.data.frame(a1=a1)
+    pheatmap(sd[1:ntop,],annotation_col = df,cluster_rows = T,show_rownames = T,
+             cluster_cols = T)
+  } else if(!is.na(a1) & !is.na(a2)) {
+    df <- as.data.frame(a1=a1,a2=a2)
+    pheatmap(sd[1:ntop,],annotation_col = df,cluster_rows = T,show_rownames = T,
+             cluster_cols = T)
+  } else if(!is.na(a2) & is.na(a1)) {
+    df <- as.data.frame(a2=a2)
+    pheatmap(sd[1:ntop,],annotation_col = df,cluster_rows = T,show_rownames = T,
+             cluster_cols = T)
+  }else{
+
+    pheatmap(sd[1:ntop,],cluster_rows = T,show_rownames = T,
+             cluster_cols = T)
+  }
+
 
 }
