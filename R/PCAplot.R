@@ -5,15 +5,16 @@
 #' @param color: how to group colors
 #' @param shape: how to group shapes
 #' @param title: title of plot
+#' @param label: vector of labels for each point (optional)
 #' @title PCAplotter my awesome function #1
 #' @export PCAplotter
 #' @example
 #' vst <- varianceStabilizingTransformation(dds)
-#' PCAplotter(dat = vst,ntop = 1000,color = colData$cellType, shape = colData$treatment,title = "PCA plot top1000 genes")
+#' PCAplotter(dat = vst,ntop = 1000,color = colData$cellType, shape = colData$treatment,title = "PCA plot top1000 genes", label = colData$sample)
 
 
 
-PCAplotter <- function(dat,ntop,color,shape,title) {
+PCAplotter <- function(dat,ntop,color,shape,title,label) {
 
   data <- plotPCA(dat,returnData = T,ntop = ntop)
   #store the percentage variance for each PC
@@ -22,11 +23,21 @@ PCAplotter <- function(dat,ntop,color,shape,title) {
   library("ggplot2")
   #plot
   ## (Cell and Vector are two datavectors in the colData data.frame of dds)
-  ggplot(data,aes(PC1,PC2,color=color,shape=shape)) +
-    geom_point(size=5) +
-    xlab(paste0("PC1: ",percentVar[1],"% variance")) +
-    ylab(paste0("PC2: ",percentVar[2],"% variance")) +
-    geom_text(aes(label=colData$cell,hjust=rep(c(1,2,3),8),vjust=rep(c(3,1,2),8))) +
-    ggtitle(title)
+  p <- ggplot(data,aes(PC1,PC2,color=color,shape=shape))
 
+  if(!is.null(label)) {
+
+    p + xlab(paste0("PC1: ",percentVar[1],"% variance")) +
+      ylab(paste0("PC2: ",percentVar[2],"% variance")) +
+      geom_text(aes(label=colData$cell)) +
+      geom_point(size=5) +
+      ggtitle(title)
+
+  }
+  else {
+
+    p + xlab(paste0("PC1: ",percentVar[1],"% variance")) +
+      ylab(paste0("PC2: ",percentVar[2],"% variance")) +
+      ggtitle(title)
+  }
 }

@@ -4,7 +4,7 @@
 \alias{PCAplotter}
 \title{PCAplotter my awesome function #1}
 \usage{
-PCAplotter(dat, ntop, color, shape, title)
+PCAplotter(dat, ntop, color, shape, title, label)
 }
 \arguments{
 \item{dat:}{normalized deseq data (with varianceStablizing, rlog etc)}
@@ -16,6 +16,8 @@ PCAplotter(dat, ntop, color, shape, title)
 \item{shape:}{how to group shapes}
 
 \item{title:}{title of plot}
+
+\item{label:}{vector of labels for each point (optional)}
 }
 \description{
 creates PCA plot
