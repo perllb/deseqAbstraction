@@ -4,7 +4,7 @@
 \alias{PCAplotter}
 \title{PCAplotter my awesome function #1}
 \usage{
-PCAplotter(dat, ntop, color, shape, title, label)
+PCAplotter(dat, ntop = 500, color, shape, title, label = NULL)
 }
 \arguments{
 \item{dat:}{normalized deseq data (with varianceStablizing, rlog etc)}

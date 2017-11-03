@@ -14,7 +14,7 @@
 
 
 
-PCAplotter <- function(dat,ntop,color,shape,title,label) {
+PCAplotter <- function(dat,ntop=500,color,shape,title,label=NULL) {
 
   data <- plotPCA(dat,returnData = T,ntop = ntop)
   #store the percentage variance for each PC
@@ -29,12 +29,12 @@ PCAplotter <- function(dat,ntop,color,shape,title,label) {
 
     p + xlab(paste0("PC1: ",percentVar[1],"% variance")) +
       ylab(paste0("PC2: ",percentVar[2],"% variance")) +
-      geom_text(aes(label=colData$cell)) +
-      geom_point(size=5) +
+      geom_text(aes(label=label),col="black",hjust=1) +
+      scale_x_continuous(expand = c(.2,.1)) +
+      geom_point(size=3) +
       ggtitle(title)
 
-  }
-  else {
+  }  else {
 
     p + xlab(paste0("PC1: ",percentVar[1],"% variance")) +
       ylab(paste0("PC2: ",percentVar[2],"% variance")) +
