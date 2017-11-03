@@ -7,6 +7,10 @@
 #' @param title: title of plot
 #' @title PCAplotter my awesome function #1
 #' @export PCAplotter
+#' @example
+#' vst <- varianceStabilizingTransformation(dds)
+#' PCAplotter(dat = vst,ntop = 1000,color = colData$cellType, shape = colData$treatment,title = "PCA plot top1000 genes")
+
 
 
 PCAplotter <- function(dat,ntop,color,shape,title) {
