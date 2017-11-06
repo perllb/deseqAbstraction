@@ -19,7 +19,7 @@ mostSignificantHeat <- function(data,test,ntop=50,a1=NULL,a2=NULL,n1=NULL,n2=NUL
   library(graphics)
 
   ordered <- test[order(-test$padj),]
-  top <- rownames(ordered)
+  top <- rownames(ordered)[1:ntop]
   merge <- merge(top,data,by.x=1,by.y=0)
   rownames(merge) <- merge[,1]
   plotData <- merge[,-1]
