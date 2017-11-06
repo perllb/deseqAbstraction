@@ -35,7 +35,7 @@ maPlot <- function(test,c1,c2,p=.5,l=0) {
        ylab=paste("log2(FC: [ ",c1," / ",c2," ])",sep=""),
        xlab="log2(mean expression)")
   title(main=paste(c1," / ",c2,sep=""))
-  mtext(text = paste("p-adj < ",p,", log2(fc) < ",l,sep=""),side = 3)
+  mtext(text = paste("p-adj < ",p,", log2(fc) > ",l,sep=""),side = 3)
   legend("topleft",legend = c(paste("up (",u,")",sep=""),paste("down (",d,")",sep = ""),"not significant"),pch=16,col=c("firebrick3","steelblue4","black"),bty='n')
 
 }
