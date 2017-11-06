@@ -44,7 +44,7 @@ volcanoPlot <- function(test,max=NULL,p=.5,title="transcriptome changes") {
        ylab = "-log10(p-adj)",
        xlab = "log2FC",
        xlim = c(-log2FC.max*1.1,log2FC.max*1.1),
-       ylim = c(0,max(yaxis)*1.2))
+       ylim = c(0,max(yaxis[is.finite(yaxis)])*1.2))
 
   sign <- getSign(x = test,p = p,l = 0)
   u <- nrow(sign$up)
