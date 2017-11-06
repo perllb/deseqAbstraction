@@ -18,6 +18,10 @@ maPlot <- function(test,c1,c2,p=.5,l=0) {
   #size of points
   cexVec <- ifelse(test = test$padj<p, yes = ifelse(test = (is.na(test$padj)),yes = 0.15,no = 0.4), no= 0.15)
 
+  sign <- getSign(x = test,p = p,l = l)
+  u <- nrow(sign$up)
+  d <- nrow(sign$down)
+
   plot(log2(test[,1]),test[,2],
        col=colVec,
        cex=cexVec,
@@ -25,7 +29,7 @@ maPlot <- function(test,c1,c2,p=.5,l=0) {
        ylab=paste("log2(FC: [ ",c1," / ",c2," ])",sep=""),
        xlab="log2(mean expression)",
        main=paste(c1," / ",c2,sep=""))
-  legend("topleft",legend = c(paste("padj < ",p,sep=""),paste("padj >= ",p,sep = ""),"not significant"),pch=16,col=c("firebricks3","steelblue4","black"),bty='n')
+  legend("topleft",legend = c(paste("padj < ",p," (",u,")",sep=""),paste("padj >= ",p," (",d,")",sep = ""),"not significant"),pch=16,col=c("firebrick3","steelblue4","black"),bty='n')
 
 }
 
