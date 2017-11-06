@@ -43,14 +43,15 @@ volcanoPlot <- function(test,max=NULL,p=.5,title="transcriptome changes") {
        cex=cex,
        ylab = "-log10(p-adj)",
        xlab = "log2FC",
-       xlim = c(-log2FC.max*1.1,log2FC.max*1.1),
-       ylim = c(0,max(yaxis[is.finite(yaxis)])*1.2))
+       xlim = c(-log2FC.max,log2FC.max),
+       ylim = c(0,max(yaxis[is.finite(yaxis)])*1.1))
+  mtext(text = paste("p-adj < ",p,sep=""),side = 3)
 
   sign <- getSign(x = test,p = p,l = 0)
   u <- nrow(sign$up)
   d <- nrow(sign$down)
 
-  legend("topleft",legend = c(paste("up (",u,")",sep=""),paste("down (",d,")",sep = ""),"not significant"),pch=16,col=c("firebrick3","steelblue4","black"),bty='n')
+  legend("topleft",legend = c(paste("up (",u,")",sep=""),paste("down (",d,")",sep = ""),"not significant"),pch=16,col=c("firebrick3","steelblue4","black"),bty='n',cex=.7)
   abline(v = 0,lty=2)
 
 }
