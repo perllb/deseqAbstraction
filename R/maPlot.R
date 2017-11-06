@@ -12,15 +12,15 @@
 maPlot <- function(test,c1,c2,p=.5,l=0) {
 
   #color up and down sign..
-  colVec <- ifelse(test = resSai$padj<p,
-                   yes=ifelse(test = resSai$log2FoldChange>l,
+  colVec <- ifelse(test = test$padj<p,
+                   yes=ifelse(test = test$log2FoldChange>l,
                               yes="firebrick3",
-                              no=ifelse(resSai$log2FoldChange< -l,
+                              no=ifelse(test$log2FoldChange< -l,
                                         yes = "steelblue4",
                                         no = "black")),
                    no = "black")
   colVec[is.na(colVec)] <- "black" ## if NA make sure it's not counted as <p
-  cexVec <- ifelse(test = resSai$padj<p,yes = 0.4,no = 0.15)
+  cexVec <- ifelse(test = test$padj<p,yes = 0.4,no = 0.15)
   #size of points
   cexVec <- ifelse(test = test$padj<p, yes = ifelse(test = (is.na(test$padj)),yes = 0.15,no = 0.4), no= 0.15)
 

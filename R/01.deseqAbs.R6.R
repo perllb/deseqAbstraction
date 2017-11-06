@@ -33,6 +33,7 @@ require(DESeq2)
 #' @field filename the name of the raw featurecount output
 #' @field rawfile the raw featurecount file
 #' @field rawCounts the count matrix (removing position and length info column 1-6) with ID rownames
+#' @field geneID geneIDs
 #' @field colData a data.frame with condition information
 #' @field sampleNames a vector given by user to provide suitable sampleNames to replace filenames from featureCounts
 #' @field VST the output from varianceStabilizingTransformation(dds)
@@ -49,22 +50,24 @@ deseqAbs <- R6Class("deseqAbs",
                     public = list(
                       name = "character",
                       filename = NULL,
-                      rawfile = "data.frame",
-                      rawCounts = "matrix",
-                      colData = "data.frame",
-                      sampleNames = "vector",
-                      VST = "matrix",
-                      deseq = "DESeq",
-                      rpkm = "matrix",
-                      test = "DESeqResults",
-                      pos = "matrix",
-                      length = "vector",
+                      rawfile = NULL,
+                      rawCounts = NULL,
+                      geneID = NULL,
+                      colData = NULL,
+                      sampleNames = NULL,
+                      VST = NULL,
+                      deseq = NULL,
+                      rpkm = NULL,
+                      test = NULL,
+                      pos = NULL,
+                      length = NULL,
                       initialize = function(name = NA,filename = NA) {
                         self$name <- name
                         self$filename <- filename
                         self$greet()
                         if(!is.na(filename)){
                           self$read_file(filename)
+                          self$geneID <- as.character(self$rawfile[,1])
                           self$getPos()
                           self$getRawCounts()
                         } else {
@@ -76,6 +79,7 @@ deseqAbs <- R6Class("deseqAbs",
                         if(!is.na(filename)) {
                           cat("- reading featureCount file\n")
                           self$rawfile <- read.csv(filename,header=T,sep = "\t",skip=1)
+                          cat("- ..featureCount file reading done. Access rawdata with $rawfile\n")
                         } else {
                           cat("- You must add name of raw featurecount file.\n")
                           cat("> dnmt$filename <- \"<path>/<featureCountOutput>\"\n")
@@ -85,29 +89,37 @@ deseqAbs <- R6Class("deseqAbs",
                       getPos = function() {
                         cat("- Fetching Positional info from file\n")
                         self$length <- self$rawfile$Length
-                        names(self$length) <- self$rawfile$Geneid
+                        names(self$length) <- self$geneID
                         self$pos <- self$rawfile[,2:5]
-                        rownames(self$pos) <- self$rawfile$Geneid
+                        rownames(self$pos) <- self$geneID
+                        cat("- ..done. Get position of genes with $pos\n")
                       },
 
                       getRawCounts = function() {
 
                         cat("- Getting countData matrix\n")
                         self$rawCounts <- self$rawfile[,-c(1:6)]
-                        rownames(self$rawCounts) <- self$rawfile$Geneid
+                        rownames(self$rawCounts) <- self$geneID
+                        cat("- ..done. access raw countData with $rawCounts\n")
 
                       },
 
                       greet = function() {
-                        cat("- DESeq object created..\n")
+                        cat("- ..deseqAbs object created..\n")
                       },
 
                       makeDESeq = function() {
 
-                        dds <- DESeqDataSetFromMatrix(countData = self$rawCounts,
-                                                      colData = self$colData,
-                                                      design =~ condition)
-                        self$deseq <- DESeq(dds)
+                        if(!is.data.frame(self$colData)) {
+                          cat("= Add colData data.frame! E.g: >deseqAbs$colData <- data.frame(condition = x)\n")
+                        } else {
+                          cat("- Running DESeq")
+                          dds <- DESeqDataSetFromMatrix(countData = self$rawCounts,
+                                                        colData = self$colData,
+                                                        design =~ condition)
+                          self$deseq <- DESeq(dds)
+                          cat("- ..DESeq done. Access object with $deseq \n")
+                        }
                       },
 
                       makeVST = function() {
@@ -118,14 +130,44 @@ deseqAbs <- R6Class("deseqAbs",
 
                       makeDiffex = function() {
 
+                        cat("- Testing for differential expression..\n")
                         self$test <- results(self$deseq)
+                        cat("- ..Diffex done. Access with $test.\n")
 
                       },
 
                       makeRPKM = function() {
 
-                        cat("computing RPKM\n")
+                        cat("- Computing RPKM..\n")
+                        self$rpkm <- self$rawCounts/ (self$length/1000) / (colSums(self$rawCounts/1000000))
+                        rownames(self$rpkm) <- self$geneID
+                        cat("- ..RPKM computed. Access with $rpkm.\n")
 
-                      }
-                    )
-)
+                      },
+
+                      fullAuto = function() {
+
+                        if(!is.null(self$colData) & !is.null(self$rawCounts)) {
+
+                          self$makeDESeq()
+                          self$deseq
+                          self$makeDiffex()
+                          self$test
+                          self$makeVST()
+                          self$makeRPKM()
+
+                        }else {
+
+                          cat("= Cannot do this yet.. \n")
+
+                          }
+                        if(is.null(self$colData)){
+
+                          cat("= make colData data.frame!\n")
+
+                        }
+                        if(is.null(self$rawCounts)) {
+                          cat("= add rawCounts matrix!\n")
+                        }
+                    }
+))

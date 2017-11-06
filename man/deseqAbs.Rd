@@ -25,6 +25,8 @@ Class a simple interface to deseq data
 
 \item{\code{rawCounts}}{the count matrix (removing position and length info column 1-6) with ID rownames}
 
+\item{\code{geneID}}{geneIDs}
+
 \item{\code{colData}}{a data.frame with condition information}
 
 \item{\code{sampleNames}}{a vector given by user to provide suitable sampleNames to replace filenames from featureCounts}
