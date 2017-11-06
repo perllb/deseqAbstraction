@@ -1,4 +1,4 @@
-library(R6)
+require(R6)
 
 #' Class a simple interface to deseq data
 #'
@@ -67,35 +67,38 @@ deseqAbs <- R6Class("deseqAbs",
                           self$getPos()
                           self$getRawCounts()
                         } else {
-                          cat("Please provide name of raw featureCounts output file\n")
+                          cat("-Please provide name of raw featureCounts output file upon creating this object\n\n")
                         }
                       },
+
                       read_file = function(filename) {
                         if(!is.na(filename)) {
-                          cat("reading featureCount file\n")
+                          cat("- reading featureCount file\n")
                           self$rawfile <- read.csv(filename,header=T,sep = "\t",skip=1)
                         } else {
-                          cat("You must add name of raw featurecount file.\n")
+                          cat("- You must add name of raw featurecount file.\n")
                           cat("> dnmt$filename <- \"<path>/<featureCountOutput>\"\n")
                         }
                       },
 
                       getPos = function() {
-                        cat("Fetching Positional info from file\n")
+                        cat("- Fetching Positional info from file\n")
                         self$length <- self$rawfile$Length
-                        self$pos <- self$rawfile[,1:5]
+                        names(self$length) <- self$rawfile$Geneid
+                        self$pos <- self$rawfile[,2:5]
+                        rownames(self$pos) <- self$rawfile$Geneid
                       },
 
                       getRawCounts = function() {
 
-                        cat("Getting countData matrix\n")
+                        cat("- Getting countData matrix\n")
                         self$rawCounts <- self$rawfile[,-c(1:6)]
+                        rownames(self$rawCounts) <- self$rawfile$Geneid
 
                       },
 
                       greet = function() {
-                        cat("DESeq object created..\n")
-                        cat("To read the file, type dnmt$read_file(dnmt$filename)\n")
+                        cat("- DESeq object created..\n")
                       },
 
                       makeDESeq = function() {
