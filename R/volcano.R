@@ -33,7 +33,7 @@ volcanoPlot <- function(test,max=NULL,p=.5,title="transcriptome changes") {
     pchY <- ifelse(test = (yaxis==max+0.1),yes = 18,no = 16)
   }
 
-  log2FC.max <- max(abs(test$log2FoldChange))
+  log2FC.max <- max(abs(test[is.finite(test$log2FoldChange),]$log2FoldChange))
 
   plot(x = test$log2FoldChange,
         y = yaxis,
