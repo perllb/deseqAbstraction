@@ -9,13 +9,15 @@
 #' test <- results(dds,contrast = c("condition","genex-KO","WT"))
 #' maPlot(test = test, c1 = "KO", c2 = "WT" )
 
-maPlot <- function(test,c1,c2) {
+maPlot <- function(test,c1,c2,p=.5,l=0) {
 
-  colVec <- ifelse(test = test$padj<0.001, yes = ifelse(test = (is.na(test$padj)),yes = "black",no = "red"), no= "black")
-  colVec[is.na(colVec)] <- "black"
-  cexVec <- ifelse(test = test$padj<0.001, yes = ifelse(test = (is.na(test$padj)),yes = 0.15,no = 0.4), no= 0.15)
-  cexVec[is.na(cexVec)] <- 0.15
-  head(test)
+  #color up and down sign..
+  colVec <- ifelse(resSai$padj<p,yes=ifelse(resSai$log2FoldChange>l,yes="firebrick3",no="steelblue4"),"black")
+  cexVec <- ifelse(resSai$padj<p,0.4,0.15)
+  colVec[is.na(colVec)] <- "black" ## if NA make sure it's not counted as <p
+  #size of points
+  cexVec <- ifelse(test = test$padj<p, yes = ifelse(test = (is.na(test$padj)),yes = 0.15,no = 0.4), no= 0.15)
+
   plot(log2(test[,1]),test[,2],
        col=colVec,
        cex=cexVec,
@@ -23,7 +25,7 @@ maPlot <- function(test,c1,c2) {
        ylab=paste("log2(FC: [ ",c1," / ",c2," ])",sep=""),
        xlab="log2(mean expression)",
        main=paste(c1," / ",c2,sep=""))
-  legend("topleft",legend = c("padj < 1e-3","padj >= 1e-3"),pch=16,col=c("red","black"),bty='n')
+  legend("topleft",legend = c(paste("padj < ",p,sep=""),paste("padj >= ",p,sep = ""),"not significant"),pch=16,col=c("firebricks3","steelblue4","black"),bty='n')
 
 }
 

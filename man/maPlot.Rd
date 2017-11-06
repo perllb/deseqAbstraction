@@ -4,7 +4,7 @@
 \alias{maPlot}
 \title{maPlot - my awesome function #2}
 \usage{
-maPlot(test, c1, c2)
+maPlot(test, c1, c2, p = 0.5, l = 0)
 }
 \arguments{
 \item{test:}{output object from results() of DESeq2}
