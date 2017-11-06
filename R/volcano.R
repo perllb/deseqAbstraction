@@ -14,7 +14,7 @@ volcanoPlot <- function(test,max=NULL,p=.5,title="transcriptome changes") {
   # get values of y axis
   yaxis <- -log10(test$padj)
   # "extremely significant genes with p-adj 0 will get infinite yaxis values.. change to max + .5
-  yaxis[is.infinte(yaxis)] <- max(yaxis) + .5
+  yaxis[is.infinite(yaxis)] <- max(yaxis) + .5
 
   # size of dots according to significane
   cex <- ifelse(test = yaxis>p,yes = .9,no = .4)
