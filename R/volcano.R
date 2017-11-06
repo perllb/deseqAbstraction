@@ -1,6 +1,15 @@
+#' @name volcanoPlot
+#' @description Generates volcano plot and marks significant genes. Scales the y axis if promted
+#' @param test: output object from results() of DESeq2
+#' @param p: cutoff of significance (p-adj)
+#' @param title: string describing plot
+#' @title volcano plot
+#' @export volcanoPlot
+#' @example
+#' test <- results(dds,contrast = c("condition","genex-KO","WT"))
+#' volcanoPlot(test = test, max=9,p=.001,title="transcriptome changes upon KO")
 
-
-volcanoPlot <- function(test,max=NULL,p=.5,title="") {
+volcanoPlot <- function(test,max=NULL,p=.5,title="transcriptome changes") {
 
   # get values of y axis
   yaxis <- -log10(test$padj)
