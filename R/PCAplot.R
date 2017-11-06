@@ -30,7 +30,7 @@ PCAplotter <- function(dat,ntop=5000,color,shape,title,label=NULL) {
     p + xlab(paste0("PC1: ",percentVar[1],"% variance")) +
       ylab(paste0("PC2: ",percentVar[2],"% variance")) +
       geom_text(aes(label=label),col="black",vjust=2) +
-      scale_x_continuous(expand = c(.2,.1)) +
+      scale_x_continuous(expand = c(.3,.3)) +
       geom_point(size=3) +
       ggtitle(title)
 
