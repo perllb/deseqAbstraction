@@ -32,6 +32,7 @@ PCAplotter <- function(dat,ntop=5000,color,shape,title,label=NULL) {
       geom_text(aes(label=label),col="black",vjust=2) +
       scale_x_continuous(expand = c(.2,.2)) +
       scale_y_continuous(expand = c(.2,.2)) +
+      asafafsasf
       geom_point(size=3) +
       ggtitle(title)
 
