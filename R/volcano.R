@@ -23,10 +23,11 @@ volcanoPlot <- function(test,max=NULL,p=.5,title="transcriptome changes") {
                                                      0, yes = "firebrick3", no = ifelse(test$log2FoldChange <
                                                                                           0, yes = "steelblue4", no = "black")), no = "black");col[is.na(col)] <- "black"
 
+  pch <- 16
   # if user specifies max ylim
   if (!is.null(max)) {
     yaxis[yaxis > max] <- max + 0.1
-    pchY <- ifelse(test = (yaxis == max + 0.1), yes = 18,
+    pch <- ifelse(test = (yaxis == max + 0.1), yes = 18,
                    no = 16)
   }
 
@@ -34,7 +35,7 @@ volcanoPlot <- function(test,max=NULL,p=.5,title="transcriptome changes") {
   log2FC.max <- max(abs(test[is.finite(test$log2FoldChange),]$log2FoldChange))
 
   plot(x = test$log2FoldChange, y = yaxis, main = title, col = col,
-       pch = pchY, cex = cex, ylab = "-log10(p-adj)", xlab = "log2FC",
+       pch = pch, cex = cex, ylab = "-log10(p-adj)", xlab = "log2FC",
        xlim = c(-log2FC.max, log2FC.max), ylim = c(0, max(yaxis[is.finite(yaxis)]) * 1.05))
 
   # subtitle of plot
