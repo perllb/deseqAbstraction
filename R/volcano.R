@@ -17,9 +17,9 @@ volcanoPlot <- function(test,max=NULL,p=.5,title="transcriptome changes") {
   cex <- ifelse(test = yaxis<p,yes = .9,no = .4)
   #color up and down sign..
   col <- ifelse(test = test$padj<p,
-                   yes=ifelse(test = test$log2FoldChange>l,
+                   yes=ifelse(test = test$log2FoldChange>0,
                               yes="firebrick3",
-                              no=ifelse(test$log2FoldChange< -l,
+                              no=ifelse(test$log2FoldChange<0,
                                         yes = "steelblue4",
                                         no = "black")),
                    no = "black")
