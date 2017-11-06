@@ -7,7 +7,7 @@ require(DESeq2)
 #' @importFrom grDevices dev.off png rainbow x11
 #' @importFrom graphics legend axis barplot image par pie abline hist layout lines mtext plot plot.new rect text title
 #' @importFrom stats quantile as.dendrogram density dist hclust median order.dendrogram reorder sd
-#' @importFrom DESeq2 DESeq results DESeqDataSetFromMatrix varianceStabilizingTransformation
+#' @importFrom DESeq2 DESeq results DESeqDataSetFromMatrix varianceStabilizingTransformation plotPCA
 #' @export
 #' @keywords Deseq
 #' @return Object of \code{\link{R6Class}} to store Deseq data.
