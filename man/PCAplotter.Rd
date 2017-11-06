@@ -4,7 +4,7 @@
 \alias{PCAplotter}
 \title{PCAplotter my awesome function #1}
 \usage{
-PCAplotter(dat, ntop = 5000, color, shape, title, label = NULL)
+PCAplotter(dat, ntop = 5000, color, shape = NULL, title, label = NULL)
 }
 \arguments{
 \item{dat:}{normalized deseq data (with varianceStablizing, rlog etc)}
@@ -13,7 +13,7 @@ PCAplotter(dat, ntop = 5000, color, shape, title, label = NULL)
 
 \item{color:}{how to group colors}
 
-\item{shape:}{how to group shapes}
+\item{shape:}{how to group shapes. (by default NULL if only color by groups wanted)}
 
 \item{title:}{title of plot}
 
