@@ -1,5 +1,5 @@
 require(R6)
-
+require(DESeq2)
 #' Class a simple interface to deseq data
 #'
 #' @docType class
