@@ -14,7 +14,7 @@
 #' @example
 #' vst <- varianceStabilizingTransformation(dds)
 #' genes <- c("TRIM28","DNMT1","ZNF52")
-#' mostVariableHeat(data = assay(vst),genes = genes, sd = 1, a1 = colData$cellLine, a2 = colData$treatment,n1 = "Cell Line",n2 = "Treatment",z = T)
+#' heatGenes(data = assay(vst),genes = genes, sd = 1, a1 = colData$cellLine, a2 = colData$treatment,n1 = "Cell Line",n2 = "Treatment",z = T)
 
 
 heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd,z=FALSE,cluster_col=T) {
