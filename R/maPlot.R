@@ -15,7 +15,7 @@ maPlot <- function(test,c1,c2,p=.5,l=0) {
   colVec <- ifelse(test = resSai$padj<p,
                    yes=ifelse(test = resSai$log2FoldChange>l,
                               yes="firebrick3",
-                              no=ifelse(resSai$log2FoldChange<-l,
+                              no=ifelse(resSai$log2FoldChange< -l,
                                         yes = "steelblue4",
                                         no = "black")),
                    no = "black")
