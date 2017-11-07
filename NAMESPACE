@@ -3,6 +3,7 @@
 export(PCAplotter)
 export(deseqAbs)
 export(getAverage)
+export(getGenes)
 export(getSign)
 export(getSignName)
 export(heatGenes)
