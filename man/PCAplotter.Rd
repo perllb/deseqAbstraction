@@ -4,7 +4,7 @@
 \alias{PCAplotter}
 \title{PCAplotter my awesome function #1}
 \usage{
-PCAplotter(dat, ntop = 5000, color = NULL, shape = NULL, title,
+PCAplotter(dat, ntop = 5000, color = NULL, shape = NULL, title = "",
   label = NULL)
 }
 \arguments{
