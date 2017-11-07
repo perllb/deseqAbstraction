@@ -9,9 +9,12 @@
 
 sampleToSample <- function(data) {
 
+  library(graphics)
+  library(pheatmap)
+  library(RColorBrewer)
+
   #sample-to-sample distance
   sampleDist <- dist(t(assay(data)))
-  library("RColorBrewer")
   sampleDistMatrix <- as.matrix(sampleDist)
   rownames(sampleDistMatrix) <- data$condition
   colnames(sampleDistMatrix) <- NULL
@@ -23,6 +26,4 @@ sampleToSample <- function(data) {
            clustring_distance_cols=sampleDist,
            col=colors,
            main = "Sample to Sample distances")
-
-
 }

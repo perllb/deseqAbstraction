@@ -150,9 +150,7 @@ deseqAbs <- R6Class("deseqAbs",
                         if(!is.null(self$colData) & !is.null(self$rawCounts)) {
 
                           self$makeDESeq()
-                          self$deseq
                           self$makeDiffex()
-                          self$test
                           self$makeVST()
                           self$makeRPKM()
 

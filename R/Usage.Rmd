@@ -1,0 +1,166 @@
+---
+title: "Usage deseqAbstraction"
+author: "Per Ludvik Brattås"
+date: "11/7/2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Tutorial on deseqAbstraction
+ 
+### Easy analysis and visualization of featureCount 
+
+#### 1. Setup of workspace
+
+```{r }
+
+# clean environment and workspace
+rm(list=ls())
+gc()
+
+# get path to directory with featurecount output
+path <- "/Users/perludvik/Dropbox (MN)/Per/PhD/Projects/DNAmeth/hNES DNMT1 KO/RNAseq/PairedParam/Quant/"
+# filename of the featurecount file
+fc.file <- "hg38.NCBI.genesBestRefSeq.exon.primary.s2.txt"
+# full pathh
+fc.file.path <- paste(path,fc.file,sep = "/")
+
+cat("filepath: ",fc.file.path)
+
+```
+
+#### 2. get the deseqAbstraction package
+
+```{r load deseaAbstraction package}
+
+# load deseqAbstraction
+library(devtools)
+install_github("perllb/deseqAbstraction")
+library(deseqAbstraction)
+library(DESeq2)
+
+```
+
+
+#### 3. Create deseqAbs object for this analysis
+##### - give a name to this data (in this case "DNMT1KO""), and the name of the raw featureCounts output file
+
+```{r}
+
+# make deseqAbs object, give name of the featurecount file
+dnmt <- deseqAbs$new("DNMT1KO",fc.file.path)
+
+```
+
+#### 4. Run DESeq pipeline
+##### - You can try to do this in one function $fullAuto(). 
+##### - Full auto has four main steps:
+##### (1) - create DEseq object (access with $deseq)
+##### (2) - Do diffex analysis (access with $test)
+##### (3) - Do varianceStablizingTransformation (access with $VST)
+##### (4) - Do RPKM normalization (access with $rpkm)
+
+##### - However, for this automation, it is critical that your deseqAbs object has
+##### (1) - the raw featureCount file in the correct format
+##### (2) - the colData data.frame with at least one column called "condition", which contain the grouping of your samples, that will later be used for diffex anaysis
+
+```{r}
+
+# try to run the automated pipe from creating deseq object to normalization (rpkm, vst) and diffex analysis!
+dnmt$fullAuto()
+
+# get error: you need to define the colData for creating DESeq object. Must be data.frame with a "condition" column that will define the diffex analysis groups
+dnmt$colData <- data.frame(condition=c(rep("CTR",3),rep("KO",3)))
+dnmt$fullAuto()
+
+```
+
+#### 5. Visualize data
+#### 5.1 PCA and sample-to-sample
+
+```{r}
+
+# plot PCA without labels on points
+PCAplotter(dat = dnmt$VST,title = "NCBI top 5000",ntop = 5000,color = dnmt$colData$condition,shape=dnmt$colData$condition)
+
+# plot PCA with labels
+PCAplotter(dat = dnmt$VST,title = "NCBI top 5000",ntop = 5000,color = dnmt$colData$condition,shape=dnmt$colData$condition,label = dnmt$colData$condition)
+
+# sample-to-sample distance
+sampleToSample(data = dnmt$VST)
+
+```
+
+#### 5.2 maPlot
+
+```{r}
+
+# make maPlot: color genes if they have p-adj and log2fc below/above given values (p and l) 
+maPlot(test = dnmt$test,"DNMT1 KO","CTR",l = .5,p = .005)
+
+```
+
+#### 5.3 volcano plot
+
+```{r}
+
+
+# generate volcanoplot. 
+volcanoPlot(test = dnmt$test)
+
+# cut y-axis 
+volcanoPlot(test = dnmt$test,max = 100)
+
+
+```
+
+#### 5.4 heatmaps
+```{r}
+
+# plot top significant genes
+mostSignificantHeat(data = assay(dnmt$VST),test = dnmt$test)
+
+# plot top significant genes, top 20
+mostSignificantHeat(data = assay(dnmt$VST),test = dnmt$test,ntop = 20)
+
+# plot top significant genes, top 20, with annotation of columns
+mostSignificantHeat(data = assay(dnmt$VST),test = dnmt$test,ntop = 20,a1 = dnmt$colData$condition,n1 = "Treatment")
+
+## plot top significant genes, top 70, with two annotation of columns
+mostSignificantHeat(data = assay(dnmt$VST),test = dnmt$test,ntop = 70,a1 = dnmt$colData$condition,n1 = "Treatment",a2 = colnames(dnmt$rawCounts),n2 = "sampleNames")
+
+# plot most variable genes
+mostVariableHeat(data = assay(dnmt$VST))
+
+# plot most variable genes
+mostVariableHeat(data = assay(dnmt$VST),ntop = 100,a1 = dnmt$colData$condition,n1 = "Treatment")
+
+
+```
+
+#### 6. get average expression levels of all genes
+
+```{r}
+base <- getAverage(dnmt$deseq)
+head(base$Mean)
+head(base$SD)
+
+```
+
+#### 7. Get significant genes
+```{r}
+# Get diffex-data of genes with p-adj < 0.001 and log2FC more/less than 0.2
+sign <- getSign(x = dnmt$test,p = .001,l = .2)
+up <- sign$up
+down <- sign$down
+
+# Get names of genes with p-adj < 0.01 and log2FC more/less than .1
+signID <- getSignName(x = dnmt$test,p = .01,l = .2)
+upID <- signID$up
+downID <- signID$down
+
+```
+
