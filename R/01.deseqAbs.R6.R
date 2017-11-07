@@ -179,6 +179,8 @@ deseqAbs <- R6Class("deseqAbs",
                             self$test[[paste("Test:",c1,"_vs._",c2,"",sep = "")]] <- results(self$deseq,contrast = c("condition",c1,c2))
                           }
 
+                          cat(paste("-- Test completed for ",c1," vs. ",c2,"..\n",sep = ""))
+
                         } else if(!is.null(c1) & !is.null(c2)) {
 
                           c1 <- gsub(pattern = "condition",replacement = "",c1)
@@ -194,10 +196,8 @@ deseqAbs <- R6Class("deseqAbs",
                           } else {
                             self$test[[paste("Test:",c1,"_vs._",c2,"",sep = "")]] <- results(self$deseq,contrast = c("condition",c1,c2))
                           }
-
+                          cat(paste("-- Test completed for ",c1," vs. ",c2,"..\n",sep = ""))
                         }
-
-                        cat("- ..Diffex done. Access with $test.\n")
 
                       },
 
@@ -222,7 +222,7 @@ deseqAbs <- R6Class("deseqAbs",
                           }
                           self$makeDESeq()
                           self$makeDiffex()
-                          self$makeVST()
+                          self$makeVST(blind = F)
                           self$makeRPKM()
 
                         }else {
