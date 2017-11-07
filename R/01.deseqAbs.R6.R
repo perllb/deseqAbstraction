@@ -137,40 +137,44 @@ deseqAbs <- R6Class("deseqAbs",
                       # c2: condition 2
                       # n1: condition 1, as index (integer) of the condition in vector from resultsNames(x$deseq)
                       # n1: condition 2, as index (integer) of the condition in vector from resultsNames(x$deseq)
-                      makeDiffex = function(name="",c1=NULL,c2=NULL,n1=NULL,n2=NULL) {
+                      makeDiffex = function(name=NULL,c1=NULL,c2=NULL,n1=NULL,n2=NULL) {
 
                         # if no specific conditions input, do default conditions
                         if(is.null(n1) & is.null(c1)) {
 
                           cat("- Testing for differential expression..\n")
-                          self$test <- append(self$test,default=results(self$deseq))
-                          cat("- ..Diffex done. Access with $test.\n")
+                          self$test[["Default"]] <- data.frame(results(self$deseq))
+                          cat("- ..Diffex completed with default values (first two condition). Access with $test.\n")
 
                         } else if(!is.null(n1) & !is.null(n2)) {
 
                           c1 <- gsub(pattern = "condition",replacement = "",resultsNames(self$deseq)[n1])
                           c2 <- gsub(pattern = "condition",replacement = "",resultsNames(self$deseq)[n2])
+
                           cat("- Testing for differential expression..\n")
                           cat(paste("-- Testing ",c1," vs. ",c2,"..\n",sep = ""))
-                          self$test <- append(self$test,results(self$deseq,contrast = c("condition",c1,c2)))
+
                           if(!is.null(name)) {
-                            names(self$test)[length(self$test)] <- name
+
+                            self$test[[name]] <- data.frame(results(self$deseq,contrast = c("condition",c1,c2)))
 
                           } else {
-                            names(self$test)[length(self$test)] <- paste("Test:",c1,"_vs._",c2,"",sep = "")
+                            self$test[[paste("Test:",c1,"_vs._",c2,"",sep = "")]] <- data.frame(results(self$deseq,contrast = c("condition",c1,c2)))
                           }
 
                         } else if(!is.null(c1) & !is.null(c2)) {
 
                           cat("- Testing for differential expression..\n")
                           cat(paste("-- Testing ",c1," vs. ",c2,"..\n",sep = ""))
-                          self$test <- append(self$test,results(self$deseq,contrast = c("condition",c1,c2)))
+
                           if(!is.null(name)) {
-                            names(self$test)[length(self$test)] <- name
+
+                            self$test[[name]] <- data.frame(results(self$deseq,contrast = c("condition",c1,c2)))
 
                           } else {
-                            names(self$test)[length(self$test)] <- paste("Test:",c1,"_vs._",c2,"",sep = "")
+                            self$test[[paste("Test:",c1,"_vs._",c2,"",sep = "")]] <- data.frame(results(self$deseq,contrast = c("condition",c1,c2)))
                           }
+
                         }
 
                         cat("- ..Diffex done. Access with $test.\n")
