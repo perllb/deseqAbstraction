@@ -1,14 +1,14 @@
 ---
-  title: "usage deseqAbstraction - iNd24 example"
+title: "usage deseqAbstraction - iNd24 example"
 author: "Per Ludvik Brattaas"
 date: "November 7, 2017"
 output:
-  html_document: default
+html_document: default
 pdf_document:
-  latex_engine: xelatex
+latex_engine: xelatex
 ---
   
-  ```{r setup, include=FALSE}
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
