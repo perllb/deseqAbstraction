@@ -85,6 +85,9 @@ dnmt$fullAuto()
 
 ```{r}
 
+# Default PCA plot 
+dnmt$pca()
+
 # plot PCA without labels on points
 PCAplotter(dat = dnmt$VST,title = "NCBI top 5000",ntop = 5000,color = dnmt$colData$condition,shape=dnmt$colData$condition)
 

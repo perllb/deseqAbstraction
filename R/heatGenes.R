@@ -19,6 +19,7 @@
 
 heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd,z=FALSE,cluster_col=T) {
 
+  library(pheatmap)
   match <- paste(genes,collapse = "$|^")
   genes.exp <- data[grep(match,rownames(data)),]
 
