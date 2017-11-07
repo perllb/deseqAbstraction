@@ -3,8 +3,8 @@ title: "Usage deseqAbstraction"
 author: "Per Ludvik Brattås"
 date: "11/7/2017"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}

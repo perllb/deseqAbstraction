@@ -61,6 +61,7 @@ deseqAbs <- R6Class("deseqAbs",
                       test = NULL,
                       pos = NULL,
                       length = NULL,
+
                       initialize = function(name = NA,filename = NA) {
                         self$name <- name
                         self$filename <- filename
@@ -163,6 +164,9 @@ deseqAbs <- R6Class("deseqAbs",
                           }
 
                         } else if(!is.null(c1) & !is.null(c2)) {
+
+                          c1 <- gsub(pattern = "condition",replacement = "",c1)
+                          c2 <- gsub(pattern = "condition",replacement = "",c2)
 
                           cat("- Testing for differential expression..\n")
                           cat(paste("-- Testing ",c1," vs. ",c2,"..\n",sep = ""))
