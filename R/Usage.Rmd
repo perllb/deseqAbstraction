@@ -2,7 +2,9 @@
 title: "Usage deseqAbstraction"
 author: "Per Ludvik Brattås"
 date: "11/7/2017"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -15,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 #### 1. Setup of workspace
 
-```{r }
+```{r setup workspace, message = FALSE}
 
 # clean environment and workspace
 rm(list=ls())
@@ -34,7 +36,7 @@ cat("filepath: ",fc.file.path)
 
 #### 2. get the deseqAbstraction package
 
-```{r load deseaAbstraction package}
+```{r load deseaAbstraction package, message = FALSE}
 
 # load deseqAbstraction
 library(devtools)
@@ -48,7 +50,7 @@ library(DESeq2)
 #### 3. Create deseqAbs object for this analysis
 ##### - give a name to this data (in this case "DNMT1KO""), and the name of the raw featureCounts output file
 
-```{r}
+```{r, create object}
 
 # make deseqAbs object, give name of the featurecount file
 dnmt <- deseqAbs$new("DNMT1KO",fc.file.path)
@@ -67,7 +69,7 @@ dnmt <- deseqAbs$new("DNMT1KO",fc.file.path)
 ##### (1) - the raw featureCount file in the correct format
 ##### (2) - the colData data.frame with at least one column called "condition", which contain the grouping of your samples, that will later be used for diffex anaysis
 
-```{r}
+```{r, automation}
 
 # try to run the automated pipe from creating deseq object to normalization (rpkm, vst) and diffex analysis!
 dnmt$fullAuto()

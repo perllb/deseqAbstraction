@@ -100,6 +100,9 @@ deseqAbs <- R6Class("deseqAbs",
                         cat("- Getting countData matrix\n")
                         self$rawCounts <- self$rawfile[,-c(1:6)]
                         rownames(self$rawCounts) <- self$geneID
+                        if(!is.null(self$sampleNames)) {
+                          colnames(self$rawCounts) <- self$sampleNames
+                        }
                         cat("- ..done. access raw countData with $rawCounts\n")
 
                       },
@@ -141,6 +144,9 @@ deseqAbs <- R6Class("deseqAbs",
                         cat("- Computing RPKM..\n")
                         self$rpkm <- self$rawCounts/ (self$length/1000) / (colSums(self$rawCounts/1000000))
                         rownames(self$rpkm) <- self$geneID
+                        if(!is.null(self$sampleNames)) {
+                          colnames(self$rpkm) <- self$sampleNames
+                        }
                         cat("- ..RPKM computed. Access with $rpkm.\n")
 
                       },
@@ -149,6 +155,9 @@ deseqAbs <- R6Class("deseqAbs",
 
                         if(!is.null(self$colData) & !is.null(self$rawCounts)) {
 
+                          if(!is.null(self$sampleNames)) {
+                            colnames(self$rawCounts) <- self$sampleNames
+                          }
                           self$makeDESeq()
                           self$makeDiffex()
                           self$makeVST()
