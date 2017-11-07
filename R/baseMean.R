@@ -14,7 +14,7 @@ getAverage <- function(dds) {
 
   baseMeanPerLvl <- sapply( levels(dds$condition), function(lvl) rowMeans( counts(dds,normalized=TRUE)[,dds$condition == lvl] ) )
   baseSDPerLvl <- sapply( levels(dds$condition), function(lvl) apply( counts(dds,normalized=TRUE)[,dds$condition == lvl],1,sd ) )
-  colnames(baseSDPerLvl) <- paste("st.err:",colnames(baseSDPerLvl),sep="")
+  colnames(baseSDPerLvl) <- paste("st.dev:",colnames(baseSDPerLvl),sep="")
   return(list(Mean=baseMeanPerLvl,SD=baseSDPerLvl))
 
 }

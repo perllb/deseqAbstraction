@@ -132,20 +132,27 @@ deseqAbs <- R6Class("deseqAbs",
 
                         if(is.null(blind)) {
 
-                          cat("== You need to define if you want to do blind dispersion estimates!")
-                          cat("== set blind=FALSE if you expect a large fraction of genes to have large differences in counts explainable by experimental design!")
-                          cat("== set blind=TRUE otherwise.")
-                          cat("== If you are not sure, try both, and compare clustring results")
+                          cat("== You need to define if you want to do blind dispersion estimates!\n")
+                          cat("== set blind=FALSE if you expect a large fraction of genes to have large differences in counts explainable by experimental design!\n")
+                          cat("== set blind=TRUE otherwise.\n")
+                          cat("== If you are not sure, try both, and compare clustring results\n")
 
                         } else {
 
                           bl <- "blind"
                           if(!blind) { bl <- "not-blind" }
 
-                            cat(paste(" - performing ",bl," variance stabilizing transformation",sep = ""))
+                            cat(paste(" - performing ",bl," variance stabilizing transformation \n",sep = ""))
                             self$VST <- varianceStabilizingTransformation(self$deseq,blind = blind)
-                            cat(paste(" - ..completed ",bl," variance stabilizing transformation",sep = ""))
+                            if(!is.null(self$sampleNames)) {
+                              colnames(assay(self$VST)) <- make.names(self$sampleNames,unique = T)
+                            }
+
+                            cat(paste(" - ..completed ",bl," variance stabilizing transformation \n",sep = ""))
+
                         }
+
+
 
                       },
 
