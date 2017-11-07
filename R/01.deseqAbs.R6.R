@@ -129,6 +129,7 @@ deseqAbs <- R6Class("deseqAbs",
 
                       makeVST = function(blind=NULL) {
 
+
                         if(is.null(blind)) {
 
                           cat("== You need to define if you want to do blind dispersion estimates!")
@@ -136,8 +137,15 @@ deseqAbs <- R6Class("deseqAbs",
                           cat("== set blind=TRUE otherwise.")
                           cat("== If you are not sure, try both, and compare clustring results")
 
+                        } else {
+
+                          bl <- "blind"
+                          if(!blind) { bl <- "not-blind" }
+
+                            cat(paste(" - performing ",bl," variance stabilizing transformation",sep = ""))
+                            self$VST <- varianceStabilizingTransformation(self$deseq,blind = blind)
+                            cat(paste(" - ..completed ",bl," variance stabilizing transformation",sep = ""))
                         }
-                        self$VST <- varianceStabilizingTransformation(self$deseq,blind = blind)
 
                       },
 
