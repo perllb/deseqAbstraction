@@ -160,8 +160,8 @@ deseqAbs <- R6Class("deseqAbs",
                         if(is.null(n1) & is.null(c1)) {
 
                           cat("- Testing for differential expression..\n")
-                          self$test[["Default"]] <- data.frame(results(self$deseq))
-                          cat("- ..Diffex completed with default values (first two condition). Access with $test.\n")
+                          self$test[["Default"]] <- results(self$deseq)
+                          cat("- ..Diffex completed with default values. Access with $test.\n")
 
                         } else if(!is.null(n1) & !is.null(n2)) {
 
@@ -173,10 +173,10 @@ deseqAbs <- R6Class("deseqAbs",
 
                           if(!is.null(name)) {
 
-                            self$test[[name]] <- data.frame(results(self$deseq,contrast = c("condition",c1,c2)))
+                            self$test[[name]] <- results(self$deseq,contrast = c("condition",c1,c2))
 
                           } else {
-                            self$test[[paste("Test:",c1,"_vs._",c2,"",sep = "")]] <- data.frame(results(self$deseq,contrast = c("condition",c1,c2)))
+                            self$test[[paste("Test:",c1,"_vs._",c2,"",sep = "")]] <- results(self$deseq,contrast = c("condition",c1,c2))
                           }
 
                         } else if(!is.null(c1) & !is.null(c2)) {
@@ -189,10 +189,10 @@ deseqAbs <- R6Class("deseqAbs",
 
                           if(!is.null(name)) {
 
-                            self$test[[name]] <- data.frame(results(self$deseq,contrast = c("condition",c1,c2)))
+                            self$test[[name]] <- results(self$deseq,contrast = c("condition",c1,c2))
 
                           } else {
-                            self$test[[paste("Test:",c1,"_vs._",c2,"",sep = "")]] <- data.frame(results(self$deseq,contrast = c("condition",c1,c2)))
+                            self$test[[paste("Test:",c1,"_vs._",c2,"",sep = "")]] <- results(self$deseq,contrast = c("condition",c1,c2))
                           }
 
                         }
