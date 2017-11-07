@@ -148,8 +148,8 @@ deseqAbs <- R6Class("deseqAbs",
 
                         } else if(!is.null(n1) & !is.null(n2)) {
 
-                          c1 <- resultsNames(self$deseq)[n1]
-                          c2 <- resultsNames(self$deseq)[n2]
+                          c1 <- gsub(pattern = "condition",replacement = "",resultsNames(self$deseq)[n1])
+                          c2 <- gsub(pattern = "condition",replacement = "",resultsNames(self$deseq)[n2])
                           cat("- Testing for differential expression..\n")
                           cat(paste("-- Testing ",c1," vs. ",c2,"..\n",sep = ""))
                           self$test <- append(self$test,results(self$deseq,contrast = c("condition",c1,c2)))
