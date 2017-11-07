@@ -127,9 +127,17 @@ deseqAbs <- R6Class("deseqAbs",
                         }
                       },
 
-                      makeVST = function() {
+                      makeVST = function(blind=NULL) {
 
-                        self$VST <- varianceStabilizingTransformation(self$deseq)
+                        if(is.null(blind)) {
+
+                          cat("== You need to define if you want to do blind dispersion estimates!")
+                          cat("== set blind=FALSE if you expect a large fraction of genes to have large differences in counts explainable by experimental design!")
+                          cat("== set blind=TRUE otherwise.")
+                          cat("== If you are not sure, try both, and compare clustring results")
+
+                        }
+                        self$VST <- varianceStabilizingTransformation(self$deseq,blind = blind)
 
                       },
 
