@@ -65,6 +65,7 @@ deseqAbs <- R6Class("deseqAbs",
                         self$name <- name
                         self$filename <- filename
                         self$greet()
+                        self$test <- list()
                         if(!is.na(filename)){
                           self$read_file(filename)
                           self$geneID <- as.character(self$rawfile[,1])
@@ -131,10 +132,47 @@ deseqAbs <- R6Class("deseqAbs",
 
                       },
 
-                      makeDiffex = function() {
+                      # name: name of test
+                      # c1: condition 1, has to be of the form of output of resultsNames(dds)
+                      # c2: condition 2
+                      # n1: condition 1, as index (integer) of the condition in vector from resultsNames(x$deseq)
+                      # n1: condition 2, as index (integer) of the condition in vector from resultsNames(x$deseq)
+                      makeDiffex = function(name="",c1=NULL,c2=NULL,n1=NULL,n2=NULL) {
 
-                        cat("- Testing for differential expression..\n")
-                        self$test <- results(self$deseq)
+                        # if no specific conditions input, do default conditions
+                        if(is.null(n1) & is.null(c1)) {
+
+                          cat("- Testing for differential expression..\n")
+                          self$test <- append(self$test,default=results(self$deseq))
+                          cat("- ..Diffex done. Access with $test.\n")
+
+                        } else if(!is.null(n1) & !is.null(n2)) {
+
+                          c1 <- resultsNames(self$deseq)[n1]
+                          c2 <- resultsNames(self$deseq)[n2]
+                          cat("- Testing for differential expression..\n")
+                          cat(paste("-- Testing ",c1," vs. ",c2,"..\n",sep = ""))
+                          self$test <- append(self$test,results(self$deseq,contrast = c("condition",c1,c2)))
+                          if(!is.null(name)) {
+                            names(self$test)[length(self$test)] <- name
+
+                          } else {
+                            names(self$test)[length(self$test)] <- paste("Test:",c1,"_vs._",c2,"",sep = "")
+                          }
+
+                        } else if(!is.null(c1) & !is.null(c2)) {
+
+                          cat("- Testing for differential expression..\n")
+                          cat(paste("-- Testing ",c1," vs. ",c2,"..\n",sep = ""))
+                          self$test <- append(self$test,results(self$deseq,contrast = c("condition",c1,c2)))
+                          if(!is.null(name)) {
+                            names(self$test)[length(self$test)] <- name
+
+                          } else {
+                            names(self$test)[length(self$test)] <- paste("Test:",c1,"_vs._",c2,"",sep = "")
+                          }
+                        }
+
                         cat("- ..Diffex done. Access with $test.\n")
 
                       },
@@ -176,5 +214,7 @@ deseqAbs <- R6Class("deseqAbs",
                         if(is.null(self$rawCounts)) {
                           cat("= add rawCounts matrix!\n")
                         }
-                    }
-))
+                      }
+                    )
+)
+
