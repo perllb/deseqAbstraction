@@ -220,6 +220,12 @@ deseqAbs <- R6Class("deseqAbs",
 
                       },
 
+                      pca = function() {
+
+                        PCAplotter(dat = self$VST,color = self$colData$condition)
+
+                      },
+
                       fullAuto = function() {
 
                         if(!is.null(self$colData) & !is.null(self$rawCounts)) {
