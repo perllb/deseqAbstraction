@@ -156,7 +156,7 @@ deseqAbs <- R6Class("deseqAbs",
                         if(!is.null(self$colData) & !is.null(self$rawCounts)) {
 
                           if(!is.null(self$sampleNames)) {
-                            colnames(self$rawCounts) <- self$sampleNames
+                            colnames(self$rawCounts) <- make.names(self$sampleNames,unique = T)
                           }
                           self$makeDESeq()
                           self$makeDiffex()
