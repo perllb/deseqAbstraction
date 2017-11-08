@@ -50,10 +50,7 @@ iN <- deseqAbs$new(name = "iN-d25",filename = fc.file.path)
 # 1. take the column names of the rawCount table from featureCounts
 cnames <- colnames(iN$rawCounts)
 # 2. remove the substrings that are not needed for identifying the samples, noise from filenames
-newnames <- gsub(pattern = "X.projects.fs1.medpvb.backup.projects.iN.d24.Aligned_hg38_STAR_mMap.hg38.mMap.",replacement = "",x = cnames)
-newnames <- gsub(pattern = "_L004Aligned.sortedByCoord.out.bam",replacement = "",x = newnames)
-newnames <- gsub(pattern = "_L005Aligned.sortedByCoord.out.bam",replacement = "",x = newnames)
-newnames <- gsub(pattern = "_L006Aligned.sortedByCoord.out.bam",replacement = "",x = newnames)
+newnames <- gsub(pattern = "Aligned.sortedByCoord.out.bam",replacement = "",gsub(pattern = "X.projects.fs1.medpvb.backup.projects.iN.d24.Aligned_hg38_STAR_mMap.hg38.mMap.",replacement = "",x = cnames))
 # 3. add these modified sample names to the object
 iN$sampleNames <- newnames
 
@@ -72,6 +69,7 @@ cond <- paste(cell,vector,rest,sep = "_")
 # make a data.frame with these vectors and store as colData
 # here, you always should have the main design as "condition" 
 iN$colData <- data.frame(condition=cond,cell=cell,vector=vector,rest=rest)
+# make better sample names
 iN$sampleNames <- make.names(names = cond,unique = T)
 
 ```
@@ -89,13 +87,13 @@ iN$sampleNames <- make.names(names = cond,unique = T)
 ##### (1) - the raw featureCount file in the correct format
 ##### (2) - the colData data.frame with at least one column called "condition", which contain the grouping of your samples, that will later be used for diffex anaysis
 
-```{r}
+```{r, message=FALSE}
 ## run pipeline
 iN$fullAuto()
 
-## by default, fullAuto do blind dispersion estimates, which is good if many genes are expected to have very different counts in different conditions.
-## if not, it might be better to do non-blind estimates, which can be manually done by calling makeVST() with blind = F.
-iN$makeVST(blind=T)
+## by default, fullAuto do blind dispersion estimates, which is NOT good if many genes are expected to have very different counts in different conditions.
+## it might be better to do non-blind estimates, which can be manually done by calling makeVST() with blind = F.
+iN$makeVST(blind=F)
 
 # take a peak at normalized data generated
 # rpkm
@@ -111,7 +109,7 @@ head(iN$test$Default)
 ##### By default, the fullAuto() function makes a diffex analysis with the last level vs the first level of the last variables in the design formula colData (design vector)
 ##### However, if you have many conditions you may want to test other pairwise combinations
 
-```{r}
+```{r, message=FALSE}
 
 ## Create directory to print diffex result matrices
 deseq.res.path <- paste(path,"Results/DEseq/",sep = "")
@@ -130,7 +128,7 @@ cbind(conds,1:length(conds))
 c1 <- conds[7]
 c2 <- conds[6]
 iN$makeDiffex(name = "RESTi",c1 = c1,c2 = c2)
-head(iN$test$RESTi)
+#head(iN$test$RESTi)
 # write diffex table sorted on p-adj
 write.table(x = iN$test$RESTi[order(iN$test$RESTi$padj),],file = paste(deseq.res.path,c1,"_vs._",c2,".Diffex.txt",sep = ""),quote = F,sep = "\t")
 
@@ -138,7 +136,7 @@ write.table(x = iN$test$RESTi[order(iN$test$RESTi$padj),],file = paste(deseq.res
 c1 <- conds[7]
 c2 <- conds[2]
 iN$makeDiffex(name = "pBpA",c1 = c1,c2 = c2)
-head(iN$test$pBpA)
+#head(iN$test$pBpA)
 # write diffex table sorted on p-adj
 write.table(x = iN$test$pBpA[order(iN$test$pBpA$padj),],file = paste(deseq.res.path,c1,"_vs._",c2,".Diffex.txt",sep = ""),quote = F,sep = "\t")
 
@@ -246,7 +244,6 @@ heatGenes(data = assay(iN$VST),genes = genes,sd = -1,z = F,a1 = iN$colData$vecto
 ```{r}
 
 ## plot only C2 samples
-
 # get index of those
 idx <- grep("C2",iN$sampleNames)
 
@@ -254,7 +251,6 @@ idx <- grep("C2",iN$sampleNames)
 mostVariableHeat(data = assay(iN$VST)[,idx],ntop = 10,a1 = iN$colData$vector[idx],n1 = "Vector",a2 = iN$colData$rest[idx],n2 = "REST")
 
 ## plot only pBpA samples
-
 # get index of those
 idx <- grep("pBpA",iN$sampleNames)
 
