@@ -104,6 +104,8 @@ deseqAbs <- R6Class("deseqAbs",
                         rownames(self$rawCounts) <- self$geneID
                         if(!is.null(self$sampleNames)) {
                           colnames(self$rawCounts) <- self$sampleNames
+                        } else if(!is.null(self$colData)) {
+                          colnames(self$rawCounts) <- make.names(names = self$colData$condition,unique = T)
                         }
                         cat("- ..done. access raw countData with $rawCounts\n")
 
@@ -146,6 +148,8 @@ deseqAbs <- R6Class("deseqAbs",
                             self$VST <- varianceStabilizingTransformation(self$deseq,blind = blind)
                             if(!is.null(self$sampleNames)) {
                               colnames(assay(self$VST)) <- make.names(self$sampleNames,unique = T)
+                            }else if(!is.null(self$colData)) {
+                              colnames(assay(self$VST)) <- make.names(names = self$colData$condition,unique = T)
                             }
 
                             cat(paste(" - ..completed ",bl," variance stabilizing transformation \n",sep = ""))
@@ -215,8 +219,17 @@ deseqAbs <- R6Class("deseqAbs",
                         rownames(self$rpkm) <- self$geneID
                         if(!is.null(self$sampleNames)) {
                           colnames(self$rpkm) <- self$sampleNames
+                        }else if(!is.null(self$colData)) {
+                          colnames(self$rpkm) <- make.names(names = self$colData$condition,unique = T)
                         }
                         cat("- ..RPKM computed. Access with $rpkm.\n")
+
+                      },
+
+                      pca = function(ntop=1000,title=NULL) {
+
+                        if(is.null(title)) {title = "PCA"}
+                        PCAplotter(dat = self$VST,color = self$colData$condition,title = title)
 
                       },
 
@@ -226,6 +239,8 @@ deseqAbs <- R6Class("deseqAbs",
 
                           if(!is.null(self$sampleNames)) {
                             colnames(self$rawCounts) <- make.names(self$sampleNames,unique = T)
+                          }else if(!is.null(self$colData)) {
+                            colnames(self$rawCounts) <- make.names(names = self$colData$condition,unique = T)
                           }
                           self$makeDESeq()
                           self$makeDiffex()

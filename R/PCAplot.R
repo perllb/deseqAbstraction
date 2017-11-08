@@ -14,7 +14,7 @@
 
 
 
-PCAplotter <- function(dat,ntop=5000,color,shape=NULL,title,label=NULL) {
+PCAplotter <- function(dat,ntop=5000,color=NULL,shape=NULL,title="",label=NULL) {
 
   data <- plotPCA(dat,returnData = T,ntop = ntop)
   #store the percentage variance for each PC
