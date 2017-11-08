@@ -27,6 +27,7 @@ maPlot <- function(test,c1,c2,p=.5,l=0) {
   sign <- getSign(x = test,p = p,l = l)
   u <- nrow(sign$up)
   d <- nrow(sign$down)
+  n <- nrow(test) - u - d
 
   plot(log2(test[,1]),test[,2],
        col=colVec,
@@ -36,7 +37,7 @@ maPlot <- function(test,c1,c2,p=.5,l=0) {
        xlab="log2(mean expression)")
   title(main=paste(c1," / ",c2,sep=""))
   mtext(text = paste("p-adj < ",p,", log2(fc) > ",l,sep=""),side = 3)
-  legend("topleft",legend = c(paste("up (",u,")",sep=""),paste("down (",d,")",sep = ""),"not significant"),pch=16,col=c("firebrick3","steelblue4","black"),bty='n')
+  legend("topleft",legend = c(paste("up (",u,")",sep=""),paste("down (",d,")",sep = ""),paste("not significant (",n,")",sep = "")),pch=16,col=c("firebrick3","steelblue4","black"),bty='n')
 
 }
 
