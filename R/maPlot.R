@@ -20,7 +20,6 @@ maPlot <- function(test,c1,c2,p=.5,l=0) {
                                         no = "black")),
                    no = "black")
   colVec[is.na(colVec)] <- "black" ## if NA make sure it's not counted as <p
-  cexVec <- ifelse(test = test$padj<p,yes = 0.4,no = 0.15)
   #size of points
   cexVec <- ifelse(test = test$padj<p, yes = ifelse(test = (is.na(test$padj)),yes = 0.15,no = 0.4), no= 0.15)
 

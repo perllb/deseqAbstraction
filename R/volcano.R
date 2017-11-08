@@ -14,7 +14,8 @@ volcanoPlot <- function(test,max=NULL,p=.5,title="transcriptome changes") {
   # get genes with p-adj 0. (these are so significant that there are not a low enough number for the p-adj in R)
   t <- which(is.infinite(-log10(test$padj)))
   # give these genes p-adj = the lowest non-zero number in R
-  test[t,]$padj <- min(test[!is.na(test$padj) & test$padj>0,]$padj)
+  if(length(t)>0) { test[t,]$padj <- min(test[!is.na(test$padj) & test$padj>0,]$padj) }
+
   # create -log10 ( padj ) yaxis
   yaxis <- -log10(test$padj)
 
