@@ -1,6 +1,6 @@
 #' @name getSign
 #' @description Get the significantly changed genes, returning deseq-table with up and down-regulated genes separately in a list.
-#' @param x: object of results(dds)
+#' @param x: object of results(dds), or a data.frame with column named "padj" with adjusted p-values, and one named "log2FoldChange" with log2(fold changes)
 #' @param p: p-adj cutoff to use
 #' @param l: log2(fc) cutoff to use
 #' @title getSign genes as table with test data

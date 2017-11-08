@@ -28,7 +28,7 @@ maPlot <- function(test,c1,c2,p=.5,l=0) {
   d <- nrow(sign$down)
   n <- nrow(test) - u - d
 
-  plot(log2(test[,1]),test[,2],
+  plot(log2(test$baseMean),test$log2FoldChange,
        col=colVec,
        cex=cexVec,
        pch=16,
