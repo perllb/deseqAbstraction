@@ -7,7 +7,7 @@
 getSign(x, p, l)
 }
 \arguments{
-\item{x:}{object of results(dds)}
+\item{x:}{object of results(dds), or a data.frame with column named "padj" with adjusted p-values, and one named "log2FoldChange" with log2(fold changes)}
 
 \item{p:}{p-adj cutoff to use}
 
