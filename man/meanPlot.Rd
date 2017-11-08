@@ -4,7 +4,8 @@
 \alias{meanPlot}
 \title{meanPlot compare gene expression}
 \usage{
-meanPlot(exp, c1 = "condition 1", c2 = "condition 2", p = 0.5, l = 0)
+meanPlot(exp, test, c1 = "condition 1", c2 = "condition 2", p = 0.5,
+  l = 0)
 }
 \arguments{
 \item{exp:}{data.frame with average expression of genes (rows) in conditions (cols). Two columns only! if you experiment has more conditions, then select columns first.}

@@ -9,24 +9,24 @@
 #' exp <- getAverage(dds)
 #' maPlot(exp = exp, c1 = "KO", c2 = "CTR" )
 
-meanPlot <- function(exp,c1 = "condition 1",c2 = "condition 2",p=.5,l=0) {
+meanPlot <- function(exp,test,c1 = "condition 1",c2 = "condition 2",p=.5,l=0) {
+
+  sign <- getSignName(x = test,p = p,l = l)
+  u <- sign$up
+  d <- sign$down
+  n <- nrow(exp) - length(u) - length(d)
 
   #color up and down sign..
-  colVec <- ifelse(test = exp$padj<p,
-                   yes=ifelse(test = exp$log2FoldChange>l,
-                              yes="firebrick3",
-                              no=ifelse(exp$log2FoldChange< -l,
-                                        yes = "steelblue4",
-                                        no = "black")),
-                   no = "black")
+  colVec <- ifelse(test = (rownames(exp) %in% u),
+                   yes = "firebrick3",
+                   no = ifelse(test = (rownames(exp) %in% d),
+                               yes = "steelblue4", no ="black"))
   colVec[is.na(colVec)] <- "black" ## if NA make sure it's not counted as <p
   #size of points
-  cexVec <- ifelse(test = exp$padj<p, yes = ifelse(test = (is.na(exp$padj)),yes = 0.15,no = 0.4), no= 0.15)
-
-  sign <- getSign(x = exp,p = p,l = l)
-  u <- nrow(sign$up)
-  d <- nrow(sign$down)
-  n <- nrow(exp) - u - d
+  cexVec <- ifelse(test = (rownames(exp) %in% u),
+                   yes = .6,
+                   no = ifelse(test = (rownames(exp) %in% d),
+                               yes = .6, no = .4))
 
   plot(log2(exp[,1]),log2(exp[,2]),
        col=colVec,
@@ -34,10 +34,8 @@ meanPlot <- function(exp,c1 = "condition 1",c2 = "condition 2",p=.5,l=0) {
        pch=16,
        xlab=paste("log2(mean ",c1,")",sep=""),
        ylab=paste("log2(mean ",c2,")",sep=""))
-  title(main=paste(c1," vs. ",c2,sep=""))
+  title(main=paste(c2," vs. ",c1,sep=""))
   mtext(text = paste("p-adj < ",p,", log2(fc) > ",l,sep=""),side = 3)
-  legend("topleft",legend = c(paste("up (",u,")",sep=""),paste("down (",d,")",sep = ""),paste("not significant (",n,")",sep = "")),pch=16,col=c("firebrick3","steelblue4","black"),bty='n')
+  legend("bottomright",legend = c(paste("up (",length(u),")",sep=""),paste("down (",length(d),")",sep = ""),paste("not significant (",n,")",sep = "")),pch=16,col=c("firebrick3","steelblue4","black"),bty='n')
 
 }
-
-
