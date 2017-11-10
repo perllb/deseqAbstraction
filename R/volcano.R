@@ -3,13 +3,14 @@
 #' @param test: output object from results() of DESeq2
 #' @param p: cutoff of significance (p-adj)
 #' @param title: string describing plot
+#' @param id: If TRUE, you can identify points and label their names. FALSE by default
 #' @title volcano plot
 #' @export volcanoPlot
 #' @example
 #' test <- results(dds,contrast = c("condition","genex-KO","WT"))
 #' volcanoPlot(test = test, max=9,p=.001,title="transcriptome changes upon KO")
 
-volcanoPlot <- function(test,max=NULL,p=.5,title="transcriptome changes") {
+volcanoPlot <- function(test,max=NULL,p=.5,title="transcriptome changes",id=F) {
 
   # get genes with p-adj 0. (these are so significant that there are not a low enough number for the p-adj in R)
   t <- which(is.infinite(-log10(test$padj)))
@@ -52,4 +53,11 @@ volcanoPlot <- function(test,max=NULL,p=.5,title="transcriptome changes") {
          bty = "n", cex = 0.7)
   abline(v = 0, lty = 2)
 
+  if(id==T) {
+
+    identify(x = test$log2FoldChange, y = yaxis,labels = rownames(test))
+
+  }
+
 }
+

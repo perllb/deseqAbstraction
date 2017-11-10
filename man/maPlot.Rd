@@ -4,7 +4,7 @@
 \alias{maPlot}
 \title{maPlot - my awesome function #2}
 \usage{
-maPlot(test, c1, c2, p = 0.5, l = 0)
+maPlot(test, c1, c2, p = 0.5, l = 0, id = F)
 }
 \arguments{
 \item{test:}{output object from results() of DESeq2}
@@ -12,6 +12,8 @@ maPlot(test, c1, c2, p = 0.5, l = 0)
 \item{c1:}{string describing condition 1 in results deseq test}
 
 \item{c2:}{string describing condition 2 in results deseq test}
+
+\item{id:}{If TRUE, you can identify points and label their names. FALSE by default}
 }
 \description{
 Plots scatter plot with log2FC on log2(baseMean), and marks significant genes

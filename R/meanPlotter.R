@@ -3,13 +3,14 @@
 #' @param exp: data.frame with average expression of genes (rows) in conditions (cols). Two columns only! if you experiment has more conditions, then select columns first.
 #' @param c1: string describing condition 1 in results deseq test
 #' @param c2: string describing condition 2 in results deseq test
+#' @param id: If TRUE, you can identify points and label their names. FALSE by default#'
 #' @title meanPlot compare gene expression
 #' @export meanPlot
 #' @example
 #' exp <- getAverage(dds)
 #' maPlot(exp = exp, c1 = "KO", c2 = "CTR" )
 
-meanPlot <- function(exp,test,c1 = "condition 1",c2 = "condition 2",p=.5,l=0) {
+meanPlot <- function(exp,test,c1 = "condition 1",c2 = "condition 2",p=.5,l=0,id=F) {
 
   sign <- getSignName(x = test,p = p,l = l)
   u <- sign$up
@@ -37,5 +38,11 @@ meanPlot <- function(exp,test,c1 = "condition 1",c2 = "condition 2",p=.5,l=0) {
   title(main=paste(c2," vs. ",c1,sep=""))
   mtext(text = paste("p-adj < ",p,", log2(fc) > ",l,sep=""),side = 3)
   legend("bottomright",legend = c(paste("up (",length(u),")",sep=""),paste("down (",length(d),")",sep = ""),paste("not significant (",n,")",sep = "")),pch=16,col=c("firebrick3","steelblue4","black"),bty='n')
+
+  if(id==T) {
+
+    identify(log2(exp[,1]),log2(exp[,2]),labels = rownames(exp))
+
+  }
 
 }

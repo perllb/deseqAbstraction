@@ -4,7 +4,8 @@
 \alias{volcanoPlot}
 \title{volcano plot}
 \usage{
-volcanoPlot(test, max = NULL, p = 0.5, title = "transcriptome changes")
+volcanoPlot(test, max = NULL, p = 0.5, title = "transcriptome changes",
+  id = F)
 }
 \arguments{
 \item{test:}{output object from results() of DESeq2}
@@ -12,6 +13,8 @@ volcanoPlot(test, max = NULL, p = 0.5, title = "transcriptome changes")
 \item{p:}{cutoff of significance (p-adj)}
 
 \item{title:}{string describing plot}
+
+\item{id:}{If TRUE, you can identify points and label their names. FALSE by default}
 }
 \description{
 Generates volcano plot and marks significant genes. Scales the y axis if promted

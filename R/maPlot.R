@@ -3,13 +3,14 @@
 #' @param test: output object from results() of DESeq2
 #' @param c1: string describing condition 1 in results deseq test
 #' @param c2: string describing condition 2 in results deseq test
+#' @param id: If TRUE, you can identify points and label their names. FALSE by default
 #' @title maPlot - my awesome function #2
 #' @export maPlot
 #' @example
 #' test <- results(dds,contrast = c("condition","genex-KO","WT"))
 #' maPlot(test = test, c1 = "KO", c2 = "WT" )
 
-maPlot <- function(test,c1,c2,p=.5,l=0) {
+maPlot <- function(test,c1,c2,p=.5,l=0,id=F) {
 
   #color up and down sign..
   colVec <- ifelse(test = test$padj<p,
@@ -38,5 +39,10 @@ maPlot <- function(test,c1,c2,p=.5,l=0) {
   mtext(text = paste("p-adj < ",p,", log2(fc) > ",l,sep=""),side = 3)
   legend("topleft",legend = c(paste("up (",u,")",sep=""),paste("down (",d,")",sep = ""),paste("not significant (",n,")",sep = "")),pch=16,col=c("firebrick3","steelblue4","black"),bty='n')
 
+  if(id==T) {
+
+    identify(log2(test$baseMean),test$log2FoldChange,labels = rownames(test))
+
+  }
 }
 

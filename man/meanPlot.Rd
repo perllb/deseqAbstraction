@@ -5,7 +5,7 @@
 \title{meanPlot compare gene expression}
 \usage{
 meanPlot(exp, test, c1 = "condition 1", c2 = "condition 2", p = 0.5,
-  l = 0)
+  l = 0, id = F)
 }
 \arguments{
 \item{exp:}{data.frame with average expression of genes (rows) in conditions (cols). Two columns only! if you experiment has more conditions, then select columns first.}
@@ -13,6 +13,8 @@ meanPlot(exp, test, c1 = "condition 1", c2 = "condition 2", p = 0.5,
 \item{c1:}{string describing condition 1 in results deseq test}
 
 \item{c2:}{string describing condition 2 in results deseq test}
+
+\item{id:}{If TRUE, you can identify points and label their names. FALSE by default#'}
 }
 \description{
 Plots scatter plot with log2(cond1) vs. log2(cond2), and marks significant genes
