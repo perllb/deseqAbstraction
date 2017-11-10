@@ -3,8 +3,8 @@ title: "Usage deseqAbstraction"
 author: "Per Ludvik Brattås"
 date: "11/7/2017"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -24,7 +24,7 @@ rm(list=ls())
 gc()
 
 # get path to directory with featurecount output
-path <- "/Users/perludvik/Dropbox (MN)/Per/PhD/Projects/DNAmeth/hNES DNMT1 KO/RNAseq/PairedParam/Quant/"
+path <- "~/Dropbox (MN)/Per/PhD/Projects/DNAmeth/hNES DNMT1 KO/RNAseq/PairedParam/Quant/"
 # filename of the featurecount file
 fc.file <- "hg38.NCBI.genesBestRefSeq.exon.primary.s2.txt"
 # full pathh
@@ -51,7 +51,6 @@ library(DESeq2)
 ##### - give a name to this data (in this case "DNMT1KO""), and the name of the raw featureCounts output file
 
 ```{r, create object}
-
 # make deseqAbs object, give name of the featurecount file
 dnmt <- deseqAbs$new("DNMT1KO",fc.file.path)
 
@@ -80,11 +79,35 @@ dnmt$fullAuto()
 
 ```
 
+#### 4.1 Make custom diffex analysis
+```{r}
+## By default, DESeq2 will make diffex test between two conditions in your colData. To see which conditions are tested, type
+dnmt$test$Default
+## here you can see the two conditions, in this case: KO vs CTR
+
+## If you have more conditions, do the following to test between two other conditions
+# get the names of the conditions 
+conds <- gsub(pattern = "condition",replacement = "",resultsNames(dnmt$deseq))
+conds
+# list condition names with index
+cbind(conds,1:length(conds))
+
+# Test KO vs. CTR
+c1 <- conds[3] # since KO is the 3rd entry of the conds vector
+c2 <- conds[2] # since CTR is the 2nd entry of the conds vector
+# make diffex analysis , and give it a name (without space is the best) that makes it easy to access later
+dnmt$makeDiffex(name = "KOvsWT",c1 = c1,c2 = c2)
+
+## access the test data with
+dnmt$test$KOvsWT
+
+## in the following examples, when using the test data, we access it like above
+```
+
 #### 5. Visualize data
 #### 5.1 PCA and sample-to-sample
 
 ```{r}
-
 # Default PCA plot 
 dnmt$pca()
 
@@ -102,40 +125,43 @@ sampleToSample(data = dnmt$VST)
 #### 5.2 maPlot
 
 ```{r}
-
 # make maPlot: color genes if they have p-adj and log2fc below/above given values (p and l) 
-maPlot(test = dnmt$test,"DNMT1 KO","CTR",l = .5,p = .005)
+maPlot(test = dnmt$test$KOvsWT,"DNMT1 KO","CTR",l = .5,p = .005)
 
+# set id = T to label points
+maPlot(test = dnmt$test$KOvsWT,"DNMT1 KO","CTR",l = .5,p = .005,id=T)
+# now click on the points you want, and press ESC when done
 ```
 
 #### 5.3 volcano plot
 
 ```{r}
-
-
 # generate volcanoplot. 
-volcanoPlot(test = dnmt$test)
+volcanoPlot(test = dnmt$test$KOvsWT)
 
 # cut y-axis 
-volcanoPlot(test = dnmt$test,max = 100)
+volcanoPlot(test = dnmt$test$KOvsWT,max = 100)
+
+# set id = T to label points
+volcanoPlot(test = dnmt$test$KOvsWT,max = 100,id = T)
+# now click on the points you want, and press ESC when done
 
 
 ```
 
 #### 5.4 heatmaps
 ```{r}
-
 # plot top significant genes
-mostSignificantHeat(data = assay(dnmt$VST),test = dnmt$test)
+mostSignificantHeat(data = assay(dnmt$VST),test = dnmt$test$KOvsWT)
 
 # plot top significant genes, top 20
-mostSignificantHeat(data = assay(dnmt$VST),test = dnmt$test,ntop = 20)
+mostSignificantHeat(data = assay(dnmt$VST),test = dnmt$test$KOvsWT,ntop = 20)
 
 # plot top significant genes, top 20, with annotation of columns
-mostSignificantHeat(data = assay(dnmt$VST),test = dnmt$test,ntop = 20,a1 = dnmt$colData$condition,n1 = "Treatment")
+mostSignificantHeat(data = assay(dnmt$VST),test = dnmt$test$KOvsWT,ntop = 20,a1 = dnmt$colData$condition,n1 = "Treatment")
 
 ## plot top significant genes, top 70, with two annotation of columns
-mostSignificantHeat(data = assay(dnmt$VST),test = dnmt$test,ntop = 70,a1 = dnmt$colData$condition,n1 = "Treatment",a2 = colnames(dnmt$rawCounts),n2 = "sampleNames")
+mostSignificantHeat(data = assay(dnmt$VST),test = dnmt$test$KOvsWT,ntop = 70,a1 = dnmt$colData$condition,n1 = "Treatment",a2 = colnames(dnmt$rawCounts),n2 = "sampleNames")
 
 # plot most variable genes
 mostVariableHeat(data = assay(dnmt$VST))
@@ -158,12 +184,12 @@ head(base$SD)
 #### 7. Get significant genes
 ```{r}
 # Get diffex-data of genes with p-adj < 0.001 and log2FC more/less than 0.2
-sign <- getSign(x = dnmt$test,p = .001,l = .2)
+sign <- getSign(x = dnmt$test$KOvsWT,p = .001,l = .2)
 up <- sign$up
 down <- sign$down
 
 # Get names of genes with p-adj < 0.01 and log2FC more/less than .1
-signID <- getSignName(x = dnmt$test,p = .01,l = .2)
+signID <- getSignName(x = dnmt$test$KOvsWT,p = .01,l = .2)
 upID <- signID$up
 downID <- signID$down
 

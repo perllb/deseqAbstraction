@@ -53,7 +53,6 @@ cnames <- colnames(iN$rawCounts)
 newnames <- gsub(pattern = "Aligned.sortedByCoord.out.bam",replacement = "",gsub(pattern = "X.projects.fs1.medpvb.backup.projects.iN.d24.Aligned_hg38_STAR_mMap.hg38.mMap.",replacement = "",x = cnames))
 # 3. add these modified sample names to the object
 iN$sampleNames <- newnames
-
 ```
 
 #### 3. Make colData data.frame that well describes the data
@@ -102,7 +101,6 @@ head(iN$rpkm)
 head(iN$VST)
 # default diffex
 head(iN$test$Default)
-
 ```
 
 #### 5. Differential expression
@@ -110,7 +108,6 @@ head(iN$test$Default)
 ##### However, if you have many conditions you may want to test other pairwise combinations
 
 ```{r, message=FALSE}
-
 ## Create directory to print diffex result matrices
 deseq.res.path <- paste(path,"Results/DEseq/",sep = "")
 if(!dir.exists(deseq.res.path)) {
@@ -168,6 +165,9 @@ sampleToSample(data = iN$VST)
 # maPlot with the RESTi
 maPlot(test = iN$test$RESTi,c1 = "pBpA+RESTi",c2 = "pBpA only",l = 1,p = .001)
 
+# maPlot with the RESTi, identify genes (click on points you want to label, then ESC)
+maPlot(test = iN$test$RESTi,c1 = "pBpA+RESTi",c2 = "pBpA only",l = 1,p = .001)
+
 # maPlot with the pBpA - test
 maPlot(test = iN$test$pBpA,"pBpA+RESTi","RESTi only",l = 1,p = .001)
 
@@ -179,6 +179,9 @@ maPlot(test = iN$test$pBpA,"pBpA+RESTi","RESTi only",l = 1,p = .001)
 
 # generate volcanoplot RESTi 
 volcanoPlot(test = iN$test$RESTi)
+
+# generate volcanoplot RESTi, identify genes in plot (click on points you want to label, then ESC)
+volcanoPlot(test = iN$test$RESTi,id = T)
 
 # cut y-axis 
 volcanoPlot(test = iN$test$RESTi,max = 100)
