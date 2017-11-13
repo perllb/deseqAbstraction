@@ -23,11 +23,11 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd,z=FALSE,clus
   library(graphics)
   library(RColorBrewer)
 
-  if(!is.matrix(data)) {
+  if(!is.matrix(data) | !is.data.frame(data)) {
     data <- assay(data)
   }
 
-  if(!is.matrix(data)) {
+  if(!is.matrix(data) | !is.data.frame(data)) {
     cat("ERROR: Data is not in correct format. Must be matrix or DESeq object")
   } else {
 

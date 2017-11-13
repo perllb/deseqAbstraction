@@ -12,11 +12,11 @@
 ## get most variable genes
 getVariableGenes = function(data,ntop=100,sdcut = 0) {
 
-  if(!is.matrix(data)) {
+  if(!is.matrix(data) | !is.data.frame(data)) {
     data <- assay(data)
   }
 
-  if(!is.matrix(data)) {
+  if(!is.matrix(data) | !is.data.frame(data)) {
     cat("ERROR: Data is not in correct format. Must be matrix or DESeq object")
   } else {
     sd <- apply(data,1,sd)
