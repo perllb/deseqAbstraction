@@ -24,12 +24,11 @@ getVariableGenes = function(data,ntop=100,sdcut = 0) {
     # if user specifices cutoff of sd for genes to return
     if(sdcut > 0) {
 
-      return(rownames(self$VST[sd>sdcut,]))
+      return(rownames(data[sd>sdcut,]))
 
     } else { ## if no sdcut defined, return top 50 (or user specified ntop genes)
 
-      tmp <- assay(self$VST)
-      sd.ordered <- tmp[order(-apply(tmp,1,sd)),]
+      sd.ordered <- data[order(-apply(data,1,sd)),]
       return(rownames(sd.ordered[1:ntop,]))
 
     }
