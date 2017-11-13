@@ -4,7 +4,7 @@
 \alias{meanPlot}
 \title{meanPlot compare gene expression}
 \usage{
-meanPlot(exp, test, c1 = "condition 1", c2 = "condition 2", p = 0.5,
+meanPlot(exp, test, c1 = "condition 1", c2 = "condition 2", p = 0.05,
   l = 0, id = F)
 }
 \arguments{

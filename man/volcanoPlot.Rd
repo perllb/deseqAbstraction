@@ -4,7 +4,7 @@
 \alias{volcanoPlot}
 \title{volcano plot}
 \usage{
-volcanoPlot(test, max = NULL, p = 0.5, title = "transcriptome changes",
+volcanoPlot(test, max = NULL, p = 0.05, title = "transcriptome changes",
   id = F)
 }
 \arguments{

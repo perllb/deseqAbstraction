@@ -10,7 +10,7 @@
 #' exp <- getAverage(dds)
 #' maPlot(exp = exp, c1 = "KO", c2 = "CTR" )
 
-meanPlot <- function(exp,test,c1 = "condition 1",c2 = "condition 2",p=.5,l=0,id=F) {
+meanPlot <- function(exp,test,c1 = "condition 1",c2 = "condition 2",p=.05,l=0,id=F) {
 
   sign <- getSignName(x = test,p = p,l = l)
   u <- sign$up

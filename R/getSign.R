@@ -11,7 +11,7 @@
 #' up <- sign$up
 #' down <- sign$down
 
-getSign <- function(x,p,l) {
+getSign <- function(x,p = .01,l = .2) {
 
   up <- x[!is.na(x$padj) & x$padj < p & x$log2FoldChange > l,]
   down <- x[!is.na(x$padj) & x$padj < p & x$log2FoldChange < -l,]

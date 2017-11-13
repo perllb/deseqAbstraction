@@ -10,7 +10,7 @@
 #' test <- results(dds,contrast = c("condition","genex-KO","WT"))
 #' maPlot(test = test, c1 = "KO", c2 = "WT" )
 
-maPlot <- function(test,c1,c2,p=.5,l=0,id=F) {
+maPlot <- function(test,c1,c2,p=.05,l=0,id=F) {
 
   #color up and down sign..
   colVec <- ifelse(test = test$padj<p,

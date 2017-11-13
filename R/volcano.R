@@ -10,7 +10,7 @@
 #' test <- results(dds,contrast = c("condition","genex-KO","WT"))
 #' volcanoPlot(test = test, max=9,p=.001,title="transcriptome changes upon KO")
 
-volcanoPlot <- function(test,max=NULL,p=.5,title="transcriptome changes",id=F) {
+volcanoPlot <- function(test,max=NULL,p=.05,title="transcriptome changes",id=F) {
 
   # get genes with p-adj 0. (these are so significant that there are not a low enough number for the p-adj in R)
   t <- which(is.infinite(-log10(test$padj)))
