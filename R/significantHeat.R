@@ -90,5 +90,7 @@ mostSignificantHeat <- function(data,test,ntop=50,a1=NULL,a2=NULL,n1=NULL,n2=NUL
     } else {
       pheatmap(plotData, cluster_rows = T, fontsize_row = 4,  show_rownames = rowShow, cluster_cols = T)
     }
+
+    return(rownames(plotData))
   }
 }

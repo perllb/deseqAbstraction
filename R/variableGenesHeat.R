@@ -86,5 +86,6 @@ mostVariableHeat <- function(data,ntop=50,a1=NULL,a2=NULL,n1=NULL,n2=NULL) {
     } else {
       pheatmap(plotData, cluster_rows = T, fontsize_row = 4,  show_rownames = rowShow, cluster_cols = T)
     }
+    return(rownames(plotData))
   }
 }
