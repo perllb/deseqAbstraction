@@ -184,10 +184,10 @@ deseqAbs <- R6Class("deseqAbs",
 
                           if(!is.null(name)) {
 
-                            self$test[[name]] <- results(self$deseq,contrast = c("condition",c1,c2))
+                            self$test[[name]] <- results(self$deseq,contrasts = c("condition",c1,c2))
 
                           } else {
-                            self$test[[paste("Test:",c1,"_vs._",c2,"",sep = "")]] <- results(self$deseq,contrast = c("condition",c1,c2))
+                            self$test[[paste("Test:",c1,"_vs._",c2,"",sep = "")]] <- results(self$deseq,contrasts = c("condition",c1,c2))
                           }
 
                           cat(paste("-- Test completed for ",c1," vs. ",c2,"..\n",sep = ""))
@@ -202,10 +202,10 @@ deseqAbs <- R6Class("deseqAbs",
 
                           if(!is.null(name)) {
 
-                            self$test[[name]] <- results(self$deseq,contrast = c("condition",c1,c2))
+                            self$test[[name]] <- results(self$deseq,contrasts = c("condition",c1,c2))
 
                           } else {
-                            self$test[[paste("Test:",c1,"_vs._",c2,"",sep = "")]] <- results(self$deseq,contrast = c("condition",c1,c2))
+                            self$test[[paste("Test:",c1,"_vs._",c2,"",sep = "")]] <- results(self$deseq,contrasts = c("condition",c1,c2))
                           }
                           cat(paste("-- Test completed for ",c1," vs. ",c2,"..\n",sep = ""))
                         }

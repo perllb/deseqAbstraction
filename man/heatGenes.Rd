@@ -4,8 +4,8 @@
 \alias{heatGenes}
 \title{HeatGenes: Heatmap of your genes of interest!}
 \usage{
-heatGenes(data, genes, a1 = NULL, a2 = NULL, n1 = NULL, n2 = NULL, sd,
-  z = FALSE, cluster_col = T)
+heatGenes(data, genes, a1 = NULL, a2 = NULL, n1 = NULL, n2 = NULL,
+  sd = 1, z = FALSE, cluster_col = T)
 }
 \arguments{
 \item{data:}{deseq matrix data (with varianceStablizing, rlog etc - eg. assay(vsd)}
