@@ -226,13 +226,16 @@ deseqAbs <- R6Class("deseqAbs",
 
                       },
 
-                      pca = function(ntop=1000,title=NULL) {
+                      pca = function(ntop=1000,title=NULL,label=NULL) {
 
                         if(is.null(title)) {title = "PCA"}
+                        if(is.null(label)) {label = rep("",nrow(self$colData$condition))}
+
                         PCAplotter(dat = self$VST,
                                    color = self$colData$condition,
                                    title = title,
-                                   ntop = ntop)
+                                   ntop = ntop,
+                                   label = label)
 
                       },
 
