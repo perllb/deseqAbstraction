@@ -99,5 +99,7 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd,z=FALSE,clus
     } else {
       pheatmap(plotData, cluster_rows = T, fontsize_row = 4,  show_rownames = rowShow, cluster_cols = cluster_col,scale = scale)
     }
+
+    return(rownames(plotData))
   }
 }
