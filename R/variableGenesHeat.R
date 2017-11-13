@@ -17,64 +17,74 @@ mostVariableHeat <- function(data,ntop=50,a1=NULL,a2=NULL,n1=NULL,n2=NULL) {
   library(graphics)
   library(pheatmap)
   library(RColorBrewer)
-  sd.ordered <- data[order(-apply(data,1,sd)),]
-  plotData <- sd.ordered[1:ntop,]
 
+  if(!is.matrix(data)) {
+    data <- assay(data)
+  }
 
-  #show rownames if 40 or less genes are plotted
-  rowShow <- T
-  if(ntop>100) { rowShow <- F }
-
-  if (!is.null(a1) & is.null(a2)) {
-
-    df <- data.frame(Var1 = factor(a1))
-    rownames(df) <- colnames(data)
-    colnames(df) <- n1
-
-    cols <- colorRampPalette(brewer.pal(9, "Set2"))
-    mycolors <- cols(length(unique(a1)))
-    names(mycolors) <- unique(a1)
-    mycolors <- list(a = mycolors)
-    names(mycolors) <- n1
-
-    pheatmap(plotData, annotation_col = df, annotation_colors = mycolors,fontsize_row = 4, cluster_rows = T, show_rownames = rowShow, cluster_cols = T)
-
-  } else if (!is.null(a1) & !is.null(a2)) {
-
-    df <- data.frame(Var1 = factor(a1),Var2 = factor(a2))
-    rownames(df) <- colnames(data)
-    colnames(df) <- c(n1,n2)
-
-    cols <- colorRampPalette(brewer.pal(9, "Set1"))
-    mycolors <- cols(length(unique(a1)))
-    names(mycolors) <- unique(a1)
-
-    cols <- colorRampPalette(brewer.pal(9, "Set3"))
-    mycolors2 <- cols(length(unique(a2)))
-    names(mycolors2) <- unique(a2)
-
-    mycolors <- list(a = mycolors,b = mycolors2)
-    names(mycolors) <- c(n1,n2)
-
-    pheatmap(plotData, annotation_col = df, annotation_colors = mycolors,fontsize_row = 4, cluster_rows = T, show_rownames = rowShow, cluster_cols = T)
-
-
-  } else if (!is.null(a2) & is.null(a1)) {
-
-    a1<-a2
-    df <- data.frame(Var1 = factor(a1))
-    rownames(df) <- colnames(data)
-    colnames(df) <- n1
-
-    cols <- colorRampPalette(brewer.pal(9, "Set1"))
-    mycolors <- cols(length(unique(a1)))
-    names(mycolors) <- unique(a1)
-    mycolors <- list(a = mycolors)
-    names(mycolors) <- n1
-
-    pheatmap(plotData, annotation_col = df, annotation_colors = mycolors,fontsize_row = 4, cluster_rows = T, show_rownames = rowShow, cluster_cols = T)
-
+  if(!is.matrix(data)) {
+    cat("ERROR: Data is not in correct format. Must be matrix or DESeq object")
   } else {
-    pheatmap(plotData, cluster_rows = T, fontsize_row = 4,  show_rownames = rowShow, cluster_cols = T)
+
+    sd.ordered <- data[order(-apply(data,1,sd)),]
+    plotData <- sd.ordered[1:ntop,]
+
+
+    #show rownames if 40 or less genes are plotted
+    rowShow <- T
+    if(ntop>100) { rowShow <- F }
+
+    if (!is.null(a1) & is.null(a2)) {
+
+      df <- data.frame(Var1 = factor(a1))
+      rownames(df) <- colnames(data)
+      colnames(df) <- n1
+
+      cols <- colorRampPalette(brewer.pal(9, "Set2"))
+      mycolors <- cols(length(unique(a1)))
+      names(mycolors) <- unique(a1)
+      mycolors <- list(a = mycolors)
+      names(mycolors) <- n1
+
+      pheatmap(plotData, annotation_col = df, annotation_colors = mycolors,fontsize_row = 4, cluster_rows = T, show_rownames = rowShow, cluster_cols = T)
+
+    } else if (!is.null(a1) & !is.null(a2)) {
+
+      df <- data.frame(Var1 = factor(a1),Var2 = factor(a2))
+      rownames(df) <- colnames(data)
+      colnames(df) <- c(n1,n2)
+
+      cols <- colorRampPalette(brewer.pal(9, "Set1"))
+      mycolors <- cols(length(unique(a1)))
+      names(mycolors) <- unique(a1)
+
+      cols <- colorRampPalette(brewer.pal(9, "Set3"))
+      mycolors2 <- cols(length(unique(a2)))
+      names(mycolors2) <- unique(a2)
+
+      mycolors <- list(a = mycolors,b = mycolors2)
+      names(mycolors) <- c(n1,n2)
+
+      pheatmap(plotData, annotation_col = df, annotation_colors = mycolors,fontsize_row = 4, cluster_rows = T, show_rownames = rowShow, cluster_cols = T)
+
+
+    } else if (!is.null(a2) & is.null(a1)) {
+
+      a1<-a2
+      df <- data.frame(Var1 = factor(a1))
+      rownames(df) <- colnames(data)
+      colnames(df) <- n1
+
+      cols <- colorRampPalette(brewer.pal(9, "Set1"))
+      mycolors <- cols(length(unique(a1)))
+      names(mycolors) <- unique(a1)
+      mycolors <- list(a = mycolors)
+      names(mycolors) <- n1
+
+      pheatmap(plotData, annotation_col = df, annotation_colors = mycolors,fontsize_row = 4, cluster_rows = T, show_rownames = rowShow, cluster_cols = T)
+
+    } else {
+      pheatmap(plotData, cluster_rows = T, fontsize_row = 4,  show_rownames = rowShow, cluster_cols = T)
+    }
   }
 }
