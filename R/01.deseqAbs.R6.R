@@ -229,7 +229,7 @@ deseqAbs <- R6Class("deseqAbs",
                       pca = function(ntop=1000,title=NULL) {
 
                         if(is.null(title)) {title = "PCA"}
-                        PCAplotter(dat = self$VST,color = self$colData$condition,title = title)
+                        PCAplotter(dat = self$VST,color = self$colData$condition,title = title,ntop=ntop)
 
                       },
 
