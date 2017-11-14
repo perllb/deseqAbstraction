@@ -101,12 +101,19 @@ deseqAbs <- R6Class("deseqAbs",
 
                       getAverage = function() {
 
-                        cat("- Computing mean normalized expression of each condition\n")
-                        baseMeanPerLvl <- sapply( levels(self$deseq$condition), function(lvl) rowMeans( counts(self$deseq,normalized=TRUE)[,self$deseq$condition == lvl] ) )
-                        baseSDPerLvl <- sapply( levels(self$deseq$condition), function(lvl) apply( counts(self$deseq,normalized=TRUE)[,self$deseq$condition == lvl],1,sd ) )
-                        colnames(baseSDPerLvl) <- paste("st.dev:",colnames(baseSDPerLvl),sep="")
-                        self$baseMean <- list(Mean=baseMeanPerLvl,SD=baseSDPerLvl)
-                        cat("- ..mean normalized expression computed for each condition. access mean with $baseMean$Mean, and st.dev with $baseMean$SD \n")
+                        if(length(levels(self$deseq$condition))>sum(duplicated(embryo$deseq$condition))) {
+                          cat("Some of your levels do not have replicates.. ")
+                        } else {
+
+                          cat("- Computing mean normalized expression of each condition\n")
+                          baseMeanPerLvl <- sapply( levels(self$deseq$condition), function(lvl) rowMeans( counts(self$deseq,normalized=TRUE)[,self$deseq$condition == lvl] ) )
+                          baseSDPerLvl <- sapply( levels(self$deseq$condition), function(lvl) apply( counts(self$deseq,normalized=TRUE)[,self$deseq$condition == lvl],1,sd ) )
+                          colnames(baseSDPerLvl) <- paste("st.dev:",colnames(baseSDPerLvl),sep="")
+                          self$baseMean <- list(Mean=baseMeanPerLvl,SD=baseSDPerLvl)
+                          cat("- ..mean normalized expression computed for each condition. access mean with $baseMean$Mean, and st.dev with $baseMean$SD \n")
+                        }
+
+
                       },
 
                       getRawCounts = function() {
