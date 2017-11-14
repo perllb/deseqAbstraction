@@ -101,7 +101,7 @@ deseqAbs <- R6Class("deseqAbs",
 
                       getAverage = function() {
 
-                        if(length(levels(self$deseq$condition))>sum(duplicated(embryo$deseq$condition))) {
+                        if(length(levels(self$deseq$condition))>sum(duplicated(self$deseq$condition))) {
                           cat("Some of your levels do not have replicates.. ")
                         } else {
 
@@ -112,8 +112,6 @@ deseqAbs <- R6Class("deseqAbs",
                           self$baseMean <- list(Mean=baseMeanPerLvl,SD=baseSDPerLvl)
                           cat("- ..mean normalized expression computed for each condition. access mean with $baseMean$Mean, and st.dev with $baseMean$SD \n")
                         }
-
-
                       },
 
                       getRawCounts = function() {
