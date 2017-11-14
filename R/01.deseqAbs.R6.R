@@ -161,15 +161,16 @@ deseqAbs <- R6Class("deseqAbs",
                           bl <- "blind"
                           if(!blind) { bl <- "not-blind" }
 
-                            cat(paste(" - performing ",bl," variance stabilizing transformation \n",sep = ""))
-                            self$VST <- varianceStabilizingTransformation(self$deseq,blind = blind)
-                            if(!is.null(self$sampleNames)) {
-                              colnames(assay(self$VST)) <- make.names(self$sampleNames,unique = T)
-                            }else if(!is.null(self$colData)) {
-                              colnames(assay(self$VST)) <- make.names(names = self$colData$condition,unique = T)
-                            }
+                          cat(paste(" - performing ",bl," variance stabilizing transformation \n",sep = ""))
+                          self$VST <- varianceStabilizingTransformation(self$deseq,blind = blind)
 
-                            cat(paste(" - ..completed ",bl," variance stabilizing transformation \n",sep = ""))
+                          if(!is.null(self$sampleNames)) {
+                            colnames(assay(self$VST)) <- make.names(self$sampleNames,unique = T)
+                          }else if(!is.null(self$colData)) {
+                            colnames(assay(self$VST)) <- make.names(names = as.character(self$colData$condition),unique = T)
+                          }
+
+                          cat(paste(" - ..completed ",bl," variance stabilizing transformation \n",sep = ""))
 
                         }
 
