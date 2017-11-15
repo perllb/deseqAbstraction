@@ -25,6 +25,10 @@ Class a simple interface to deseq data
 
 \item{\code{rawCounts}}{the count matrix (removing position and length info column 1-6) with ID rownames}
 
+\item{\code{baseMean}}{list of data.frames: Mean and SD: mean and SD of normalized count data}
+
+\item{\code{rpkmMean}}{list of data.frames: Mean and SD: mean and SD of RPKM}
+
 \item{\code{geneID}}{geneIDs}
 
 \item{\code{colData}}{a data.frame with condition information}

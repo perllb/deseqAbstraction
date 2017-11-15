@@ -33,6 +33,8 @@ require(DESeq2)
 #' @field filename the name of the raw featurecount output
 #' @field rawfile the raw featurecount file
 #' @field rawCounts the count matrix (removing position and length info column 1-6) with ID rownames
+#' @field baseMean list of data.frames: Mean and SD: mean and SD of normalized count data
+#' @field rpkmMean list of data.frames: Mean and SD: mean and SD of RPKM
 #' @field geneID geneIDs
 #' @field colData a data.frame with condition information
 #' @field sampleNames a vector given by user to provide suitable sampleNames to replace filenames from featureCounts
@@ -53,6 +55,7 @@ deseqAbs <- R6Class("deseqAbs",
                       rawfile = NULL,
                       rawCounts = NULL,
                       baseMean = NULL,
+                      rpkmMean = NULL,
                       geneID = NULL,
                       colData = NULL,
                       sampleNames = NULL,
@@ -105,12 +108,23 @@ deseqAbs <- R6Class("deseqAbs",
                           cat("Some of your levels do not have replicates.. ")
                         } else {
 
-                          cat("- Computing mean normalized expression of each condition\n")
+                          ## RPKM
+                          if(is.null(self$rpkm)) { self$makeRPKM() }
+                          if(!is.null(self$rpkm)) {
+                            cat("- Computing mean RPKM of each condition\n")
+                            baseMeanPerLvl <- sapply( levels(self$deseq$condition), function(lvl) rowMeans( self$rpkm[,self$deseq$condition == lvl] ) )
+                            baseSDPerLvl <- sapply( levels(self$deseq$condition), function(lvl) apply( self$rpkm[,self$deseq$condition == lvl],1,sd ) )
+                            colnames(baseSDPerLvl) <- paste("st.dev:",colnames(baseSDPerLvl),sep="")
+                            self$rpkmMean <- list(Mean=baseMeanPerLvl,SD=baseSDPerLvl)
+                            cat("- ..mean normalized expression computed for each condition. access mean with $baseMean$Mean, and st.dev with $baseMean$SD \n")
+                          }
+                          ## normalized counts
+                          cat("- Computing mean RPKM of each condition\n")
                           baseMeanPerLvl <- sapply( levels(self$deseq$condition), function(lvl) rowMeans( counts(self$deseq,normalized=TRUE)[,self$deseq$condition == lvl] ) )
                           baseSDPerLvl <- sapply( levels(self$deseq$condition), function(lvl) apply( counts(self$deseq,normalized=TRUE)[,self$deseq$condition == lvl],1,sd ) )
                           colnames(baseSDPerLvl) <- paste("st.dev:",colnames(baseSDPerLvl),sep="")
                           self$baseMean <- list(Mean=baseMeanPerLvl,SD=baseSDPerLvl)
-                          cat("- ..mean normalized expression computed for each condition. access mean with $baseMean$Mean, and st.dev with $baseMean$SD \n")
+                          cat("- ..mean normalized counts computed for each condition. access mean with $baseMean$Mean, and st.dev with $baseMean$SD \n")
                         }
                       },
 
@@ -119,6 +133,7 @@ deseqAbs <- R6Class("deseqAbs",
                         cat("- Getting countData matrix\n")
                         self$rawCounts <- self$rawfile[,-c(1:6)]
                         rownames(self$rawCounts) <- self$geneID
+
                         if(!is.null(self$sampleNames)) {
                           colnames(self$rawCounts) <- self$sampleNames
                         } else if(!is.null(self$colData)) {
@@ -236,7 +251,7 @@ deseqAbs <- R6Class("deseqAbs",
                         self$rpkm <- self$rawCounts/ (self$length/1000) / (colSums(self$rawCounts/1000000))
                         rownames(self$rpkm) <- self$geneID
                         if(!is.null(self$sampleNames)) {
-                          colnames(self$rpkm) <- self$sampleNames
+                          colnames(self$rpkm) <- make.names(names = self$sampleNames,unique = T)
                         }else if(!is.null(self$colData)) {
                           colnames(self$rpkm) <- make.names(names = self$colData$condition,unique = T)
                         }
