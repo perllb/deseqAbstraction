@@ -10,7 +10,7 @@ heatGenes(data, genes, a1 = NULL, a2 = NULL, n1 = NULL, n2 = NULL,
 \arguments{
 \item{data:}{deseq matrix data (with varianceStablizing, rlog etc - eg. assay(vsd)}
 
-\item{genes:}{a vector of gene IDs that can be grepped from rownames of data}
+\item{genes:}{a vector of gene IDs to be extracted from rownames of data}
 
 \item{a1:}{annotation of the samples}
 

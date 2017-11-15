@@ -1,7 +1,7 @@
 #' @name heatGenes
 #' @description Plots heatmap showing the expression of the genes of given gene-list and having sd above given value
 #' @param data: deseq matrix data (with varianceStablizing, rlog etc - eg. assay(vsd)
-#' @param genes: a vector of gene IDs that can be grepped from rownames of data
+#' @param genes: a vector of gene IDs to be extracted from rownames of data
 #' @param a1: annotation of the samples
 #' @param a2: annotation of the samples
 #' @param n1: name of annotation in a1
@@ -31,8 +31,7 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=1,z=FALSE,cl
     cat("ERROR: Data is not in correct format. Must be matrix or DESeq object")
   } else {
 
-    match <- paste(genes,collapse = "$|^")
-    genes.exp <- data[grep(match,rownames(data)),]
+    genes.exp <- data[genes,]
 
     ## get standard deviation of each gene
     sd.exp <- apply(genes.exp,1,sd)

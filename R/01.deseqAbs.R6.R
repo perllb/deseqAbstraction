@@ -110,6 +110,7 @@ deseqAbs <- R6Class("deseqAbs",
 
                           ## RPKM
                           if(is.null(self$rpkm)) { self$makeRPKM() }
+
                           if(!is.null(self$rpkm)) {
                             cat("- Computing mean RPKM of each condition\n")
                             baseMeanPerLvl <- sapply( levels(self$deseq$condition), function(lvl) rowMeans( self$rpkm[,self$deseq$condition == lvl] ) )
@@ -118,6 +119,7 @@ deseqAbs <- R6Class("deseqAbs",
                             self$rpkmMean <- list(Mean=baseMeanPerLvl,SD=baseSDPerLvl)
                             cat("- ..mean normalized expression computed for each condition. access mean with $baseMean$Mean, and st.dev with $baseMean$SD \n")
                           }
+
                           ## normalized counts
                           cat("- Computing mean RPKM of each condition\n")
                           baseMeanPerLvl <- sapply( levels(self$deseq$condition), function(lvl) rowMeans( counts(self$deseq,normalized=TRUE)[,self$deseq$condition == lvl] ) )
