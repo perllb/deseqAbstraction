@@ -94,21 +94,21 @@ deseqTE <- R6Class("deseqTE",
 
                      },
 
-                     getClass <- function(data,class) {
+                     getClass = function(data,class) {
 
                        class.features <- as.character(self$TE.features[grep(class,self$TE.features$V2),1])
                        return(data[grep(paste(class.features,collapse = "|^"),rownames(data)),])
 
                      },
 
-                     getFamily <- function(data,family) {
+                     getFamily = function(data,family) {
 
                        family.features <- as.character(self$TE.features[grep(class,self$TE.features$V3),1])
                        return(data[grep(paste(family.features,collapse = "|^"),rownames(data)),])
 
                      },
 
-                     getSubFamily <- function(data,subfamily) {
+                     getSubFamily = function(data,subfamily) {
 
                        sfamily.features <- as.character(self$TE.features[grep(class,self$TE.features$V3),1])
                        return(data[grep(paste(sfamily.features,collapse = "|^"),rownames(data)),])
