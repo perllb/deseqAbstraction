@@ -51,16 +51,17 @@ deseqTE <- R6Class("deseqTE",
                    inherit = deseqAbs,
 
                    public = list(
-                     familyDF = NULL,
+
                      filteredRawfile = NULL,
                      TE.features = NULL,
                      genome = NULL,
 
-                     initialize = function(genome=NULL) {
+                     initialize = function(name = NA,filename = NA,genome=NULL) {
 
-                       super$initialize()
+                       super$initialize(name = NA,filename = NA)
 
                        if(!is.null(genome)) {
+
                          self$genome = genome
                          self$TE.features <- self$getFeatures(genome)
                        }
