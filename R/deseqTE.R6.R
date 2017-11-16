@@ -57,10 +57,13 @@ deseqTE <- R6Class("deseqTE",
                        if(!is.na(filename)) {
                          cat("- reading featureCount file\n")
                          tmp <- read.csv(filename,header=T,sep = "\t",skip=1)
+                         len <- nrow(tmp)
                          cat("- ..featureCount file reading done. \n")
                          cat("- Filter low read elements.. ")
                          self$rawfile <- tmp[rowMeans(tmp[,7:ncol(tmp)])>3,]
-                         cat("- ..featureCount file filtering done. Access rawdata with $rawfile\n")
+                         lenf <- nrow(self$rawfile)
+                         rem <- len-lenf
+                         cat("- ..featureCount file filtering done.\n --Original rawfile had ",len," elements \n --After filtering ",lenf," elements remain.\n -- ",rem," elements removed due to <3 reads on average.\n --- Access filtered file with $rawfile\n")
 
                        } else {
                          cat("- You must add name of raw featurecount file.\n")
