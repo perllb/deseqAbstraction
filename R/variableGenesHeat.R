@@ -29,7 +29,6 @@ mostVariableHeat <- function(data,ntop=50,a1=NULL,a2=NULL,n1=NULL,n2=NULL) {
     sd.ordered <- data[order(-apply(data,1,sd)),]
     plotData <- sd.ordered[1:ntop,]
 
-
     #show rownames if 40 or less genes are plotted
     rowShow <- T
     if(ntop>100) { rowShow <- F }
@@ -81,7 +80,7 @@ mostVariableHeat <- function(data,ntop=50,a1=NULL,a2=NULL,n1=NULL,n2=NULL) {
       mycolors <- list(a = mycolors)
       names(mycolors) <- n1
 
-      pheatmap(plotData, annotation_col = df, annotation_colors = mycolors,fontsize_row = 4, cluster_rows = T, show_rownames = rowShow, cluster_cols = T)
+      pheatmap(plotData, annotation_col = df, annotation_coloddsrs = mycolors,fontsize_row = 4, cluster_rows = T, show_rownames = rowShow, cluster_cols = T)
 
     } else {
       pheatmap(plotData, cluster_rows = T, fontsize_row = 4,  show_rownames = rowShow, cluster_cols = T)

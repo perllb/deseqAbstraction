@@ -10,7 +10,8 @@
 
 getGenes <- function(data,genes) {
 
-  genes.data <- data[genes,]
+  match <- paste(genes,collapse = "$|^")
+  genes.data <- data[grep(match,rownames(genes.exp)),]
   return(genes.data)
 
 }
