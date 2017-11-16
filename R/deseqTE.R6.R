@@ -58,7 +58,7 @@ deseqTE <- R6Class("deseqTE",
 
                      initialize = function(name = NA,filename = NA,genome=NULL) {
 
-                       super$initialize(name = NA,filename = NA)
+                       super$initialize(name = name,filename = name)
 
                        if(!is.null(genome)) {
 
