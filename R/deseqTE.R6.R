@@ -49,9 +49,29 @@ require(DESeq2)
 
 deseqTE <- R6Class("deseqTE",
                    inherit = deseqAbs,
+
                    public = list(
                      familyDF = NULL,
                      filteredRawfile = NULL,
+                     TE.features = NULL,
+                     genome = NULL,
+
+                     initialize = function(genome=NULL) {
+
+                       super$initialize()
+
+                       if(!is.null(genome)) {
+                         self$genome = genome
+                         self$TE.features <- self$getFeatures(genome)
+                       }
+                      },
+
+                     getFeatures = function(genome) {
+
+                       library(RCurl)
+                       return(read.delim(text = getURL(paste("https://raw.githubusercontent.com/perllb/deseqAbstraction/master/data/",genome,".repeats.features.txt",sep = "")),header=F))
+
+                     },
 
                      read_file = function(filename,filter=3) {
                        if(!is.na(filename)) {
