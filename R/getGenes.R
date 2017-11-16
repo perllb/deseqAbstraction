@@ -11,7 +11,7 @@
 getGenes <- function(data,genes) {
 
   match <- paste(genes,collapse = "$|^")
-  genes.data <- data[grep(match,rownames(genes.exp)),]
+  genes.data <- data[grep(match,rownames(data)),]
   return(genes.data)
 
 }
