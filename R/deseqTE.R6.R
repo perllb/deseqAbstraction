@@ -94,6 +94,24 @@ deseqTE <- R6Class("deseqTE",
 
                      },
 
+                     maPlotTE = function(testData,c1="cond1",c2="cond2",p=.05,l=0) {
+
+                       maPlot(testData,c1,c2)
+                       col <- c("darkolivegreen3","indianred4","steelblue","tan4")
+                       idx <- 1
+                       for (ere in c("LINE","SINE","LTR","SVA")) {
+
+                         if(ere == "SVA") { ere <- "Retroposon" }
+
+                         curr <- te$getClass(data = testData,ere)
+                         curr.sig <- getSign(x = curr,p = p,l=l)
+                         points(log2(curr.sig$baseMean),curr.sig$log2FoldChange,col=col[idx],pch=16)
+                         idx <- idx+1
+                       }
+
+                       legend("topright",legend = rev(c("LINE","SINE","LTR","SVA")),col=rev(col),pch=16)
+                     },
+
                      getClass = function(data,class) {
 
                        class.features <- as.character(self$TE.features[grep(class,self$TE.features$V2),1])
