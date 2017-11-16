@@ -72,6 +72,7 @@ deseqAbs <- R6Class("deseqAbs",
                         self$greet()
                         self$test <- list()
 
+
                         if(!is.na(filename)){
                           self$read_file(filename)
                           self$geneID <- as.character(self$rawfile[,1])

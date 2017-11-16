@@ -51,10 +51,27 @@ deseqTE <- R6Class("deseqTE",
                    inherit = deseqAbs,
                    public = list(
                      familyDF = NULL,
+                     filteredRawfile = NULL,
+
+                     read_file = function(filename) {
+                       if(!is.na(filename)) {
+                         cat("- reading featureCount file\n")
+                         tmp <- read.csv(filename,header=T,sep = "\t",skip=1)
+                         cat("- ..featureCount file reading done. \n")
+                         cat("- Filter low read elements.. ")
+                         self$rawfile <- tmp[rowMeans(tmp[,7:ncol(tmp)])>3,]
+                         cat("- ..featureCount file filtering done. Access rawdata with $rawfile\n")
+
+                       } else {
+                         cat("- You must add name of raw featurecount file.\n")
+                         cat("> dnmt$filename <- \"<path>/<featureCountOutput>\"\n")
+                       }
+                     },
+
 
                      percGenome = function() {
 
-                       summary <- read.delim(paste(self$filename,".summary",sep=""))
+
 
                      }
 
