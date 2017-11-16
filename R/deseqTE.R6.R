@@ -63,7 +63,7 @@ deseqTE <- R6Class("deseqTE",
                          self$rawfile <- tmp[rowMeans(tmp[,7:ncol(tmp)])>filter,]
                          lenf <- nrow(self$rawfile)
                          rem <- len-lenf
-                         cat("- ..featureCount file filtering done.\n --Original rawfile had ",len," elements \n --After filtering ",lenf," elements remain.\n -- ",rem," elements removed due to < ",filter," reads on average.\n --- If you want another cutoff, enter filer = x in call to method. \n --- Access filtered file with $rawfile\n")
+                         cat("- ..featureCount file filtering done.\n --Original rawfile had",len,"elements \n --After filtering",lenf,"elements remain.\n --",rem,"elements removed due to < ",filter," reads on average.\n --- If you want another cutoff for filtering, enter [filter = x] in call to method. \n --- Access filtered file with $rawfile\n")
 
                        } else {
                          cat("- You must add name of raw featurecount file.\n")
