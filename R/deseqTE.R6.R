@@ -58,12 +58,16 @@ deseqTE <- R6Class("deseqTE",
 
                      initialize = function(name = NA,filename = NA,genome=NULL) {
 
-                       super$initialize(name = name,filename = filename)
+                       if(is.null(genome)) {
+                         cat("== you did not enter genome. please insert genome = hg38 or mm10!")
+                       } else {
 
-                       if(!is.null(genome)) {
+                         super$initialize(name = name,filename = filename)
 
+                         cat("- Reading genomic RepeatMasker feature for ",genome)
                          self$genome = genome
                          self$TE.features <- self$getFeatures(genome)
+                         cat("- genomic RepeatMasker feature for ",genome,"reading completed.. stored in $TE.features")
                        }
                       },
 
