@@ -50,6 +50,14 @@ require(DESeq2)
 deseqTE <- R6Class("deseqTE",
                    inherit = deseqAbs,
                    public = list(
+                     familyDF = NULL,
+
+                     percGenome = function() {
+
+                       summary <- read.delim(paste(self$filename,".summary",sep=""))
+
+                     }
+
 
 
 
