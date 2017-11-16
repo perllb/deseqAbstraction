@@ -1,0 +1,44 @@
+---
+  title: "transposonFiesta_usage"
+author: "Per Ludvik Brattaas"
+date: "November 16, 2017"
+output: html_document
+---
+
+  ```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Set up objects and environment
+```{r cars}
+## clean environment
+rm(list=ls())
+gc()
+
+library(devtools)
+install_github("perllb/deseqAbstraction")
+library(deseqAbstraction)
+install_github("perllb/transposonFiesta")
+library(transposonFiesta)
+
+# set path and filenames
+path <- "/home/pbrattaas/Dropbox (MN)/Per/PhD/Projects/DNAmeth/hNES DNMT1 KO/RNAseq/PairedParam/Quant/"
+te.file <- "hg38.unique.ERE.notInNCBI.Exon.txt"
+ncbi.file <- "hg38.NCBI.genesBestRefSeq.exon.primary.s2.txt"
+
+# create new objects - one for NCBI quantifications and one for RepeatMasker
+coding <- deseqAbs$new("codingData",paste(path,ncbi.file,sep = ""))
+te <- deseqAbs$new("TE",paste(path,ncbi.file,sep=""))
+
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+  ```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

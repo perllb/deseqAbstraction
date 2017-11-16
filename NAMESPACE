@@ -3,6 +3,7 @@
 export(PCAplotter)
 export(baseMeanBar)
 export(deseqAbs)
+export(deseqTE)
 export(getAverage)
 export(getGenes)
 export(getSign)
