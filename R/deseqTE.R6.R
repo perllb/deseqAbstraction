@@ -71,6 +71,50 @@ deseqTE <- R6Class("deseqTE",
                        }
                       },
 
+                     percentTE = function() {
+
+                       te.summary <- paste(self$filename,".summary",sep="")
+                       sum <- read.delim(te.summary)
+                       tot.map <- colSums(sum[,-1])
+                       map.rm <- sum[1,-1]
+
+                       map.LINE <- colSums(getClass(self$rawCounts,"LINE"))
+                       map.SINE <- colSums(getClass(self$rawCounts,"SINE"))
+                       map.LTR <- colSums(getClass(self$rawCounts,"LTR"))
+                       map.SVA <- colSums(getClass(self$rawCounts,"Retroposon"))
+
+
+                       df <- t(data.frame(LINE=map.LINE,SINE=map.SINE,LTR=map.LTR,SVA=map.SVA))
+                       colnames(df) <- make.names(names = te$colData$condition,unique = T)
+                       plotPerc <- df*100/tot.map
+                       col <- c("darkolivegreen3","indianred4","steelblue","tan4")
+                       x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome")
+                       legend("topleft",legend = rev(c("LINE","SINE","LTR","SVA")),fill=rev(col))
+                       title("Percentage of reads mapping to EREs / genome")
+
+                     },
+
+                     getClass <- function(data,class) {
+
+                       class.features <- as.character(self$TE.features[grep(class,self$TE.features$V2),1])
+                       return(data[grep(paste(class.features,collapse = "|^"),rownames(data)),])
+
+                     },
+
+                     getFamily <- function(data,family) {
+
+                       family.features <- as.character(self$TE.features[grep(class,self$TE.features$V3),1])
+                       return(data[grep(paste(family.features,collapse = "|^"),rownames(data)),])
+
+                     },
+
+                     getSubFamily <- function(data,subfamily) {
+
+                       sfamily.features <- as.character(self$TE.features[grep(class,self$TE.features$V3),1])
+                       return(data[grep(paste(sfamily.features,collapse = "|^"),rownames(data)),])
+
+                     },
+
                      getFeatures = function(genome) {
 
                        library(RCurl)
@@ -94,18 +138,6 @@ deseqTE <- R6Class("deseqTE",
                          cat("- You must add name of raw featurecount file.\n")
                          cat("> dnmt$filename <- \"<path>/<featureCountOutput>\"\n")
                        }
-                     },
-
-
-                     percGenome = function() {
-
-
-
                      }
-
-
-
-
-
                    )
 )
