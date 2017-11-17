@@ -116,10 +116,10 @@ deseqTE <- R6Class("deseqTE",
                        legend("topright",legend = rev(c("LINE","SINE","LTR","SVA")),col=rev(col),pch=16)
                      },
 
-                     getClass = function(data,class) {
+                     getClass = function(data,TEclass) {
 
-                       class.features <- as.character(self$TE.features[grep(class,self$TE.features$V2),1])
-                       return(data[grep(paste(class.features,collapse = "|^"),rownames(data)),])
+                       TEclass.features <- as.character(self$TE.features[grep(TEclass,self$TE.features$V2),1])
+                       return(data[grep(paste(TEclass.features,collapse = "|^"),rownames(data)),])
 
                      },
 
