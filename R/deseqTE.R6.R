@@ -81,17 +81,28 @@ deseqTE <- R6Class("deseqTE",
                        map.LINE <- colSums(self$getTEClass(self$rawCounts,"LINE"))
                        map.SINE <- colSums(self$getTEClass(self$rawCounts,"SINE"))
                        map.LTR <- colSums(self$getTEClass(self$rawCounts,"LTR"))
-                       map.SVA <- colSums(self$getTEClass(self$rawCounts,"Retroposon"))
 
+                       if ( self$genome == "hg38") {
+                         map.SVA <- colSums(self$getTEClass(self$rawCounts,"Retroposon"))
+                         df <- t(data.frame(LINE=map.LINE,SINE=map.SINE,LTR=map.LTR,SVA=map.SVA))
+                         colnames(df) <- make.names(names = self$colData$condition,unique = T)
+                         plotPerc <- df*100/tot.map
+                         col <- c("darkolivegreen3","indianred4","steelblue","tan4")
+                         x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
+                         legend("topleft",legend = rev(c("LINE","SINE","LTR","SVA")),fill=rev(col))
+                         title("Percentage of reads mapping to EREs / genome")
 
-                       df <- t(data.frame(LINE=map.LINE,SINE=map.SINE,LTR=map.LTR,SVA=map.SVA))
-                       colnames(df) <- make.names(names = self$colData$condition,unique = T)
-                       plotPerc <- df*100/tot.map
-                       col <- c("darkolivegreen3","indianred4","steelblue","tan4")
-                       x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
-                       legend("topleft",legend = rev(c("LINE","SINE","LTR","SVA")),fill=rev(col))
-                       title("Percentage of reads mapping to EREs / genome")
+                       } else {
 
+                         df <- t(data.frame(LINE=map.LINE,SINE=map.SINE,LTR=map.LTR))
+                         colnames(df) <- make.names(names = self$colData$condition,unique = T)
+                         plotPerc <- df*100/tot.map
+                         col <- c("darkolivegreen3","indianred4","steelblue","tan4")
+                         x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
+                         legend("topleft",legend = rev(c("LINE","SINE","LTR")),fill=rev(col))
+                         title("Percentage of reads mapping to EREs / genome")
+
+                       }
                      },
 
                      upSubFamily = function(p=.05,l=0,n=10) {
