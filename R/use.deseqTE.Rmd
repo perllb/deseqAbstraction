@@ -82,5 +82,6 @@ coding$fullAuto()
 #### 7. PlotTE diffex maPlot, color significant TE entries
 ```{r}
 te$maPlotTE(te$test$Default)
+
 ```
 
