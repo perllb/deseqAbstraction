@@ -105,7 +105,11 @@ deseqTE <- R6Class("deseqTE",
 
                          curr <- te$getClass(data = testData,ere)
                          curr.sig <- getSign(x = curr,p = p,l=l)
-                         points(log2(curr.sig$baseMean),curr.sig$log2FoldChange,col=col[idx],pch=16)
+
+                          if(!is.null(curr.sig)){
+                           points(log2(curr.sig$baseMean),curr.sig$log2FoldChange,col=col[idx],pch=16)
+                         }
+
                          idx <- idx+1
                        }
 
