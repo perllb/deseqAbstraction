@@ -131,60 +131,13 @@ $(document).ready(function () {
 <pre class="r"><code>rm(list=ls())
 gc()</code></pre>
 <pre><code>##          used (Mb) gc trigger (Mb) max used (Mb)
-## Ncells 370115 19.8     592000 31.7   460000 24.6
-## Vcells 563323  4.3    1308461 10.0   802815  6.2</code></pre>
+## Ncells 370116 19.8     592000 31.7   460000 24.6
+## Vcells 563338  4.3    1308461 10.0   804048  6.2</code></pre>
 <pre class="r"><code>## load packages
 library(devtools)
-library(DESeq2)</code></pre>
-<pre><code>## Loading required package: S4Vectors</code></pre>
-<pre><code>## Loading required package: stats4</code></pre>
-<pre><code>## Loading required package: BiocGenerics</code></pre>
-<pre><code>## Loading required package: parallel</code></pre>
-<pre><code>## 
-## Attaching package: 'BiocGenerics'</code></pre>
-<pre><code>## The following objects are masked from 'package:parallel':
-## 
-##     clusterApply, clusterApplyLB, clusterCall, clusterEvalQ,
-##     clusterExport, clusterMap, parApply, parCapply, parLapply,
-##     parLapplyLB, parRapply, parSapply, parSapplyLB</code></pre>
-<pre><code>## The following objects are masked from 'package:stats':
-## 
-##     IQR, mad, xtabs</code></pre>
-<pre><code>## The following objects are masked from 'package:base':
-## 
-##     anyDuplicated, append, as.data.frame, cbind, colnames,
-##     do.call, duplicated, eval, evalq, Filter, Find, get, grep,
-##     grepl, intersect, is.unsorted, lapply, lengths, Map, mapply,
-##     match, mget, order, paste, pmax, pmax.int, pmin, pmin.int,
-##     Position, rank, rbind, Reduce, rownames, sapply, setdiff,
-##     sort, table, tapply, union, unique, unsplit, which, which.max,
-##     which.min</code></pre>
-<pre><code>## 
-## Attaching package: 'S4Vectors'</code></pre>
-<pre><code>## The following objects are masked from 'package:base':
-## 
-##     colMeans, colSums, expand.grid, rowMeans, rowSums</code></pre>
-<pre><code>## Loading required package: IRanges</code></pre>
-<pre><code>## Loading required package: GenomicRanges</code></pre>
-<pre><code>## Loading required package: GenomeInfoDb</code></pre>
-<pre><code>## Loading required package: SummarizedExperiment</code></pre>
-<pre><code>## Loading required package: Biobase</code></pre>
-<pre><code>## Welcome to Bioconductor
-## 
-##     Vignettes contain introductory material; view with
-##     'browseVignettes()'. To cite Bioconductor, see
-##     'citation(&quot;Biobase&quot;)', and for packages 'citation(&quot;pkgname&quot;)'.</code></pre>
-<pre class="r"><code>install_github(&quot;perllb/deseqAbstraction&quot;)</code></pre>
-<pre><code>## Downloading GitHub repo perllb/deseqAbstraction@master
-## from URL https://api.github.com/repos/perllb/deseqAbstraction/zipball/master</code></pre>
-<pre><code>## Installing deseqAbstraction</code></pre>
-<pre><code>## '/usr/local/lib64/R/bin/R' --no-site-file --no-environ --no-save  \
-##   --no-restore --quiet CMD INSTALL  \
-##   '/tmp/RtmphkQxiW/devtoolsac813981070/perllb-deseqAbstraction-afca285'  \
-##   --library='/home/pbrattaas/R/x86_64-pc-linux-gnu-library/3.3'  \
-##   --install-tests</code></pre>
-<pre><code>## </code></pre>
-<pre class="r"><code>library(deseqAbstraction)</code></pre>
+library(DESeq2)
+install_github(&quot;perllb/deseqAbstraction&quot;)
+library(deseqAbstraction)</code></pre>
 </div>
 <div id="set-path-to-you-featurecount-files" class="section level3">
 <h3>2. set path to you featureCount files</h3>
@@ -201,6 +154,8 @@ coding.file &lt;- &quot;hg38.s2.unique.NCBI.Exon.txt&quot;</code></pre>
 </div>
 <div id="create-new-objects---one-for-ncbi-quantifications-and-one-for-repeatmasker-annotations" class="section level4">
 <h4>3. Create new objects - one for NCBI quantifications and one for RepeatMasker annotations</h4>
+<pre class="r"><code># create object with coding/mrna/gene counts
+coding &lt;- deseqAbs$new(&quot;codingData&quot;,filename = paste(path,coding.file,sep = &quot;&quot;))</code></pre>
 <pre><code>## - ..deseqAbs object created..
 ## - reading featureCount file
 ## - ..featureCount file reading done. Access rawdata with $rawfile
@@ -208,6 +163,8 @@ coding.file &lt;- &quot;hg38.s2.unique.NCBI.Exon.txt&quot;</code></pre>
 ## - ..done. Get position of genes with $pos
 ## - Getting countData matrix
 ## - ..done. access raw countData with $rawCounts</code></pre>
+<pre class="r"><code># create object with transpososn counts. here, genome (mm10 or hg38) of your analysis has to be defined! more genomes might be added soon
+te &lt;- deseqTE$new(name = &quot;TE&quot;,filename = paste(path,te.file,sep=&quot;&quot;),genome = &quot;hg38&quot;)</code></pre>
 <pre><code>## - ..deseqAbs object created..
 ## - reading featureCount file
 ## - ..featureCount file reading done. 
@@ -221,9 +178,7 @@ coding.file &lt;- &quot;hg38.s2.unique.NCBI.Exon.txt&quot;</code></pre>
 ## - ..done. Get position of genes with $pos
 ## - Getting countData matrix
 ## - ..done. access raw countData with $rawCounts
-## - Reading genomic RepeatMasker feature for  hg38</code></pre>
-<pre><code>## Loading required package: bitops</code></pre>
-<pre><code>## - genomic RepeatMasker feature for  hg38 reading completed.. stored in $TE.features</code></pre>
+## - Reading genomic RepeatMasker feature for  hg38- genomic RepeatMasker feature for  hg38 reading completed.. stored in $TE.features</code></pre>
 </div>
 <div id="assign-coldata-data.frame.-it-must-contain-a-condition-column-that-describes-the-main-conditions-of-your-experiment.-also-it-is-good-to-add-additional-informal-column-such-as-sample-sampleid-etc." class="section level4">
 <h4>4. Assign colData data.frame. It MUST contain a “condition” column that describes the main conditions of your experiment. Also, it is good to add additional informal column, such as “sample” , “sampleID” etc.</h4>
