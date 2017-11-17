@@ -78,10 +78,10 @@ deseqTE <- R6Class("deseqTE",
                        tot.map <- colSums(sum[,-1])
                        map.rm <- sum[1,-1]
 
-                       map.LINE <- colSums(getTEClass(self$rawCounts,"LINE"))
-                       map.SINE <- colSums(getTEClass(self$rawCounts,"SINE"))
-                       map.LTR <- colSums(getTEClass(self$rawCounts,"LTR"))
-                       map.SVA <- colSums(getTEClass(self$rawCounts,"Retroposon"))
+                       map.LINE <- colSums(self$getTEClass(self$rawCounts,"LINE"))
+                       map.SINE <- colSums(self$getTEClass(self$rawCounts,"SINE"))
+                       map.LTR <- colSums(self$getTEClass(self$rawCounts,"LTR"))
+                       map.SVA <- colSums(self$getTEClass(self$rawCounts,"Retroposon"))
 
 
                        df <- t(data.frame(LINE=map.LINE,SINE=map.SINE,LTR=map.LTR,SVA=map.SVA))
