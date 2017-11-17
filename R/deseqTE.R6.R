@@ -103,7 +103,7 @@ deseqTE <- R6Class("deseqTE",
 
                          if(ere == "SVA") { ere <- "Retroposon" }
 
-                         curr <- te$getClass(data = testData,ere)
+                         curr <- te$getTEClass(data = testData,ere)
                          curr.sig <- getSign(x = curr,p = p,l=l)
 
                           if(!is.null(curr.sig)){
