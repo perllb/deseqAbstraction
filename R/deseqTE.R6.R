@@ -88,7 +88,7 @@ deseqTE <- R6Class("deseqTE",
                        colnames(df) <- make.names(names = te$colData$condition,unique = T)
                        plotPerc <- df*100/tot.map
                        col <- c("darkolivegreen3","indianred4","steelblue","tan4")
-                       x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome")
+                       x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
                        legend("topleft",legend = rev(c("LINE","SINE","LTR","SVA")),fill=rev(col))
                        title("Percentage of reads mapping to EREs / genome")
 
@@ -109,7 +109,9 @@ deseqTE <- R6Class("deseqTE",
                          if(ere == "SVA") { ere <- "Retroposon" }
 
                          curr <- self$getTEClass(data = testData,ere)
-                         curr.sig <- getSign(x = curr,p = p,l=l)
+                         curr.up <- getSign(x = curr,p = p,l=l)$up
+                         curr.down <- getSign(x = curr,p = p,l=l)$down
+                         curr.sig <- rbind(curr.up,curr.down)
 
                           if(nrow(curr.sig)>0){
                            points(log2(curr.sig$baseMean),curr.sig$log2FoldChange,col=col[idx],pch=16)
