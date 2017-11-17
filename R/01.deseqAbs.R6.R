@@ -96,11 +96,16 @@ deseqAbs <- R6Class("deseqAbs",
 
                       readsAssigned = function() {
 
+                        # read summary file
                         sum <- read.delim(paste(self$filename,".summary",sep=""))
                         colnames(sum) <- c('a',as.character(self$colData$samples))
+                        ## get total reads mapping to the genome
                         tot.map <- colSums(sum[,-1])
+                        ## get number of reads assigned and not
                         assigned <- sum[1,-1]
                         notassigned <- tot.map-assigned
+
+                        # plot
                         plot <- as.matrix(rbind(assigned = assigned,not.assigned = notassigned))
                         x <- barplot(plot,col=c("blue","grey80"),ylim=c(0,max(tot.map)*1.2),ylab="total read number",las=2)
                         legend("topleft",legend = c("not assigned","assigned"),fill=c("grey80","blue"))

@@ -94,7 +94,7 @@ deseqTE <- R6Class("deseqTE",
 
                      },
 
-                     upSubFamily = function(p=.9925,l=0,n=10) {
+                     upSubFamily = function(p=.05,l=0,n=10) {
 
                        # get upregulated elements
                        up <- getSignName(x = self$test$Default,p = p,l = l)$up

@@ -30,7 +30,6 @@ library(deseqAbstraction)
 
 ```{r set paths}
 # set path and filenames
-
 path <- "/home/pbrattaas/Dropbox (MN)/Per/PhD/Projects/DNAmeth/hNES DNMT1 KO/RNAseq/PairedParam/Quant/"
 te.file <- "hg38.s2.unique.ERE.SENSE.notInNCBI.Exon.txt.test"
 coding.file <- "hg38.s2.unique.NCBI.Exon.txt"
@@ -60,7 +59,6 @@ coding$colData <- data.frame(samples=c("hNES_CTR_1","hNES_CTR_2","hNES_CTR_3","h
 ##### - percentage TEs? Plots each class
 ```{r} 
 # check read and mapping stats
-
 # how much of each TE class?
 te$percentTE()
 
@@ -82,6 +80,24 @@ coding$fullAuto()
 #### 7. PlotTE diffex maPlot, color significant TE entries
 ```{r}
 te$maPlotTE(te$test$Default)
-
 ```
+
+#### 8. Get number of upregulated elements
+
+##### 8.1 In each class
+```{r}
+te$upClassBar()
+```
+
+##### 8.2 In each family
+```{r}
+## get top 15 families with most upregulated elements
+te$upFamilyBar(p = 92,l = 0,n = 15)
+```
+
+##### 8.3 In each subfamily
+```{r}
+te$upSubFamily()
+```
+
 
