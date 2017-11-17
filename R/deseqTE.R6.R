@@ -96,17 +96,22 @@ deseqTE <- R6Class("deseqTE",
 
                      maPlotTE = function(testData,c1="cond1",c2="cond2",p=.05,l=0) {
 
+                       ## plot standard maPlot
                        maPlot(testData,c1,c2)
+
+                       ## define colors for TEs
                        col <- c("darkolivegreen3","indianred4","steelblue","tan4")
-                       idx <- 1
+                       idx <- 1 # index to increment pr TE class
+
                        for (ere in c("LINE","SINE","LTR","SVA")) {
 
+                         # for SVA, grep on Retroposon
                          if(ere == "SVA") { ere <- "Retroposon" }
 
-                         curr <- te$getTEClass(data = testData,ere)
+                         curr <- self$getTEClass(data = testData,ere)
                          curr.sig <- getSign(x = curr,p = p,l=l)
 
-                          if(!is.null(curr.sig)){
+                          if(nrow(curr.sig)>0){
                            points(log2(curr.sig$baseMean),curr.sig$log2FoldChange,col=col[idx],pch=16)
                          }
 
