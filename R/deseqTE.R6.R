@@ -78,10 +78,10 @@ deseqTE <- R6Class("deseqTE",
                        tot.map <- colSums(sum[,-1])
                        map.rm <- sum[1,-1]
 
-                       map.LINE <- colSums(getClass(self$rawCounts,"LINE"))
-                       map.SINE <- colSums(getClass(self$rawCounts,"SINE"))
-                       map.LTR <- colSums(getClass(self$rawCounts,"LTR"))
-                       map.SVA <- colSums(getClass(self$rawCounts,"Retroposon"))
+                       map.LINE <- colSums(getTEClass(self$rawCounts,"LINE"))
+                       map.SINE <- colSums(getTEClass(self$rawCounts,"SINE"))
+                       map.LTR <- colSums(getTEClass(self$rawCounts,"LTR"))
+                       map.SVA <- colSums(getTEClass(self$rawCounts,"Retroposon"))
 
 
                        df <- t(data.frame(LINE=map.LINE,SINE=map.SINE,LTR=map.LTR,SVA=map.SVA))
@@ -116,7 +116,7 @@ deseqTE <- R6Class("deseqTE",
                        legend("topright",legend = rev(c("LINE","SINE","LTR","SVA")),col=rev(col),pch=16)
                      },
 
-                     getClass = function(data,TEclass) {
+                     getTEClass = function(data,TEclass) {
 
                        TEclass.features <- as.character(self$TE.features[grep(TEclass,self$TE.features$V2),1])
                        return(data[grep(paste(TEclass.features,collapse = "|^"),rownames(data)),])
