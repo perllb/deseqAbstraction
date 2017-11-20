@@ -113,7 +113,7 @@ deseqAbs <- R6Class("deseqAbs",
                           sum <- read.delim(summaryFile)
                         }
 
-                        if(!is.na(self$colData$samples)) {
+                        if(!is.null(self$colData$samples)) {
                           colnames(sum) <- c('a',as.character(self$colData$samples))
                         }
 
