@@ -113,13 +113,13 @@ deseqTE <- R6Class("deseqTE",
                          dfr <- matrix(nrow=length(subfam),ncol=length(self$rawCounts[1,]))
                          idx <- 1
 
-                         for (curr in family) {
+                         for (curr in subfam) {
                            map <- colSums(self$getSubFamily(self$rawCounts,curr))
                            dfr[idx,] <- map
                            idx <- idx+1
                          }
                          df <- data.frame(dfr)
-                         rownames(df) <- family
+                         rownames(df) <- subfam
                          colnames(df) <- paste(te.des$colData$condition,te.des$colData$samples,sep = " : ")
 
                          plotPerc <- as.matrix(df*100/tot.map)
