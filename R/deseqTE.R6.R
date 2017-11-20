@@ -56,7 +56,7 @@ deseqTE <- R6Class("deseqTE",
                      TE.features = NULL,
                      genome = NULL,
 
-                     initialize = function(name = NA,filename = NA,genome=NULL,filter=5) {
+                     initialize = function(name = NA,filename = NA,genome=NULL,filter=5,colData=NULL) {
 
                        if(is.null(genome)) {
                          cat("== you did not enter genome. please insert genome = hg38 or mm10!")
