@@ -74,8 +74,17 @@ deseqAbs <- R6Class("deseqAbs",
                         }
                         if(is.null(colData)) {
                           cat("-- ERROR: No colData given! \n")
+                        } else {
+                          if(is.null(colData$condition)) {
+                            cat("-- ERROR: colData has no 'condition' column. \n")
+                          }
+                          if(is.null(colData$samples)) {
+                            cat("-- ERROR: colData has no 'samples' column. \n")
+                          }
                         }
                         if(!is.null(filename) & !is.null(colData)) {
+
+
 
                           self$greet()
 

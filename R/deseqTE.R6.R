@@ -171,12 +171,12 @@ deseqTE <- R6Class("deseqTE",
                          plotPerc <- as.matrix(df*100/tot.map)
                          col <- cols(nrow(plotPerc))
                          x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
-                         legend("topleft",legend = rev(subfam),fill=rev(col),bty='n')
+                         legend("topleft",legend = rev(TEclass),fill=rev(col),bty='n')
                          title("Percentage of reads mapping to families / genome")
                          plotPerc <- df*100/tot.map
                          col <- c("darkolivegreen3","indianred4","steelblue","tan4")
                          x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
-                         legend("topleft",legend = subfam,fill=col,bty='n')
+                         legend("topleft",legend = TEclass,fill=col,bty='n')
                          title("Percentage of reads mapping to classes / genome")
                        }
 
