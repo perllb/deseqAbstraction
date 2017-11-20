@@ -92,7 +92,8 @@ deseqTE <- R6Class("deseqTE",
                        }
                       },
 
-                     percentTE = function(summaryFile=NULL) {
+                     ## Class, family and subfam can be vectors
+                     percentTE = function(summaryFile=NULL,family=NULL,TEclass=NULL,subfam=NULL) {
 
                        if(is.null(summaryFile)) {
                          sum <- read.delim(paste(self$filename,".summary",sep=""))
@@ -103,32 +104,97 @@ deseqTE <- R6Class("deseqTE",
                        tot.map <- colSums(sum[,-1])
                        map.rm <- sum[1,-1]
 
-                       map.LINE <- colSums(self$getTEClass(self$rawCounts,"LINE"))
-                       map.SINE <- colSums(self$getTEClass(self$rawCounts,"SINE"))
-                       map.LTR <- colSums(self$getTEClass(self$rawCounts,"LTR"))
+                       ## IF subfam specified, plot percentage of that subfam
+                       if(!is.null(subfam)) {
 
-                       if ( self$genome == "hg38") {
+                         dfr <- data.frame()
+                         for (curr in subfam) {
+                           map <- colSums(self$getSubFamily(self$rawCounts,curr))
+                           dfr$curr <- map
+                         }
 
-                         map.SVA <- colSums(self$getTEClass(self$rawCounts,"Retroposon"))
-                         df <- t(data.frame(LINE=map.LINE,SINE=map.SINE,LTR=map.LTR,SVA=map.SVA))
+                         df <- t(dfr)
+
                          colnames(df) <- make.names(names = self$colData$condition,unique = T)
                          plotPerc <- df*100/tot.map
                          col <- c("darkolivegreen3","indianred4","steelblue","tan4")
                          x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
-                         legend("topleft",legend = rev(c("LINE","SINE","LTR","SVA")),fill=rev(col),bty = 'n')
-                         title("Percentage of reads mapping to EREs / genome")
-
-                       } else {
-
-                         df <- t(data.frame(LINE=map.LINE,SINE=map.SINE,LTR=map.LTR))
-                         colnames(df) <- make.names(names = self$colData$condition,unique = T)
-                         plotPerc <- df*100/tot.map
-                         col <- c("darkolivegreen3","indianred4","steelblue","tan4")
-                         x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
-                         legend("topleft",legend = rev(c("LINE","SINE","LTR")),fill=rev(col),bty='n')
-                         title("Percentage of reads mapping to EREs / genome")
+                         legend("topleft",legend = rev(subfam),fill=rev(col),bty='n')
+                         title("Percentage of reads mapping to subfamilies / genome")
 
                        }
+
+                       ## Family?
+                       if(!is.null(family)) {
+
+                         dfr <- data.frame()
+                         for (curr in family) {
+                           map <- colSums(self$getFamily(self$rawCounts,curr))
+                           dfr$curr <- map
+                         }
+
+                         df <- t(dfr)
+
+                         colnames(df) <- make.names(names = self$colData$condition,unique = T)
+                         plotPerc <- df*100/tot.map
+                         col <- c("darkolivegreen3","indianred4","steelblue","tan4")
+                         x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
+                         legend("topleft",legend = rev(subfam),fill=rev(col),bty='n')
+                         title("Percentage of reads mapping to families / genome")
+
+
+                       }
+                       ## Class?
+                       if(!is.null(TEclass)) {
+
+                         dfr <- data.frame()
+                         for (curr in TEclass) {
+                           map <- colSums(self$getTEClass(self$rawCounts,curr))
+                           dfr$curr <- map
+                         }
+
+                         df <- t(dfr)
+
+                         colnames(df) <- make.names(names = self$colData$condition,unique = T)
+                         plotPerc <- df*100/tot.map
+                         col <- c("darkolivegreen3","indianred4","steelblue","tan4")
+                         x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
+                         legend("topleft",legend = rev(subfam),fill=rev(col),bty='n')
+                         title("Percentage of reads mapping to classes / genome")
+                       }
+
+                       ## If no family or class specified, plot all classes
+
+                       if(is.null(subfam) & is.null(family) & is.null(class)) {
+                         map.LINE <- colSums(self$getTEClass(self$rawCounts,"LINE"))
+                         map.SINE <- colSums(self$getTEClass(self$rawCounts,"SINE"))
+                         map.LTR <- colSums(self$getTEClass(self$rawCounts,"LTR"))
+
+                         if ( self$genome == "hg38") {
+
+                           map.SVA <- colSums(self$getTEClass(self$rawCounts,"Retroposon"))
+                           df <- t(data.frame(LINE=map.LINE,SINE=map.SINE,LTR=map.LTR,SVA=map.SVA))
+                           colnames(df) <- make.names(names = self$colData$condition,unique = T)
+                           plotPerc <- df*100/tot.map
+                           col <- c("darkolivegreen3","indianred4","steelblue","tan4")
+                           x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
+                           legend("topleft",legend = rev(c("LINE","SINE","LTR","SVA")),fill=rev(col),bty = 'n')
+                           title("Percentage of reads mapping to EREs / genome")
+
+                         } else {
+
+                           df <- t(data.frame(LINE=map.LINE,SINE=map.SINE,LTR=map.LTR))
+                           colnames(df) <- make.names(names = self$colData$condition,unique = T)
+                           plotPerc <- df*100/tot.map
+                           col <- c("darkolivegreen3","indianred4","steelblue","tan4")
+                           x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
+                           legend("topleft",legend = rev(c("LINE","SINE","LTR")),fill=rev(col),bty='n')
+                           title("Percentage of reads mapping to EREs / genome")
+
+                         }
+                       }
+
+
                      },
 
                      upSubFamily = function(p=.05,l=0,n=10) {
@@ -302,22 +368,24 @@ deseqTE <- R6Class("deseqTE",
 
                      getTEClass = function(data,TEclass) {
 
-                       TEclass.features <- as.character(self$TE.features[grep(TEclass,self$TE.features$V2),1])
+                       greps <- paste(TEclass,collapse = "$|^")
+                       TEclass.features <- as.character(self$TE.features[grep(greps,self$TE.features$V2),1])
                        return(data[grep(paste(TEclass.features,collapse = "|^"),rownames(data)),])
 
                      },
 
                      getFamily = function(data,family) {
 
-                       family.features <- as.character(self$TE.features[grep(class,self$TE.features$V3),1])
+                       greps <- paste(family,collapse = "$|^")
+                       family.features <- as.character(self$TE.features[grep(greps,self$TE.features$V3),1])
                        return(data[grep(paste(family.features,collapse = "|^"),rownames(data)),])
 
                      },
 
                      getSubFamily = function(data,subfamily) {
 
-                       sfamily.features <- as.character(self$TE.features[grep(class,self$TE.features$V3),1])
-                       return(data[grep(paste(sfamily.features,collapse = "|^"),rownames(data)),])
+                       greps <- paste(subfamily,collapse = "$|^")
+                       return(data[grep(greps,rownames(data)),])
 
                      },
 
