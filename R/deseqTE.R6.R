@@ -56,13 +56,27 @@ deseqTE <- R6Class("deseqTE",
                      TE.features = NULL,
                      genome = NULL,
 
-                     initialize = function(name = NA,filename = NA,genome=NULL) {
+                     initialize = function(name = NA,filename = NA,genome=NULL,filter=5) {
 
                        if(is.null(genome)) {
                          cat("== you did not enter genome. please insert genome = hg38 or mm10!")
                        } else {
 
-                         super$initialize(name = name,filename = filename)
+
+                         self$name <- name
+                         self$filename <- filename
+                         self$greet()
+                         self$test <- list()
+
+
+                         if(!is.na(filename)){
+                           self$read_file(filename,filter = filter)
+                           self$geneID <- as.character(self$rawfile[,1])
+                           self$getPos()
+                           self$getRawCounts()
+                         } else {
+                           cat("-Please provide name of raw featureCounts output file upon creating this object\n\n")
+                         }
 
                          cat("- Reading genomic RepeatMasker feature for ",genome)
                          self$genome = genome
@@ -302,7 +316,7 @@ deseqTE <- R6Class("deseqTE",
 
                      },
 
-                     read_file = function(filename,filter=3) {
+                     read_file = function(filename,filter=5) {
                        if(!is.na(filename)) {
                          cat("- reading featureCount file\n")
                          tmp <- read.csv(filename,header=T,sep = "\t",skip=1)
