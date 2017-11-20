@@ -60,35 +60,46 @@ deseqTE <- R6Class("deseqTE",
 
                        if(is.null(genome)) {
                          cat("== you did not enter genome. please insert genome = hg38 or mm10!")
-                       } else {
+                       }
+                       if(is.null(filename)) {
+                         cat("-- ERROR: No filename (with full path) given! \n")
+                         cat("--- Please provide name (and full path) of raw featureCounts output file upon creating this object\n\n")
+                       }
+                       if(is.null(colData)) {
+                         cat("-- ERROR: No colData given! \n")
+                       }
+                       if(!is.null(filename) & !is.null(colData) & !is.null(genome)) {
 
+                         self$greet()
 
                          self$name <- name
                          self$filename <- filename
-                         self$greet()
+                         self$colData <- colData
+
                          self$test <- list()
 
-
-                         if(!is.na(filename)){
-                           self$read_file(filename,filter = filter)
-                           self$geneID <- as.character(self$rawfile[,1])
-                           self$getPos()
-                           self$getRawCounts()
-                         } else {
-                           cat("-Please provide name of raw featureCounts output file upon creating this object\n\n")
-                         }
+                         self$read_file(filename,filter = filter)
+                         self$geneID <- as.character(self$rawfile[,1])
+                         self$getPos()
+                         self$getRawCounts()
 
                          cat("- Reading genomic RepeatMasker feature for ",genome)
                          self$genome = genome
                          self$TE.features <- self$getFeatures(genome)
                          cat("- genomic RepeatMasker feature for ",genome,"reading completed.. stored in $TE.features")
+
+
                        }
                       },
 
-                     percentTE = function() {
+                     percentTE = function(summaryFile=NULL) {
 
-                       te.summary <- paste(self$filename,".summary",sep="")
-                       sum <- read.delim(te.summary)
+                       if(is.null(summaryFile)) {
+                         sum <- read.delim(paste(self$filename,".summary",sep=""))
+                       } else {
+                         sum <- read.delim(summaryFile)
+                       }
+
                        tot.map <- colSums(sum[,-1])
                        map.rm <- sum[1,-1]
 
@@ -97,13 +108,14 @@ deseqTE <- R6Class("deseqTE",
                        map.LTR <- colSums(self$getTEClass(self$rawCounts,"LTR"))
 
                        if ( self$genome == "hg38") {
+
                          map.SVA <- colSums(self$getTEClass(self$rawCounts,"Retroposon"))
                          df <- t(data.frame(LINE=map.LINE,SINE=map.SINE,LTR=map.LTR,SVA=map.SVA))
                          colnames(df) <- make.names(names = self$colData$condition,unique = T)
                          plotPerc <- df*100/tot.map
                          col <- c("darkolivegreen3","indianred4","steelblue","tan4")
                          x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
-                         legend("topleft",legend = rev(c("LINE","SINE","LTR","SVA")),fill=rev(col))
+                         legend("topleft",legend = rev(c("LINE","SINE","LTR","SVA")),fill=rev(col),bty = 'n')
                          title("Percentage of reads mapping to EREs / genome")
 
                        } else {
@@ -113,7 +125,7 @@ deseqTE <- R6Class("deseqTE",
                          plotPerc <- df*100/tot.map
                          col <- c("darkolivegreen3","indianred4","steelblue","tan4")
                          x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
-                         legend("topleft",legend = rev(c("LINE","SINE","LTR")),fill=rev(col))
+                         legend("topleft",legend = rev(c("LINE","SINE","LTR")),fill=rev(col),bty='n')
                          title("Percentage of reads mapping to EREs / genome")
 
                        }

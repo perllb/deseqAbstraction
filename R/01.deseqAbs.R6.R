@@ -66,21 +66,30 @@ deseqAbs <- R6Class("deseqAbs",
                       pos = NULL,
                       length = NULL,
 
-                      initialize = function(name = NA,filename = NA) {
+                      initialize = function(name = NA,filename = NA,colData = NA) {
 
-                        self$name <- name
-                        self$filename <- filename
-                        self$greet()
-                        self$test <- list()
+                        if(is.null(filename)) {
+                          cat("-- ERROR: No filename (with full path) given! \n")
+                          cat("--- Please provide name (and full path) of raw featureCounts output file upon creating this object\n\n")
+                        }
+                        if(is.null(colData)) {
+                          cat("-- ERROR: No colData given! \n")
+                        }
+                        if(!is.null(filename) & !is.null(colData)) {
 
+                          self$greet()
 
-                        if(!is.na(filename)){
+                          self$name <- name
+                          self$filename <- filename
+                          self$colData <- colData
+
+                          self$test <- list()
+
                           self$read_file(filename)
                           self$geneID <- as.character(self$rawfile[,1])
                           self$getPos()
                           self$getRawCounts()
-                        } else {
-                          cat("-Please provide name of raw featureCounts output file upon creating this object\n\n")
+
                         }
                       },
 
@@ -95,11 +104,19 @@ deseqAbs <- R6Class("deseqAbs",
                         }
                       },
 
-                      readsAssigned = function() {
+                      readsAssigned = function(summaryFile=NULL) {
 
-                        # read summary file
-                        sum <- read.delim(paste(self$filename,".summary",sep=""))
-                        colnames(sum) <- c('a',as.character(self$colData$samples))
+                        if(is.null(summaryFile)) {
+                          # read summary file
+                          sum <- read.delim(paste(self$filename,".summary",sep=""))
+                        }else {
+                          sum <- read.delim(summaryFile)
+                        }
+
+                        if(!is.na(self$colData$samples)) {
+                          colnames(sum) <- c('a',as.character(self$colData$samples))
+                        }
+
                         ## get total reads mapping to the genome
                         tot.map <- colSums(sum[,-1])
                         ## get number of reads assigned and not
@@ -108,6 +125,7 @@ deseqAbs <- R6Class("deseqAbs",
 
                         # plot
                         plot <- as.matrix(rbind(assigned = assigned,not.assigned = notassigned))
+
                         x <- barplot(plot,col=c("blue","grey80"),ylim=c(0,max(tot.map)*1.2),ylab="total read number",las=2)
                         legend("topleft",legend = c("not assigned","assigned"),fill=c("grey80","blue"))
                         title(main = "Reads assigned to annotation out of all mapped reads")
