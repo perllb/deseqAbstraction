@@ -67,6 +67,7 @@ deseqAbs <- R6Class("deseqAbs",
                       length = NULL,
 
                       initialize = function(name = NA,filename = NA) {
+
                         self$name <- name
                         self$filename <- filename
                         self$greet()
@@ -115,10 +116,10 @@ deseqAbs <- R6Class("deseqAbs",
 
                       getPos = function() {
                         cat("- Fetching Positional info from file\n")
-                        self$length <- self$rawfile$Length
-                        names(self$length) <- self$geneID
+                        self$length <- self$rawfile[,6]
+                        names(self$length) <- self[,1]
                         self$pos <- self$rawfile[,2:5]
-                        rownames(self$pos) <- self$geneID
+                        rownames(self$pos) <- self[,1]
                         cat("- ..done. Get position of genes with $pos\n")
                       },
 
