@@ -107,16 +107,18 @@ deseqTE <- R6Class("deseqTE",
                        ## IF subfam specified, plot percentage of that subfam
                        if(!is.null(subfam)) {
 
-                         dfr <- data.frame()
-                         for (curr in subfam) {
-                           map <- colSums(self$getSubFamily(self$rawCounts,curr))
-                           dfr$curr <- map
+                         dfr <- matrix(nrow=length(subfam),ncol=length(self$rawCounts[1,]))
+                         idx <- 1
+                         for (curr in family) {
+                           map <- colSums(self$getFamily(self$rawCounts,curr))
+                           dfr[idx,] <- map
+                           idx <- idx+1
                          }
+                         df <- data.frame(dfr)
+                         rownames(df) <- family
+                         colnames(df) <- paste(te.des$colData$condition,te.des$colData$samples,sep = " : ")
 
-                         df <- t(dfr)
-
-                         colnames(df) <- make.names(names = self$colData$condition,unique = T)
-                         plotPerc <- df*100/tot.map
+                         plotPerc <- as.matrix(df*100/tot.map)
                          col <- c("darkolivegreen3","indianred4","steelblue","tan4")
                          x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
                          legend("topleft",legend = rev(subfam),fill=rev(col),bty='n')
@@ -127,19 +129,21 @@ deseqTE <- R6Class("deseqTE",
                        ## Family?
                        if(!is.null(family)) {
 
-                         dfr <- data.frame()
+                         dfr <- matrix(nrow=length(family),ncol=length(self$rawCounts[1,]))
+                         idx <- 1
                          for (curr in family) {
                            map <- colSums(self$getFamily(self$rawCounts,curr))
-                           dfr$curr <- map
+                           dfr[idx,] <- map
+                           idx <- idx+1
                          }
+                         df <- data.frame(dfr)
+                         rownames(df) <- family
+                         colnames(df) <- paste(te.des$colData$condition,te.des$colData$samples,sep = " : ")
 
-                         df <- t(dfr)
-
-                         colnames(df) <- make.names(names = self$colData$condition,unique = T)
-                         plotPerc <- df*100/tot.map
+                         plotPerc <- as.matrix(df*100/tot.map)
                          col <- c("darkolivegreen3","indianred4","steelblue","tan4")
                          x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
-                         legend("topleft",legend = rev(subfam),fill=rev(col),bty='n')
+                         legend("topleft",legend = rev(family),fill=rev(col),bty='n')
                          title("Percentage of reads mapping to families / genome")
 
 
@@ -147,15 +151,22 @@ deseqTE <- R6Class("deseqTE",
                        ## Class?
                        if(!is.null(TEclass)) {
 
-                         dfr <- data.frame()
+                         dfr <- matrix(nrow=length(TEclass),ncol=length(self$rawCounts[1,]))
+                         idx <- 1
                          for (curr in TEclass) {
-                           map <- colSums(self$getTEClass(self$rawCounts,curr))
-                           dfr$curr <- map
+                           map <- colSums(self$getTEclass(self$rawCounts,curr))
+                           dfr[idx,] <- map
+                           idx <- idx+1
                          }
+                         df <- data.frame(dfr)
+                         rownames(df) <- TEclass
+                         colnames(df) <- paste(te.des$colData$condition,te.des$colData$samples,sep = " : ")
 
-                         df <- t(dfr)
-
-                         colnames(df) <- make.names(names = self$colData$condition,unique = T)
+                         plotPerc <- as.matrix(df*100/tot.map)
+                         col <- c("darkolivegreen3","indianred4","steelblue","tan4")
+                         x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
+                         legend("topleft",legend = rev(subfam),fill=rev(col),bty='n')
+                         title("Percentage of reads mapping to families / genome")
                          plotPerc <- df*100/tot.map
                          col <- c("darkolivegreen3","indianred4","steelblue","tan4")
                          x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
