@@ -96,7 +96,7 @@ deseqTE <- R6Class("deseqTE",
                      percentTE = function(summaryFile=NULL,family=NULL,TEclass=NULL,subfam=NULL) {
 
                        library(RColorBrewer)
-                       cols <- colorRampPalette(brewer.pal(9, "Set2"))
+                       cols <- colorRampPalette(brewer.pal(9, "Set1"))
 
                        if(is.null(summaryFile)) {
                          sum <- read.delim(paste(self$filename,".summary",sep=""))
@@ -112,8 +112,9 @@ deseqTE <- R6Class("deseqTE",
 
                          dfr <- matrix(nrow=length(subfam),ncol=length(self$rawCounts[1,]))
                          idx <- 1
+
                          for (curr in family) {
-                           map <- colSums(self$getFamily(self$rawCounts,curr))
+                           map <- colSums(self$getSubFamily(self$rawCounts,curr))
                            dfr[idx,] <- map
                            idx <- idx+1
                          }
