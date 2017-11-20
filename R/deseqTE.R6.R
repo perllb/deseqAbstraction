@@ -98,6 +98,8 @@ deseqTE <- R6Class("deseqTE",
                        library(RColorBrewer)
                        cols <- colorRampPalette(brewer.pal(9, "Set1"))
 
+                       par(mar=c(8,4,4,4))
+
                        if(is.null(summaryFile)) {
                          sum <- read.delim(paste(self$filename,".summary",sep=""))
                        } else {
@@ -158,7 +160,7 @@ deseqTE <- R6Class("deseqTE",
                          dfr <- matrix(nrow=length(TEclass),ncol=length(self$rawCounts[1,]))
                          idx <- 1
                          for (curr in TEclass) {
-                           map <- colSums(self$getTEclass(self$rawCounts,curr))
+                           map <- colSums(self$getTEClass(self$rawCounts,curr))
                            dfr[idx,] <- map
                            idx <- idx+1
                          }
