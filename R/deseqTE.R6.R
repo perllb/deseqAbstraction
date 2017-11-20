@@ -75,7 +75,7 @@ deseqTE <- R6Class("deseqTE",
                            cat("-- ERROR: colData has no 'samples' column. \n")
                          }
                        }
-                       if(!is.null(filename) & !is.null(colData) & !is.null(genome)) {
+                       if(!is.null(filename) & !is.null(colData) & !is.null(genome) & !is.null(colData$samples) & !is.null(colData$condition)) {
 
                          self$greet()
 
