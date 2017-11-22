@@ -85,7 +85,7 @@ deseqAbs <- R6Class("deseqAbs",
                         }
 
                         ## If all parameters are set, initialize
-                        if(!is.null(filename) & !is.null(colData) & !is.null(colData$condition) & is.null(colData$samples)) {
+                        if(!is.null(filename) & !is.null(colData) & !is.null(colData$condition) & !is.null(colData$samples)) {
 
                           # message
                           self$greet()
