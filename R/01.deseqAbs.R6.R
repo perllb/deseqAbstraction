@@ -68,6 +68,7 @@ deseqAbs <- R6Class("deseqAbs",
 
                       initialize = function(name = NA,filename = NA,colData = NA) {
 
+                        ### Check if all required parameters are set!
                         if(is.null(filename)) {
                           cat("-- ERROR: No filename (with full path) given! \n")
                           cat("--- Please provide name (and full path) of raw featureCounts output file upon creating this object\n\n")
@@ -82,10 +83,11 @@ deseqAbs <- R6Class("deseqAbs",
                             cat("-- ERROR: colData has no 'samples' column. \n")
                           }
                         }
+
+                        ## If all parameters are set, initialize
                         if(!is.null(filename) & !is.null(colData) & !is.null(colData$condition) & is.null(colData$samples)) {
 
-
-
+                          # message
                           self$greet()
 
                           self$name <- name

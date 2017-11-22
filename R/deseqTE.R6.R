@@ -129,7 +129,7 @@ deseqTE <- R6Class("deseqTE",
                          }
                          df <- data.frame(dfr)
                          rownames(df) <- subfam
-                         colnames(df) <- paste(te.des$colData$condition,te.des$colData$samples,sep = " : ")
+                         colnames(df) <- paste(self$colData$condition,self$colData$samples,sep = " : ")
 
                          plotPerc <- as.matrix(df*100/tot.map)
                          col <- cols(nrow(plotPerc))
@@ -151,7 +151,7 @@ deseqTE <- R6Class("deseqTE",
                          }
                          df <- data.frame(dfr)
                          rownames(df) <- family
-                         colnames(df) <- paste(te.des$colData$condition,te.des$colData$samples,sep = " : ")
+                         colnames(df) <- paste(self$colData$condition,self$colData$samples,sep = " : ")
 
                          plotPerc <- as.matrix(df*100/tot.map)
                          col <- cols(nrow(plotPerc))
@@ -167,13 +167,14 @@ deseqTE <- R6Class("deseqTE",
                          dfr <- matrix(nrow=length(TEclass),ncol=length(self$rawCounts[1,]))
                          idx <- 1
                          for (curr in TEclass) {
+                           if(curr=="SVA") {curr <- "Retroposon"}
                            map <- colSums(self$getTEClass(self$rawCounts,curr))
                            dfr[idx,] <- map
                            idx <- idx+1
                          }
                          df <- data.frame(dfr)
                          rownames(df) <- TEclass
-                         colnames(df) <- paste(te.des$colData$condition,te.des$colData$samples,sep = " : ")
+                         colnames(df) <- paste(self$colData$condition,self$colData$samples,sep = " : ")
 
                          plotPerc <- as.matrix(df*100/tot.map)
                          col <- cols(nrow(plotPerc))
@@ -190,6 +191,7 @@ deseqTE <- R6Class("deseqTE",
                        ## If no family or class specified, plot all classes
 
                        if(is.null(subfam) & is.null(family) & is.null(class)) {
+
                          map.LINE <- colSums(self$getTEClass(self$rawCounts,"LINE"))
                          map.SINE <- colSums(self$getTEClass(self$rawCounts,"SINE"))
                          map.LTR <- colSums(self$getTEClass(self$rawCounts,"LTR"))
@@ -197,6 +199,7 @@ deseqTE <- R6Class("deseqTE",
                          if ( self$genome == "hg38") {
 
                            map.SVA <- colSums(self$getTEClass(self$rawCounts,"Retroposon"))
+
                            df <- t(data.frame(LINE=map.LINE,SINE=map.SINE,LTR=map.LTR,SVA=map.SVA))
                            colnames(df) <- make.names(names = self$colData$condition,unique = T)
                            plotPerc <- df*100/tot.map
@@ -217,8 +220,6 @@ deseqTE <- R6Class("deseqTE",
 
                          }
                        }
-
-
                      },
 
                      upSubFamily = function(p=.05,l=0,n=10) {
