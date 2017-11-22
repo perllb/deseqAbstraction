@@ -102,6 +102,9 @@ deseqAbs <- R6Class("deseqAbs",
                           self$getRawCounts()
 
                         }
+                        else {
+                          cat("Could not initialize object..")
+                        }
                       },
 
                       read_file = function(filename) {

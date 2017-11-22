@@ -119,11 +119,11 @@ deseqTE <- R6Class("deseqTE",
                        ## IF subfam specified, plot percentage of that subfam
                        if(!is.null(subfam)) {
 
-                         dfr <- matrix(nrow=length(subfam),ncol=length(self$rawCounts[1,]))
+                         dfr <- matrix(nrow=length(subfam),ncol=length(self$baseMean$Mean[1,]))
                          idx <- 1
 
                          for (curr in subfam) {
-                           map <- colSums(self$getSubFamily(self$rawCounts,curr))
+                           map <- colSums(self$getSubFamily(self$baseMean$Mean,curr))
                            dfr[idx,] <- map
                            idx <- idx+1
                          }
@@ -142,10 +142,10 @@ deseqTE <- R6Class("deseqTE",
                        ## Family?
                        if(!is.null(family)) {
 
-                         dfr <- matrix(nrow=length(family),ncol=length(self$rawCounts[1,]))
+                         dfr <- matrix(nrow=length(family),ncol=length(self$baseMean$Mean[1,]))
                          idx <- 1
                          for (curr in family) {
-                           map <- colSums(self$getFamily(self$rawCounts,curr))
+                           map <- colSums(self$getFamily(self$baseMean$Mean,curr))
                            dfr[idx,] <- map
                            idx <- idx+1
                          }
@@ -164,11 +164,11 @@ deseqTE <- R6Class("deseqTE",
                        ## Class?
                        if(!is.null(TEclass)) {
 
-                         dfr <- matrix(nrow=length(TEclass),ncol=length(self$rawCounts[1,]))
+                         dfr <- matrix(nrow=length(TEclass),ncol=length(self$baseMean$Mean[1,]))
                          idx <- 1
                          for (curr in TEclass) {
                            if(curr=="SVA") {curr <- "Retroposon"}
-                           map <- colSums(self$getTEClass(self$rawCounts,curr))
+                           map <- colSums(self$getTEClass(self$baseMean$Mean,curr))
                            dfr[idx,] <- map
                            idx <- idx+1
                          }
@@ -192,13 +192,13 @@ deseqTE <- R6Class("deseqTE",
 
                        if(is.null(subfam) & is.null(family) & is.null(class)) {
 
-                         map.LINE <- colSums(self$getTEClass(self$rawCounts,"LINE"))
-                         map.SINE <- colSums(self$getTEClass(self$rawCounts,"SINE"))
-                         map.LTR <- colSums(self$getTEClass(self$rawCounts,"LTR"))
+                         map.LINE <- colSums(self$getTEClass(self$baseMean$Mean,"LINE"))
+                         map.SINE <- colSums(self$getTEClass(self$baseMean$Mean,"SINE"))
+                         map.LTR <- colSums(self$getTEClass(self$baseMean$Mean,"LTR"))
 
                          if ( self$genome == "hg38") {
 
-                           map.SVA <- colSums(self$getTEClass(self$rawCounts,"Retroposon"))
+                           map.SVA <- colSums(self$getTEClass(self$baseMean$Mean,"Retroposon"))
 
                            df <- t(data.frame(LINE=map.LINE,SINE=map.SINE,LTR=map.LTR,SVA=map.SVA))
                            colnames(df) <- make.names(names = self$colData$condition,unique = T)
