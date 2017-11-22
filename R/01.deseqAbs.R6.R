@@ -157,20 +157,21 @@ deseqAbs <- R6Class("deseqAbs",
 
                       getAverage = function() {
 
+                        self$getAverageReads()
+                        self$getAverageRPKM()
+
+                      },
+
+                      getAverageReads = function() {
+
                         if(length(levels(self$deseq$condition))>sum(duplicated(self$deseq$condition))) {
                           cat("Some of your levels do not have replicates.. ")
                         } else {
 
-                          ## RPKM
-                          if(is.null(self$rpkm)) { self$makeRPKM() }
-
-                          if(!is.null(self$rpkm)) {
-                            cat("- Computing mean RPKM of each condition\n")
-                            baseMeanPerLvl <- sapply( levels(self$deseq$condition), function(lvl) rowMeans( self$rpkm[,self$deseq$condition == lvl] ) )
-                            baseSDPerLvl <- sapply( levels(self$deseq$condition), function(lvl) apply( self$rpkm[,self$deseq$condition == lvl],1,sd ) )
-                            colnames(baseSDPerLvl) <- paste("st.dev:",colnames(baseSDPerLvl),sep="")
-                            self$rpkmMean <- list(Mean=baseMeanPerLvl,SD=baseSDPerLvl)
-                            cat("- ..mean normalized expression computed for each condition. access mean with $baseMean$Mean, and st.dev with $baseMean$SD \n")
+                          if(is.null(self$deseq)) {
+                            cat("You must run deseq to get normalized read counts..\n")
+                            cat("Running DEseq..\n")
+                            self$makeDESeq()
                           }
 
                           ## normalized counts
@@ -180,6 +181,21 @@ deseqAbs <- R6Class("deseqAbs",
                           colnames(baseSDPerLvl) <- paste("st.dev:",colnames(baseSDPerLvl),sep="")
                           self$baseMean <- list(Mean=baseMeanPerLvl,SD=baseSDPerLvl)
                           cat("- ..mean normalized counts computed for each condition. access mean with $baseMean$Mean, and st.dev with $baseMean$SD \n")
+                        }
+                      },
+
+                      getAverageRPKM = function() {
+
+                        ## RPKM
+                        if(is.null(self$rpkm)) { self$makeRPKM() }
+
+                        if(!is.null(self$rpkm)) {
+                          cat("- Computing mean RPKM of each condition\n")
+                          baseMeanPerLvl <- sapply( levels(self$deseq$condition), function(lvl) rowMeans( self$rpkm[,self$deseq$condition == lvl] ) )
+                          baseSDPerLvl <- sapply( levels(self$deseq$condition), function(lvl) apply( self$rpkm[,self$deseq$condition == lvl],1,sd ) )
+                          colnames(baseSDPerLvl) <- paste("st.dev:",colnames(baseSDPerLvl),sep="")
+                          self$rpkmMean <- list(Mean=baseMeanPerLvl,SD=baseSDPerLvl)
+                          cat("- ..mean normalized expression computed for each condition. access mean with $baseMean$Mean, and st.dev with $baseMean$SD \n")
                         }
                       },
 
