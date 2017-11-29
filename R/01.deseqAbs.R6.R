@@ -118,6 +118,34 @@ deseqAbs <- R6Class("deseqAbs",
                         }
                       },
 
+                      fullQC = function() {
+                        par(mfrow=c(2,3))
+                        self$pca()
+                        self$mostVariableHeat()
+                        self$sampleToSample()
+                        self$significantHeat()
+
+
+                      },
+
+                      significantHeat = function() {
+
+                        mostSignificantHeat(self$VST)
+
+                      },
+
+                      mostVariableHeat = function() {
+
+                        mostVariableHeat(self$VST,ntop=50)
+
+                      },
+
+                      sampleToSample = function() {
+
+                        sampleToSample(self$VST)
+
+                      },
+
                       readsAssigned = function(summaryFile=NULL) {
 
                         if(is.null(summaryFile)) {
