@@ -422,16 +422,37 @@ deseqTE <- R6Class("deseqTE",
                      },
 
                      read_file = function(filename,filter=5) {
+                       path <- filename
                        if(!is.na(filename)) {
-                         cat("- reading featureCount file\n")
-                         tmp <- read.csv(filename,header=T,sep = "\t",skip=1)
-                         len <- nrow(tmp)
-                         cat("- ..featureCount file reading done. \n")
-                         cat("- Filter low read elements.. ")
-                         self$rawfile <- tmp[rowMeans(tmp[,7:ncol(tmp)])>filter,]
-                         lenf <- nrow(self$rawfile)
-                         rem <- len-lenf
-                         cat("- ..featureCount file filtering done.\n --Original rawfile had",len,"elements \n --After filtering",lenf,"elements remain.\n --",rem,"elements removed due to < ",filter," reads on average.\n --- If you want another cutoff for filtering, enter [filter = x] in call to method. \n --- Access filtered file with $rawfile\n")
+
+                         #check if filtered file exists
+                         filtered.file <- paste(path,".filter",filter,sep="")
+
+                         #if filtered file exist, then read than one instead
+                         if(file.exists(filtered.file)) {
+                           cat("- reading featureCount file, that was previously filtered on",filter,"reads.\n")
+                           tmp <- read.csv(filtered.file,header=T,sep = "\t",skip=0)
+                           len <- nrow(tmp)
+                           cat("- .. filtered featureCount file-reading done. \n")
+                         }
+                         else if(!file.exists(filtered.file)) {
+                           cat("- reading featureCount file\n")
+                           tmp <- read.csv(filename,header=T,sep = "\t",skip=1)
+                           len <- nrow(tmp)
+                           cat("- ..featureCount file reading done. \n")
+                           cat("- Filter low read elements.. ")
+                           self$rawfile <- tmp[rowMeans(tmp[,7:ncol(tmp)])>filter,]
+                           lenf <- nrow(self$rawfile)
+                           rem <- len-lenf
+                           cat("- ..featureCount file filtering done.\n --Original rawfile had",len,"elements \n --After filtering",lenf,"elements remain.\n --",rem,"elements removed due to < ",filter," reads on average.\n --- If you want another cutoff for filtering, enter [filter = x] in call to method. \n --- Access filtered file with $rawfile\n")
+
+                           # write filtered count table, so it can be read next time, instead of file with all 0-read TEs
+                           write.table(x = self$rawfile,
+                                       file = filtered.file,
+                                       sep = "\t",quote = F,row.names = F)
+                           summary <- paste(path,".summary",sep = "")
+                           file.copy(from = summary,to = paste(filtered.file,".summary",sep=""),overwrite = T)
+                         }
 
                        } else {
                          cat("- You must add name of raw featurecount file.\n")
