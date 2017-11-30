@@ -430,6 +430,7 @@ deseqTE <- R6Class("deseqTE",
 
                          #if filtered file exist, then read than one instead
                          if(file.exists(filtered.file)) {
+                           cat("- You have previously read and filtered this count file on",filter,"reads, so this file will be read. If you do not want to read it, please delete the filtered file\n")
                            cat("- reading featureCount file, that was previously filtered on",filter,"reads.\n")
                            tmp <- read.csv(filtered.file,header=T,sep = "\t",skip=0)
                            len <- nrow(tmp)
