@@ -120,7 +120,6 @@ deseqAbs <- R6Class("deseqAbs",
 
                       fullQC = function() {
 
-                        par(mfrow=c(2,3))
                         self$readsAssigned()
                         self$pca()
                         self$mostVariableHeat()
