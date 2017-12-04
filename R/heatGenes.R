@@ -11,7 +11,7 @@
 #' @param cluster_col: logical operator: if TRUE (default), cluster columns, if FALSE do not cluster columns
 #' @title HeatGenes: Heatmap of your genes of interest!
 #' @export heatGenes
-#' @example
+#' @examples
 #' vst <- varianceStabilizingTransformation(dds)
 #' genes <- c("TRIM28","DNMT1","ZNF52")
 #' heatGenes(data = assay(vst),genes = genes, sd = 1, a1 = colData$cellLine, a2 = colData$treatment,n1 = "Cell Line",n2 = "Treatment",z = T)

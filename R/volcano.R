@@ -6,7 +6,7 @@
 #' @param id: If TRUE, you can identify points and label their names. FALSE by default
 #' @title volcano plot
 #' @export volcanoPlot
-#' @example
+#' @examples
 #' test <- results(dds,contrast = c("condition","genex-KO","WT"))
 #' volcanoPlot(test = test, max=9,p=.001,title="transcriptome changes upon KO")
 

@@ -5,7 +5,7 @@
 #' @param l: log2(fc) cutoff to use
 #' @title getSign genes as table with test data
 #' @export getSign
-#' @example
+#' @examples
 #' test <- results(dds,contrast = c("condition","genex-KO","WT"))
 #' sign <- getSign(x = test, p = 0.01, l = 0.5)
 #' up <- sign$up

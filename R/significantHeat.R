@@ -9,7 +9,7 @@
 #' @param n2: name of annotation in a2
 #' @title Plot most significant genes: heatmap
 #' @export mostSignificantHeat
-#' @example
+#' @examples
 #' vst <- varianceStabilizingTransformation(dds)
 #' test <- results(dds)
 #' mostSignificantHeat(data = assay(vst),test=test,ntop = 100, a1 = colData$cellLine, a2 = colData$treatment,n1="Cell Line",n2="Treatment")

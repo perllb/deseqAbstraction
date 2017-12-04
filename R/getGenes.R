@@ -4,7 +4,7 @@
 #' @param genes: a vector of gene IDs that can be grepped from rownames of data
 #' @title getGenes: Get data for your genes of interest!
 #' @export getGenes
-#' @example
+#' @examples
 #' getGenes(data = assay(vst),genes = genes)
 
 

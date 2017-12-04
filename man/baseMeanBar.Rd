@@ -14,3 +14,8 @@ baseMeanBar(deseqAbs, genes)
 \description{
 barplot of gene expression
 }
+\examples{
+deseqAbs <- dnmt
+genes <- c("DNMT1","TRIM28","PAX6","DCX","SOX2","AGO2")
+baseMeanBar(dnmt,genes)
+}

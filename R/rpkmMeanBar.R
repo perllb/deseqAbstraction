@@ -4,7 +4,7 @@
 #' @param genes: a vector of gene IDs to be extracted from rownames of data
 #' @title baseMeanBar: Barplot of your genes of interest!
 #' @export rpkmMeanBar
-#' @example
+#' @examples
 #' deseqAbs <- dnmt
 #' genes <- c("DNMT1","TRIM28","PAX6","DCX","SOX2","AGO2")
 #' rpkmMeanBar(dnmt,genes)

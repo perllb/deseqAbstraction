@@ -12,3 +12,7 @@ sampleToSample(data)
 \description{
 Plots heatmap showing sample-to-sample distances
 }
+\examples{
+vst <- varianceStabilizingTransformation(dds)
+sampleToSample(data = vst)
+}

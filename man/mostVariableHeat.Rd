@@ -23,3 +23,7 @@ mostVariableHeat(data, ntop = 50, a1 = NULL, a2 = NULL, n1 = NULL,
 \description{
 Plots heatmap showing the expression of most variable genes
 }
+\examples{
+vst <- varianceStabilizingTransformation(dds)
+mostVariableHeat(data = assay(vst),ntop = 100, a1 = colData$cellLine, a2 = colData$treatment,n1="Cell Line",n2="Treatment")
+}

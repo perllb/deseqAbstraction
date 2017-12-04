@@ -14,3 +14,6 @@ getGenes(data, genes)
 \description{
 gets data for given genes. data can be of any format, as long as the genes IDs are rownames
 }
+\examples{
+getGenes(data = assay(vst),genes = genes)
+}

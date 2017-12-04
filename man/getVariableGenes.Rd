@@ -16,3 +16,7 @@ getVariableGenes(data, ntop = 100, sdcut = 0)
 \description{
 returns the most variable genes in data
 }
+\examples{
+vst <- varianceStabilizingTransformation(dds)
+getVariableGenes(data = assay(vst),ntop = 100)
+}

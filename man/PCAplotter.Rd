@@ -23,3 +23,7 @@ PCAplotter(dat, ntop = 5000, color = NULL, shape = NULL, title = "",
 \description{
 creates PCA plot
 }
+\examples{
+vst <- varianceStabilizingTransformation(dds);
+PCAplotter(dat = vst,ntop = 1000,color = colData$cellType, shape = colData$treatment,title = "PCA plot top1000 genes", label = colData$sample)
+}

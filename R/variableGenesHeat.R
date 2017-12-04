@@ -8,7 +8,7 @@
 #' @param n2: name of annotation in a2
 #' @title mostVariableHeat - heatmap of variable genes
 #' @export mostVariableHeat
-#' @example
+#' @examples
 #' vst <- varianceStabilizingTransformation(dds)
 #' mostVariableHeat(data = assay(vst),ntop = 100, a1 = colData$cellLine, a2 = colData$treatment,n1="Cell Line",n2="Treatment")
 

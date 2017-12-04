@@ -18,3 +18,7 @@ maPlot(test, c1 = "cond1", c2 = "cond2", p = 0.05, l = 0, id = F)
 \description{
 Plots scatter plot with log2FC on log2(baseMean), and marks significant genes
 }
+\examples{
+test <- results(dds,contrast = c("condition","genex-KO","WT"))
+maPlot(test = test, c1 = "KO", c2 = "WT" )
+}

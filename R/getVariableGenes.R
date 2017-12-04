@@ -5,7 +5,7 @@
 #' @param sdcut: return all genes having higher sd than this cutoff
 #' @title getVariableGenes - get genes with high variation
 #' @export getVariableGenes
-#' @example
+#' @examples
 #' vst <- varianceStabilizingTransformation(dds)
 #' getVariableGenes(data = assay(vst),ntop = 100)
 

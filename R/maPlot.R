@@ -6,7 +6,7 @@
 #' @param id: If TRUE, you can identify points and label their names. FALSE by default
 #' @title maPlot - my awesome function #2
 #' @export maPlot
-#' @example
+#' @examples
 #' test <- results(dds,contrast = c("condition","genex-KO","WT"))
 #' maPlot(test = test, c1 = "KO", c2 = "WT" )
 

@@ -3,7 +3,7 @@
 #' @param data: normalized deseq data (with varianceStablizing, rlog etc)
 #' @title sampleToSample my awesome function #2
 #' @export sampleToSample
-#' @example
+#' @examples
 #' vst <- varianceStabilizingTransformation(dds)
 #' sampleToSample(data = vst)
 

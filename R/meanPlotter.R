@@ -6,7 +6,7 @@
 #' @param id: If TRUE, you can identify points and label their names. FALSE by default#'
 #' @title meanPlot compare gene expression
 #' @export meanPlot
-#' @example
+#' @examples
 #' exp <- getAverage(dds)
 #' maPlot(exp = exp, c1 = "KO", c2 = "CTR" )
 

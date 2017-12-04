@@ -8,7 +8,7 @@
 #' @param label: vector of labels for each point (optional)
 #' @title PCAplotter my awesome function #1
 #' @export PCAplotter
-#' @example
+#' @examples
 #' vst <- varianceStabilizingTransformation(dds);
 #' PCAplotter(dat = vst,ntop = 1000,color = colData$cellType, shape = colData$treatment,title = "PCA plot top1000 genes", label = colData$sample)
 

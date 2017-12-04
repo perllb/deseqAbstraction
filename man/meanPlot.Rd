@@ -19,3 +19,7 @@ meanPlot(exp, test, c1 = "condition 1", c2 = "condition 2", p = 0.05,
 \description{
 Plots scatter plot with log2(cond1) vs. log2(cond2), and marks significant genes
 }
+\examples{
+exp <- getAverage(dds)
+maPlot(exp = exp, c1 = "KO", c2 = "CTR" )
+}

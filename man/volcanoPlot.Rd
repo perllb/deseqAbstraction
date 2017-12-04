@@ -19,3 +19,7 @@ volcanoPlot(test, max = NULL, p = 0.05, title = "transcriptome changes",
 \description{
 Generates volcano plot and marks significant genes. Scales the y axis if promted
 }
+\examples{
+test <- results(dds,contrast = c("condition","genex-KO","WT"))
+volcanoPlot(test = test, max=9,p=.001,title="transcriptome changes upon KO")
+}
