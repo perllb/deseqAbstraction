@@ -177,7 +177,7 @@ deseqAbs <- R6Class("deseqAbs",
                         }else {
                           # plot percentage
                           plot <- assigned*100/(notassigned+assigned)
-                          x <- barplot(plot,col=c("blue","grey80"),ylim=c(0,max(tot.map)*1.2),ylab="total read number",las=2)
+                          x <- barplot(plot,col=c("blue","grey80"),ylim=c(0,max(plot)*1.2),ylab="total read number",las=2)
                           legend("topleft",legend = c("not assigned","assigned"),fill=c("grey80","blue"))
                           title(main = "Reads assigned to annotation out of all mapped reads")
                           text(x = x,y = plot*1.1,labels = assigned)
