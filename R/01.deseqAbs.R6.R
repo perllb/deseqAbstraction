@@ -128,9 +128,9 @@ deseqAbs <- R6Class("deseqAbs",
 
                         if(!is.null(self$VST) & !is.null(self$deseq)) {
                           cat(">>Plotting reads assigned to database. Also showing non-mapped reads.\n")
-                          self$readsAssigned()
+                          self$readsAssigned(nonAssigned=TRUE)
                           cat(">>Plotting reads assigned to database. Percentage of all reads mapping to genome.\n")
-                          self$readsAssigned(nonAssigned = F)
+                          self$readsAssigned(nonAssigned=F)
                           cat(">>Plotting PCA. Top 1000 most variable genes used.\n")
                           self$pca(ntop = 1000)
                           cat(">>Plotting most variable genes.\n")
