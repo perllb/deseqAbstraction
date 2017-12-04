@@ -120,19 +120,28 @@ deseqAbs <- R6Class("deseqAbs",
 
                       sampleQC = function() {
 
-                        cat(">>Plotting reads assigned to database. Also showing non-mapped reads.")
-                        self$readsAssigned()
-                        cat(">>Plotting reads assigned to database. Percentage of all reads mapping to genome.")
-                        self$readsAssigned(nonAssigned = F)
-                        cat(">>Plotting PCA. Top 1000 most variable genes used.")
-                        self$pca(ntop = 1000)
-                        cat(">>Plotting most variable genes.")
-                        self$mostVariableHeat()
-                        cat(">>Plotting sample to sample distances.")
-                        self$sampleToSample()
-                        cat(">>Plotting significantly changed genes.. These changes are defined by the default DESeq results() test.. ")
-                        self$significantHeat()
+                        if(is.null(self$VST) | is.null(self$deseq)) {
+                          cat(">>First: Run fullAuto() for normalization and diffex testing.. ")
+                          self$fullAuto()
+                          cat("- ..complete! fullAuto() compelted, now proceding with sampleQC().")
+                        }
 
+                        if(is.null(self$VST) | is.null(self$deseq)) {
+                          cat(">>Plotting reads assigned to database. Also showing non-mapped reads.")
+                          self$readsAssigned()
+                          cat(">>Plotting reads assigned to database. Percentage of all reads mapping to genome.")
+                          self$readsAssigned(nonAssigned = F)
+                          cat(">>Plotting PCA. Top 1000 most variable genes used.")
+                          self$pca(ntop = 1000)
+                          cat(">>Plotting most variable genes.")
+                          self$mostVariableHeat()
+                          cat(">>Plotting sample to sample distances.")
+                          self$sampleToSample()
+                          cat(">>Plotting significantly changed genes.. These changes are defined by the default DESeq results() test.. ")
+                          self$significantHeat()
+                        }else {
+                          cat(">ERROR! could not run QC.. $VST or $deseq is NULL!")
+                        }
 
                       },
 
