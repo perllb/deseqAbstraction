@@ -151,37 +151,37 @@ deseqAbs <- R6Class("deseqAbs",
                       # if nonAssigned = T, then also plot all reads that are NOT assigned to the given database
                       readsAssigned = function(summaryFile=NULL,nonAssigned=F) {
 
-                        if(is.null(summaryFile)) {
-                          # read summary file
-                          sum <- read.delim(paste(self$filename,".summary",sep=""))
-                        }else {
+
+                        if (is.null(summaryFile)) {
+                          sum <- read.delim(paste(self$filename, ".summary", sep = ""))
+                        } else {
                           sum <- read.delim(summaryFile)
                         }
 
-                        if(!is.null(self$colData$samples)) {
-                          colnames(sum) <- c('a',as.character(self$colData$samples))
+                        if (!is.null(self$colData$samples)) {
+                          colnames(sum) <- c("a", as.character(self$colData$samples))
+                        }
+                        tot.map <- colSums(sum[, -1])
+                        assigned <- sum[1, -1]
+                        notassigned <- tot.map - assigned
+                        if (nonAssigned) {
+                          plot <- as.matrix(rbind(assigned = assigned, not.assigned = notassigned))
+                          x <- barplot(plot, col = c("blue", "grey80"), ylim = c(0,
+                                                                                 max(tot.map) * 1.2), ylab = "total read number",
+                                       las = 2)
+                          legend("topleft", legend = c("not assigned", "assigned"),
+                                 fill = c("grey80", "blue"),bty='n')
+                          title(main = "Reads assigned to annotation out of all mapped reads")
+                        } else {
+                          plot <- as.matrix(assigned * 100/(notassigned + assigned))
+                          x <- barplot(plot, col = c("blue", "grey80"), ylim = c(0,
+                                                                                 max(plot) * 2), ylab = "percentage reads assigned / reads to genome", las = 2)
+                          title(main = "Reads assigned to annotation out of all mapped reads")
+                          options(scipen = -10)
+                          text(x = x-.4, y = plot * 1.1, labels = format(assigned,scientific=T),srt=90,pos = 4)
                         }
 
-                        ## get total reads mapping to the genome
-                        tot.map <- colSums(sum[,-1])
-                        ## get number of reads assigned and not
-                        assigned <- sum[1,-1]
-                        notassigned <- tot.map-assigned
 
-                        if(nonAssigned) {
-                          # plot
-                          plot <- as.matrix(rbind(assigned = assigned,not.assigned = notassigned))
-                          x <- barplot(plot,col=c("blue","grey80"),ylim=c(0,max(tot.map)*1.2),ylab="total read number",las=2)
-                          legend("topleft",legend = c("not assigned","assigned"),fill=c("grey80","blue"))
-                          title(main = "Reads assigned to annotation out of all mapped reads")
-                        }else {
-                          # plot percentage
-                          plot <- assigned*100/(notassigned+assigned)
-                          x <- barplot(plot,col=c("blue","grey80"),ylim=c(0,max(plot)*1.2),ylab="total read number",las=2)
-                          legend("topleft",legend = c("not assigned","assigned"),fill=c("grey80","blue"))
-                          title(main = "Reads assigned to annotation out of all mapped reads")
-                          text(x = x,y = plot*1.1,labels = assigned)
-                        }
                       },
 
                       getPos = function() {
