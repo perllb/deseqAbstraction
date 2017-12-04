@@ -145,9 +145,9 @@ deseqAbs <- R6Class("deseqAbs",
 
                       },
 
-                      significantHeat = function() {
+                      significantHeat = function(test=self$test$Default) {
 
-                        mostSignificantHeat(self$VST)
+                        mostSignificantHeat(data=self$VST,test=test)
 
                       },
 
@@ -311,7 +311,7 @@ deseqAbs <- R6Class("deseqAbs",
                             colnames(assay(self$VST)) <- make.names(names = as.character(self$colData$condition),unique = T)
                           }
 
-                          cat(paste(" - ..complete!",bl," variance stabilizing transformation \n",sep = ""))
+                          cat(paste(" - ..complete! ",bl," variance stabilizing transformation \n",sep = ""))
 
                         }
 
