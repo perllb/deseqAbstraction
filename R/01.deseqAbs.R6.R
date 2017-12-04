@@ -118,12 +118,19 @@ deseqAbs <- R6Class("deseqAbs",
                         }
                       },
 
-                      fullQC = function() {
+                      sampleQC = function() {
 
+                        cat(">>Plotting reads assigned to database. Also showing non-mapped reads.")
                         self$readsAssigned()
-                        self$pca()
+                        cat(">>Plotting reads assigned to database. Percentage of all reads mapping to genome.")
+                        self$readsAssigned(nonAssigned = F)
+                        cat(">>Plotting PCA. Top 1000 most variable genes used.")
+                        self$pca(ntop = 1000)
+                        cat(">>Plotting most variable genes.")
                         self$mostVariableHeat()
+                        cat(">>Plotting sample to sample distances.")
                         self$sampleToSample()
+                        cat(">>Plotting significantly changed genes.. These changes are defined by the default DESeq results() test.. ")
                         self$significantHeat()
 
 
@@ -188,7 +195,7 @@ deseqAbs <- R6Class("deseqAbs",
                         names(self$length) <- self$rawfile[,1]
                         self$pos <- self$rawfile[,2:5]
                         rownames(self$pos) <- self$rawfile[,1]
-                        cat("- ..done. Get position of genes with $pos\n")
+                        cat("- ..complete! Get position of genes with $pos\n")
                       },
 
                       getAverage = function() {
@@ -214,7 +221,7 @@ deseqAbs <- R6Class("deseqAbs",
                           baseSDPerLvl <- sapply( levels(self$deseq$condition), function(lvl) apply( counts(self$deseq,normalized=TRUE)[,self$deseq$condition == lvl],1,sd ) )
                           colnames(baseSDPerLvl) <- paste("st.dev:",colnames(baseSDPerLvl),sep="")
                           self$baseMean <- list(Mean=baseMeanPerLvl,SD=baseSDPerLvl)
-                          cat("- ..mean normalized counts computed for each condition. access mean with $baseMean$Mean, and st.dev with $baseMean$SD \n")
+                          cat("- ..complete! Mean normalized counts computed for each condition. access mean with $baseMean$Mean, and st.dev with $baseMean$SD \n")
                         }
                       },
 
@@ -233,7 +240,7 @@ deseqAbs <- R6Class("deseqAbs",
                           baseSDPerLvl <- sapply( levels(self$colData$condition), function(lvl) apply( self$rpkm[,self$colData$condition == lvl],1,sd ) )
                           colnames(baseSDPerLvl) <- paste("st.dev:",colnames(baseSDPerLvl),sep="")
                           self$rpkmMean <- list(Mean=baseMeanPerLvl,SD=baseSDPerLvl)
-                          cat("- ..mean normalized expression computed for each condition. access mean with $baseMean$Mean, and st.dev with $baseMean$SD \n")
+                          cat("- ..complete! Mean normalized expression computed for each condition. access mean with $baseMean$Mean, and st.dev with $baseMean$SD \n")
                           }
                         }
                       },
@@ -249,12 +256,12 @@ deseqAbs <- R6Class("deseqAbs",
                         } else if(!is.null(self$colData)) {
                           colnames(self$rawCounts) <- make.names(names = self$colData$condition,unique = T)
                         }
-                        cat("- ..done. access raw countData with $rawCounts\n")
+                        cat("- ..complete! Access raw countData with $rawCounts\n")
 
                       },
 
                       greet = function() {
-                        cat("- ..deseqAbs object created..\n")
+                        cat("- ..complete! deseqAbs object created..\n")
                       },
 
                       makeDESeq = function() {
@@ -267,7 +274,7 @@ deseqAbs <- R6Class("deseqAbs",
                                                         colData = self$colData,
                                                         design =~ condition)
                           self$deseq <- DESeq(dds)
-                          cat("- ..DESeq done. Access object with $deseq \n")
+                          cat("- ..complete! Access object with $deseq \n")
                         }
                       },
 
@@ -295,7 +302,7 @@ deseqAbs <- R6Class("deseqAbs",
                             colnames(assay(self$VST)) <- make.names(names = as.character(self$colData$condition),unique = T)
                           }
 
-                          cat(paste(" - ..completed ",bl," variance stabilizing transformation \n",sep = ""))
+                          cat(paste(" - ..complete!",bl," variance stabilizing transformation \n",sep = ""))
 
                         }
 
@@ -315,7 +322,7 @@ deseqAbs <- R6Class("deseqAbs",
 
                           cat(">>Testing for differential expression..\n")
                           self$test[["Default"]] <- results(self$deseq)
-                          cat("- ..Diffex completed with default values. Access with $test.\n")
+                          cat("- ..complete! Diffex completed with default values. Access with $test.\n")
 
                         } else if(!is.null(n1) & !is.null(n2)) {
 
@@ -333,7 +340,7 @@ deseqAbs <- R6Class("deseqAbs",
                             self$test[[paste("Test:",c1,"_vs._",c2,"",sep = "")]] <- results(self$deseq,contrasts = c("condition",c1,c2))
                           }
 
-                          cat(paste("- .. Test completed for ",c1," vs. ",c2,"..\n",sep = ""))
+                          cat(paste("- ..complete! Test completed for ",c1," vs. ",c2,"..\n",sep = ""))
 
                         } else if(!is.null(c1) & !is.null(c2)) {
 
@@ -350,7 +357,7 @@ deseqAbs <- R6Class("deseqAbs",
                           } else {
                             self$test[[paste("Test:",c1,"_vs._",c2,"",sep = "")]] <- results(self$deseq,contrasts = c("condition",c1,c2))
                           }
-                          cat(paste("- ..Test completed for ",c1," vs. ",c2,"..\n",sep = ""))
+                          cat(paste("- ..Complete! Test completed for ",c1," vs. ",c2,"..\n",sep = ""))
                         }
 
                       },
@@ -365,7 +372,7 @@ deseqAbs <- R6Class("deseqAbs",
                         }else if(!is.null(self$colData)) {
                           colnames(self$rpkm) <- make.names(names = self$colData$condition,unique = T)
                         }
-                        cat("- ..RPKM computed. Access with $rpkm.\n")
+                        cat("- ..complete! RPKM computed. Access with $rpkm.\n")
 
                       },
 

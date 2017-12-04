@@ -90,10 +90,10 @@ deseqTE <- R6Class("deseqTE",
                          self$getPos()
                          self$getRawCounts()
 
-                         cat(">>Reading genomic RepeatMasker feature for ",genome)
+                         cat(">>Reading genomic RepeatMasker feature for ",genome,"\n")
                          self$genome = genome
                          self$TE.features <- self$getFeatures(genome)
-                         cat("- .. genomic RepeatMasker feature for ",genome,"reading completed.. stored in $TE.features")
+                         cat("- ..complete! Genomic RepeatMasker feature for ",genome,"read.. stored in $TE.features")
 
 
                        }
@@ -560,18 +560,17 @@ deseqTE <- R6Class("deseqTE",
                            cat(">Info: You have previously read and filtered this count file on",filter,"reads, so this file will be read. If you do not want to read it, please delete the filtered file\n")
                            cat(">>Reading featureCount file, that was previously filtered on",filter,"reads.\n")
                            self$rawfile <- read.csv(filtered.file,header=T,sep = "\t",skip=0)
-                           cat("- .. filtered featureCount file-reading done. \n")
+                           cat("- ..complete! filtered featureCount file-reading. \n")
                          }
                          else if(!file.exists(filtered.file)) {
                            cat(">>Reading featureCount file\n")
                            tmp <- read.csv(filename,header=T,sep = "\t",skip=1)
                            len <- nrow(tmp)
-                           cat("- ..featureCount file reading done. \n")
+                           cat("- ..complete! featureCount file reading done. \n")
                            cat(">>Filtering low read elements.. ")
                            self$rawfile <- tmp[rowMeans(tmp[,7:ncol(tmp)])>filter,]
-                           lenf <- nrow(self$rawfile)
                            rem <- len-lenf
-                           cat("- ..featureCount file filtering done.\n -- 1.Original rawfile had",len,"elements \n -- 2.After filtering",lenf,"elements remain.\n -- 3.",rem,"elements removed due to < ",filter," reads on average.\n --- 4. If you want another cutoff for filtering, enter [filter = x] in call to method. \n --- 5. Access filtered file with $rawfile\n")
+                           cat("- ..complete! featureCount file filtering done.\n -- 1.Original rawfile had",len,"elements \n -- 2.After filtering",lenf,"elements remain.\n -- 3.",rem,"elements removed due to < ",filter," reads on average.\n --- 4. If you want another cutoff for filtering, enter [filter = x] in call to method. \n --- 5. Access filtered file with $rawfile\n")
 
                            # write filtered count table, so it can be read next time, instead of file with all 0-read TEs
                            write.table(x = self$rawfile,
