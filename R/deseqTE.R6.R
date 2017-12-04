@@ -567,7 +567,7 @@ deseqTE <- R6Class("deseqTE",
                            tmp <- read.csv(filename,header=T,sep = "\t",skip=1)
                            len <- nrow(tmp)
                            cat("- ..complete! featureCount file reading done. \n")
-                           cat(">>Filtering low read elements.. ")
+                           cat(">>Filtering low read elements..\n")
                            self$rawfile <- tmp[rowMeans(tmp[,7:ncol(tmp)])>filter,]
                            rem <- len-lenf
                            cat("- ..complete! featureCount file filtering done.\n -- 1.Original rawfile had",len,"elements \n -- 2.After filtering",lenf,"elements remain.\n -- 3.",rem,"elements removed due to < ",filter," reads on average.\n --- 4. If you want another cutoff for filtering, enter [filter = x] in call to method. \n --- 5. Access filtered file with $rawfile\n")

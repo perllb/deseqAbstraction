@@ -103,7 +103,7 @@ deseqAbs <- R6Class("deseqAbs",
 
                         }
                         else {
-                          cat(">ERROR: Could not initialize object..")
+                          cat(">ERROR: Could not initialize object..\n")
                         }
                       },
 
@@ -121,26 +121,26 @@ deseqAbs <- R6Class("deseqAbs",
                       sampleQC = function() {
 
                         if(is.null(self$VST) | is.null(self$deseq)) {
-                          cat(">>First: Run fullAuto() for normalization and diffex testing.. ")
+                          cat(">>First: Run fullAuto() for normalization and diffex testing.. \n")
                           self$fullAuto()
-                          cat("- ..complete! fullAuto() compelted, now proceding with sampleQC().")
+                          cat("- ..complete! fullAuto() compelted, now proceding with sampleQC().\n")
                         }
 
-                        if(is.null(self$VST) | is.null(self$deseq)) {
-                          cat(">>Plotting reads assigned to database. Also showing non-mapped reads.")
+                        if(!is.null(self$VST) & !is.null(self$deseq)) {
+                          cat(">>Plotting reads assigned to database. Also showing non-mapped reads.\n")
                           self$readsAssigned()
-                          cat(">>Plotting reads assigned to database. Percentage of all reads mapping to genome.")
+                          cat(">>Plotting reads assigned to database. Percentage of all reads mapping to genome.\n")
                           self$readsAssigned(nonAssigned = F)
-                          cat(">>Plotting PCA. Top 1000 most variable genes used.")
+                          cat(">>Plotting PCA. Top 1000 most variable genes used.\n")
                           self$pca(ntop = 1000)
-                          cat(">>Plotting most variable genes.")
+                          cat(">>Plotting most variable genes.\n")
                           self$mostVariableHeat()
-                          cat(">>Plotting sample to sample distances.")
+                          cat(">>Plotting sample to sample distances.\n")
                           self$sampleToSample()
-                          cat(">>Plotting significantly changed genes.. These changes are defined by the default DESeq results() test.. ")
+                          cat(">>Plotting significantly changed genes.. These changes are defined by the default DESeq results() test..\n")
                           self$significantHeat()
                         }else {
-                          cat(">ERROR! could not run QC.. $VST or $deseq is NULL!")
+                          cat(">ERROR! could not run QC.. $VST or $deseq is NULL!\n")
                         }
 
                       },
@@ -240,7 +240,7 @@ deseqAbs <- R6Class("deseqAbs",
                         if(is.null(self$rpkm)) {self$makeRPKM() }
 
                         if(length(levels(self$deseq$condition))>sum(duplicated(self$deseq$condition))) {
-                          cat(">Warning: Some of your levels do not have replicates.. ")
+                          cat(">Warning: Some of your levels do not have replicates..\n")
                         } else {
 
                           if(!is.null(self$rpkm)) {
