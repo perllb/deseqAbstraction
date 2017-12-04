@@ -34,7 +34,8 @@ maPlot <- function(test,c1="cond1",c2="cond2",p=.05,l=0,id=F) {
        cex=cexVec,
        pch=16,
        ylab=paste("log2(FC: [ ",c1," / ",c2," ])",sep=""),
-       xlab="log2(mean expression)")
+       xlab="log2(mean expression)",
+       ylim=c(-max(abs(test$log2FoldChange))*1.4,max(abs(test$log2FoldChange))*1.4))
   title(main=paste(c1," / ",c2,sep=""))
   mtext(text = paste("p-adj < ",p,", log2(fc) > ",l,sep=""),side = 3)
   legend("topleft",legend = c(paste("up (",u,")",sep=""),paste("down (",d,")",sep = ""),paste("not significant (",n,")",sep = "")),pch=16,col=c("firebrick3","steelblue4","black"),bty='n')

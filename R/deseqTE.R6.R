@@ -492,7 +492,7 @@ deseqTE <- R6Class("deseqTE",
                      maPlotTE = function(testData,c1="cond1",c2="cond2",p=.05,l=0) {
 
                        ## plot standard maPlot
-                       maPlot(testData,c1,c2)
+                       maPlot(testData,c1=c1,c2=c2,p=p,l=l)
 
                        ## define colors for TEs
                        col <- c("darkolivegreen3","indianred4","steelblue","tan4")
@@ -509,7 +509,7 @@ deseqTE <- R6Class("deseqTE",
                          curr.sig <- rbind(curr.up,curr.down)
 
                           if(nrow(curr.sig)>0){
-                           points(log2(curr.sig$baseMean),curr.sig$log2FoldChange,col=col[idx],pch=16)
+                           points(log2(curr.sig$baseMean),curr.sig$log2FoldChange,col=col[idx],pch=16,cex=.8)
                          }
 
                          idx <- idx+1
