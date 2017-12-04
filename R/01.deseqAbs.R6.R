@@ -147,7 +147,9 @@ deseqAbs <- R6Class("deseqAbs",
 
                       },
 
-                      readsAssigned = function(summaryFile=NULL) {
+                      # provide specific summary file name if not identical name as count file with *.summary suffix
+                      # if nonAssigned = T, then also plot all reads that are NOT assigned to the given database
+                      readsAssigned = function(summaryFile=NULL,nonAssigned=F) {
 
                         if(is.null(summaryFile)) {
                           # read summary file
@@ -166,13 +168,20 @@ deseqAbs <- R6Class("deseqAbs",
                         assigned <- sum[1,-1]
                         notassigned <- tot.map-assigned
 
-                        # plot
-                        plot <- as.matrix(rbind(assigned = assigned,not.assigned = notassigned))
-
-                        x <- barplot(plot,col=c("blue","grey80"),ylim=c(0,max(tot.map)*1.2),ylab="total read number",las=2)
-                        legend("topleft",legend = c("not assigned","assigned"),fill=c("grey80","blue"))
-                        title(main = "Reads assigned to annotation out of all mapped reads")
-
+                        if(nonAssigned) {
+                          # plot
+                          plot <- as.matrix(rbind(assigned = assigned,not.assigned = notassigned))
+                          x <- barplot(plot,col=c("blue","grey80"),ylim=c(0,max(tot.map)*1.2),ylab="total read number",las=2)
+                          legend("topleft",legend = c("not assigned","assigned"),fill=c("grey80","blue"))
+                          title(main = "Reads assigned to annotation out of all mapped reads")
+                        }else {
+                          # plot percentage
+                          plot <- assigned*100/(notassigned+assigned)
+                          x <- barplot(plot,col=c("blue","grey80"),ylim=c(0,max(tot.map)*1.2),ylab="total read number",las=2)
+                          legend("topleft",legend = c("not assigned","assigned"),fill=c("grey80","blue"))
+                          title(main = "Reads assigned to annotation out of all mapped reads")
+                          text(x = x,y = plot*1.1,labels = assigned)
+                        }
                       },
 
                       getPos = function() {
