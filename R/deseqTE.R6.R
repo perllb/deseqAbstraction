@@ -59,20 +59,20 @@ deseqTE <- R6Class("deseqTE",
                      initialize = function(name = NA,filename = NA,genome=NULL,filter=5,colData=NULL) {
 
                        if(is.null(genome)) {
-                         cat("== you did not enter genome. please insert genome = hg38 or mm10!")
+                         cat(">ERROR: you did not enter genome. please insert genome = hg38 or mm10!")
                        }
                        if(is.null(filename)) {
-                         cat("-- ERROR: No filename (with full path) given! \n")
-                         cat("--- Please provide name (and full path) of raw featureCounts output file upon creating this object\n\n")
+                         cat(">ERROR: No filename (with full path) given! \n")
+                         cat("-- Please provide name (and full path) of raw featureCounts output file upon creating this object\n\n")
                        }
                        if(is.null(colData)) {
-                         cat("-- ERROR: No colData given! \n")
+                         cat(">ERROR: No colData given! \n")
                        }else {
                          if(is.null(colData$condition)) {
-                           cat("-- ERROR: colData has no 'condition' column. \n")
+                           cat(">ERROR: colData has no 'condition' column. \n")
                          }
                          if(is.null(colData$samples)) {
-                           cat("-- ERROR: colData has no 'samples' column. \n")
+                           cat(">ERROR: colData has no 'samples' column. \n")
                          }
                        }
                        if(!is.null(filename) & !is.null(colData) & !is.null(genome) & !is.null(colData$samples) & !is.null(colData$condition)) {
@@ -90,10 +90,10 @@ deseqTE <- R6Class("deseqTE",
                          self$getPos()
                          self$getRawCounts()
 
-                         cat("- Reading genomic RepeatMasker feature for ",genome)
+                         cat(">>Reading genomic RepeatMasker feature for ",genome)
                          self$genome = genome
                          self$TE.features <- self$getFeatures(genome)
-                         cat("- genomic RepeatMasker feature for ",genome,"reading completed.. stored in $TE.features")
+                         cat("- .. genomic RepeatMasker feature for ",genome,"reading completed.. stored in $TE.features")
 
 
                        }
@@ -557,21 +557,21 @@ deseqTE <- R6Class("deseqTE",
 
                          #if filtered file exist, then read than one instead
                          if(file.exists(filtered.file)) {
-                           cat("- You have previously read and filtered this count file on",filter,"reads, so this file will be read. If you do not want to read it, please delete the filtered file\n")
-                           cat("- reading featureCount file, that was previously filtered on",filter,"reads.\n")
+                           cat(">Info: You have previously read and filtered this count file on",filter,"reads, so this file will be read. If you do not want to read it, please delete the filtered file\n")
+                           cat(">>Reading featureCount file, that was previously filtered on",filter,"reads.\n")
                            self$rawfile <- read.csv(filtered.file,header=T,sep = "\t",skip=0)
                            cat("- .. filtered featureCount file-reading done. \n")
                          }
                          else if(!file.exists(filtered.file)) {
-                           cat("- reading featureCount file\n")
+                           cat(">>Reading featureCount file\n")
                            tmp <- read.csv(filename,header=T,sep = "\t",skip=1)
                            len <- nrow(tmp)
                            cat("- ..featureCount file reading done. \n")
-                           cat("- Filter low read elements.. ")
+                           cat(">>Filtering low read elements.. ")
                            self$rawfile <- tmp[rowMeans(tmp[,7:ncol(tmp)])>filter,]
                            lenf <- nrow(self$rawfile)
                            rem <- len-lenf
-                           cat("- ..featureCount file filtering done.\n --Original rawfile had",len,"elements \n --After filtering",lenf,"elements remain.\n --",rem,"elements removed due to < ",filter," reads on average.\n --- If you want another cutoff for filtering, enter [filter = x] in call to method. \n --- Access filtered file with $rawfile\n")
+                           cat("- ..featureCount file filtering done.\n -- 1.Original rawfile had",len,"elements \n -- 2.After filtering",lenf,"elements remain.\n -- 3.",rem,"elements removed due to < ",filter," reads on average.\n --- 4. If you want another cutoff for filtering, enter [filter = x] in call to method. \n --- 5. Access filtered file with $rawfile\n")
 
                            # write filtered count table, so it can be read next time, instead of file with all 0-read TEs
                            write.table(x = self$rawfile,
@@ -582,8 +582,8 @@ deseqTE <- R6Class("deseqTE",
                          }
 
                        } else {
-                         cat("- You must add name of raw featurecount file.\n")
-                         cat("> dnmt$filename <- \"<path>/<featureCountOutput>\"\n")
+                         cat(">ERROR: You must add name of raw featurecount file.\n")
+                         cat("-- E.g. dnmt$filename <- \"<path>/<featureCountOutput>\"\n")
                        }
                      }
                    )

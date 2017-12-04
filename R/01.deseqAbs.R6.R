@@ -70,17 +70,17 @@ deseqAbs <- R6Class("deseqAbs",
 
                         ### Check if all required parameters are set!
                         if(is.null(filename)) {
-                          cat("-- ERROR: No filename (with full path) given! \n")
+                          cat(">ERROR: No filename (with full path) given! \n")
                           cat("--- Please provide name (and full path) of raw featureCounts output file upon creating this object\n\n")
                         }
                         if(is.null(colData)) {
-                          cat("-- ERROR: No colData given! \n")
+                          cat(">ERROR: No colData given! \n")
                         } else {
                           if(is.null(colData$condition)) {
-                            cat("-- ERROR: colData has no 'condition' column. \n")
+                            cat(">ERROR: colData has no 'condition' column. \n")
                           }
                           if(is.null(colData$samples)) {
-                            cat("-- ERROR: colData has no 'samples' column. \n")
+                            cat(">ERROR: colData has no 'samples' column. \n")
                           }
                         }
 
@@ -103,18 +103,18 @@ deseqAbs <- R6Class("deseqAbs",
 
                         }
                         else {
-                          cat("Could not initialize object..")
+                          cat(">ERROR: Could not initialize object..")
                         }
                       },
 
                       read_file = function(filename) {
                         if(!is.na(filename)) {
-                          cat("- reading featureCount file\n")
+                          cat(">>Reading featureCount file\n")
                           self$rawfile <- read.csv(filename,header=T,sep = "\t",skip=1)
                           cat("- ..featureCount file reading done. Access rawdata with $rawfile\n")
                         } else {
-                          cat("- You must add name of raw featurecount file.\n")
-                          cat("> dnmt$filename <- \"<path>/<featureCountOutput>\"\n")
+                          cat(">ERROR: You must add name of raw featurecount file.\n")
+                          cat("- > dnmt$filename <- \"<path>/<featureCountOutput>\"\n")
                         }
                       },
 
@@ -183,7 +183,7 @@ deseqAbs <- R6Class("deseqAbs",
                       },
 
                       getPos = function() {
-                        cat("- Fetching Positional info from file\n")
+                        cat(">>Fetching Positional info from file\n")
                         self$length <- self$rawfile[,6]
                         names(self$length) <- self$rawfile[,1]
                         self$pos <- self$rawfile[,2:5]
@@ -201,15 +201,15 @@ deseqAbs <- R6Class("deseqAbs",
                       getAverageReads = function() {
 
                         if(is.null(self$deseq)) {
-                          cat("You must run deseq to get normalized read counts..\n")
+                          cat(">ERROR: You must run deseq to get normalized read counts..\n")
                           self$makeDESeq()
                         }
 
                         if(length(levels(self$deseq$condition))>sum(duplicated(self$deseq$condition))) {
-                          cat("Some of your levels do not have replicates.. \n")
+                          cat(">Warning: Some of your levels do not have replicates.. \n")
                         } else {
                           ## normalized counts
-                          cat("- Computing mean normalized counts of each condition\n")
+                          cat(">>Computing mean normalized counts of each condition\n")
                           baseMeanPerLvl <- sapply( levels(self$deseq$condition), function(lvl) rowMeans( counts(self$deseq,normalized=TRUE)[,self$deseq$condition == lvl] ) )
                           baseSDPerLvl <- sapply( levels(self$deseq$condition), function(lvl) apply( counts(self$deseq,normalized=TRUE)[,self$deseq$condition == lvl],1,sd ) )
                           colnames(baseSDPerLvl) <- paste("st.dev:",colnames(baseSDPerLvl),sep="")
@@ -224,11 +224,11 @@ deseqAbs <- R6Class("deseqAbs",
                         if(is.null(self$rpkm)) {self$makeRPKM() }
 
                         if(length(levels(self$deseq$condition))>sum(duplicated(self$deseq$condition))) {
-                          cat("Some of your levels do not have replicates.. ")
+                          cat(">Warning: Some of your levels do not have replicates.. ")
                         } else {
 
                           if(!is.null(self$rpkm)) {
-                          cat("- Computing mean RPKM of each condition\n")
+                          cat(">>Computing mean RPKM of each condition\n")
                           baseMeanPerLvl <- sapply( levels(self$colData$condition), function(lvl) rowMeans( self$rpkm[,self$colData$condition == lvl] ) )
                           baseSDPerLvl <- sapply( levels(self$colData$condition), function(lvl) apply( self$rpkm[,self$colData$condition == lvl],1,sd ) )
                           colnames(baseSDPerLvl) <- paste("st.dev:",colnames(baseSDPerLvl),sep="")
@@ -240,7 +240,7 @@ deseqAbs <- R6Class("deseqAbs",
 
                       getRawCounts = function() {
 
-                        cat("- Getting countData matrix\n")
+                        cat(">>Getting countData matrix\n")
                         self$rawCounts <- self$rawfile[,-c(1:6)]
                         rownames(self$rawCounts) <- self$geneID
 
@@ -260,9 +260,9 @@ deseqAbs <- R6Class("deseqAbs",
                       makeDESeq = function() {
 
                         if(!is.data.frame(self$colData)) {
-                          cat("= Add colData data.frame! E.g: >deseqAbs$colData <- data.frame(condition = x)\n")
+                          cat(">ERROR: Add colData data.frame! E.g: >deseqAbs$colData <- data.frame(condition = x)\n")
                         } else {
-                          cat("- Running DESeq")
+                          cat(">>Running DESeq")
                           dds <- DESeqDataSetFromMatrix(countData = self$rawCounts,
                                                         colData = self$colData,
                                                         design =~ condition)
@@ -276,7 +276,7 @@ deseqAbs <- R6Class("deseqAbs",
 
                         if(is.null(blind)) {
 
-                          cat("== You need to define if you want to do blind dispersion estimates!\n")
+                          cat(">ERROR: You need to define if you want to do blind dispersion estimates!\n")
                           cat("== set blind=FALSE if you expect a large fraction of genes to have large differences in counts explainable by experimental design!\n")
                           cat("== set blind=TRUE otherwise.\n")
                           cat("== If you are not sure, try both, and compare clustring results\n")
@@ -286,7 +286,7 @@ deseqAbs <- R6Class("deseqAbs",
                           bl <- "blind"
                           if(!blind) { bl <- "not-blind" }
 
-                          cat(paste(" - performing ",bl," variance stabilizing transformation \n",sep = ""))
+                          cat(paste(">>Performing ",bl," variance stabilizing transformation \n",sep = ""))
                           self$VST <- varianceStabilizingTransformation(self$deseq,blind = blind)
 
                           if(!is.null(self$sampleNames)) {
@@ -313,7 +313,7 @@ deseqAbs <- R6Class("deseqAbs",
                         # if no specific conditions input, do default conditions
                         if(is.null(n1) & is.null(c1)) {
 
-                          cat("- Testing for differential expression..\n")
+                          cat(">>Testing for differential expression..\n")
                           self$test[["Default"]] <- results(self$deseq)
                           cat("- ..Diffex completed with default values. Access with $test.\n")
 
@@ -322,7 +322,7 @@ deseqAbs <- R6Class("deseqAbs",
                           c1 <- gsub(pattern = "condition",replacement = "",resultsNames(self$deseq)[n1])
                           c2 <- gsub(pattern = "condition",replacement = "",resultsNames(self$deseq)[n2])
 
-                          cat("- Testing for differential expression..\n")
+                          cat(">>Testing for differential expression..\n")
                           cat(paste("-- Testing ",c1," vs. ",c2,"..\n",sep = ""))
 
                           if(!is.null(name)) {
@@ -333,14 +333,14 @@ deseqAbs <- R6Class("deseqAbs",
                             self$test[[paste("Test:",c1,"_vs._",c2,"",sep = "")]] <- results(self$deseq,contrasts = c("condition",c1,c2))
                           }
 
-                          cat(paste("-- Test completed for ",c1," vs. ",c2,"..\n",sep = ""))
+                          cat(paste("- .. Test completed for ",c1," vs. ",c2,"..\n",sep = ""))
 
                         } else if(!is.null(c1) & !is.null(c2)) {
 
                           c1 <- gsub(pattern = "condition",replacement = "",c1)
                           c2 <- gsub(pattern = "condition",replacement = "",c2)
 
-                          cat("- Testing for differential expression..\n")
+                          cat(">>Testing for differential expression..\n")
                           cat(paste("-- Testing ",c1," vs. ",c2,"..\n",sep = ""))
 
                           if(!is.null(name)) {
@@ -350,14 +350,14 @@ deseqAbs <- R6Class("deseqAbs",
                           } else {
                             self$test[[paste("Test:",c1,"_vs._",c2,"",sep = "")]] <- results(self$deseq,contrasts = c("condition",c1,c2))
                           }
-                          cat(paste("-- Test completed for ",c1," vs. ",c2,"..\n",sep = ""))
+                          cat(paste("- ..Test completed for ",c1," vs. ",c2,"..\n",sep = ""))
                         }
 
                       },
 
                       makeRPKM = function() {
 
-                        cat("- Computing RPKM..\n")
+                        cat(">>Computing RPKM..\n")
                         self$rpkm <- self$rawCounts/ (self$length/1000) / (colSums(self$rawCounts/1000000))
                         rownames(self$rpkm) <- self$geneID
                         if(!is.null(self$sampleNames)) {
@@ -399,16 +399,16 @@ deseqAbs <- R6Class("deseqAbs",
 
                         }else {
 
-                          cat("= Cannot do this yet.. \n")
+                          cat(">ERROR: Cannot do this yet.. \n")
 
                           }
                         if(is.null(self$colData)){
 
-                          cat("= make colData data.frame!\n")
+                          cat("- You need to make colData data.frame!\n")
 
                         }
                         if(is.null(self$rawCounts)) {
-                          cat("= add rawCounts matrix!\n")
+                          cat("- You need to add rawCounts matrix!\n")
                         }
                       },
 
