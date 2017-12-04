@@ -166,19 +166,17 @@ deseqAbs <- R6Class("deseqAbs",
                         notassigned <- tot.map - assigned
                         if (nonAssigned) {
                           plot <- as.matrix(rbind(assigned = assigned, not.assigned = notassigned))
-                          x <- barplot(plot, col = c("blue", "grey80"), ylim = c(0,
-                                                                                 max(tot.map) * 1.2), ylab = "total read number",
-                                       las = 2)
+                          x <- barplot(plot, col = c("blue", "grey80"), ylim = c(0,max(tot.map) * 1.2), ylab = "total read number",las = 2)
                           legend("topleft", legend = c("not assigned", "assigned"),
                                  fill = c("grey80", "blue"),bty='n')
                           title(main = "Reads assigned to annotation out of all mapped reads")
                         } else {
                           plot <- as.matrix(assigned * 100/(notassigned + assigned))
-                          x <- barplot(plot, col = c("blue", "grey80"), ylim = c(0,
-                                                                                 max(plot) * 2), ylab = "percentage reads assigned / reads to genome", las = 2)
+                          x <- barplot(plot, col = c("blue", "grey80"), ylim = c(0,max(plot) * 2), ylab = "percentage reads assigned / reads to genome", las = 2)
                           title(main = "Reads assigned to annotation out of all mapped reads")
-                          options(scipen = -10)
+                          options(scipen=-10)
                           text(x = x-.4, y = plot * 1.1, labels = format(assigned,scientific=T),srt=90,pos = 4)
+                          options(scipen=0)
                         }
 
 
