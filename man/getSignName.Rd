@@ -16,3 +16,10 @@ getSignName(x, p, l)
 \description{
 Get the significantly changed genes, returning IDs of up and down-regulated genes separately in a list.
 }
+\examples{
+test <- results(dds,contrast = c("condition","genex-KO","WT"))
+sign <- getSign(x = test, p = 0.01, l = 0.5)
+up <- sign$up
+down <- sign$down
+
+}

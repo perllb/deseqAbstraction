@@ -26,7 +26,7 @@ getSign <- function(x,p = .01,l = .2) {
 #' @param l: log2(fc) cutoff to use
 #' @title getSign IDs of genes that are sign. up or down
 #' @export getSignName
-#' @example
+#' @examples
 #' test <- results(dds,contrast = c("condition","genex-KO","WT"))
 #' sign <- getSign(x = test, p = 0.01, l = 0.5)
 #' up <- sign$up

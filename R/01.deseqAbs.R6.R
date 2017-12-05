@@ -391,13 +391,13 @@ deseqAbs <- R6Class("deseqAbs",
                         if(is.null(label)) {label = rep("",length(self$colData$condition))}
                         if(is.null(shape)) {
                           PCAplotter(dat = self$VST,
-                                     color = color,
+                                     color = col,
                                      title = title,
                                      ntop = ntop,
                                      label = label)
                         } else {
                           PCAplotter(dat = self$VST,
-                                     color = color,
+                                     color = col,
                                      shape = shape,
                                      title = title,
                                      ntop = ntop,
