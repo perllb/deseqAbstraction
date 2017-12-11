@@ -149,9 +149,9 @@ deseqAbs <- R6Class("deseqAbs",
 
                       },
 
-                      mostVariableHeat = function() {
+                      mostVariableHeat = function(ntop=50) {
 
-                        mostVariableHeat(self$VST,ntop=50)
+                        mostVariableHeat(self$VST,ntop=ntop)
 
                       },
 
