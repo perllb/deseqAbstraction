@@ -46,8 +46,6 @@ require(DESeq2)
 #' @field length of each gene
 #' @export
 
-
-
 deseqAbs <- R6Class("deseqAbs",
                     public = list(
                       name = "character",

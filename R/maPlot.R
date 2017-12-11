@@ -37,4 +37,5 @@ maPlot <- function(test,c1="cond1",c2="cond2",p=.05,l=0,id=F) {
        xlab="log2(mean expression)",
        ylim=c(-max(abs(test$log2FoldChange))*1.4,max(abs(test$log2FoldChange))*1.4))
   title(main=paste(c1," / ",c2,sep=""))
-  mtext(text = paste("p-adj < ",p,", log2(fc) > ",l,sep=""uijil,kjReRe
+  mtext(text = paste("p-adj < ",p,", log2(fc) > ",l,sep=""))
+}
