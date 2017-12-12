@@ -268,7 +268,7 @@ deseqAbs <- R6Class("deseqAbs",
                       },
 
                       greet = function() {
-                        cat("- ..complete! deseqAbs object created..\n")
+                        cat(">>Creating deseqAbs object\n")
                       },
 
                       makeDESeq = function() {
