@@ -4,10 +4,12 @@
 \alias{sampleToSample}
 \title{sampleToSample my awesome function #2}
 \usage{
-sampleToSample(data)
+sampleToSample(data, samples = NULL)
 }
 \arguments{
 \item{data:}{normalized deseq data (with varianceStablizing, rlog etc)}
+
+\item{samples:}{vector of sample names to show in map}
 }
 \description{
 Plots heatmap showing sample-to-sample distances

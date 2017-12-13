@@ -1,13 +1,14 @@
 #' @name sampleToSample
 #' @description Plots heatmap showing sample-to-sample distances
 #' @param data: normalized deseq data (with varianceStablizing, rlog etc)
+#' @param samples: vector of sample names to show in map
 #' @title sampleToSample my awesome function #2
 #' @export sampleToSample
 #' @examples
 #' vst <- varianceStabilizingTransformation(dds)
 #' sampleToSample(data = vst)
 
-sampleToSample <- function(data) {
+sampleToSample <- function(data,samples=NULL) {
 
   library(graphics)
   library(pheatmap)
@@ -16,7 +17,11 @@ sampleToSample <- function(data) {
   #sample-to-sample distance
   sampleDist <- dist(t(assay(data)))
   sampleDistMatrix <- as.matrix(sampleDist)
-  rownames(sampleDistMatrix) <- data$condition
+  if(is.null(samples)){
+    rownames(sampleDistMatrix) <- colnames(assay(vst))
+  }else{
+    rownames(sampleDistMatrix) <- samples
+  }
   colnames(sampleDistMatrix) <- NULL
 
   colors <- colorRampPalette(colors = c("red","white","Blue"))(25)
