@@ -28,8 +28,9 @@ closeGenes <- function(a,b,dist=10000) {
         feat.name <- as.character(b$ID[i])
         # get genes on same chromosome
         genes.chr <- a[a$Chr == feat.chr,]
+        genes.chr.tss <- ifelse(genes.chr$Strand=="+",yes = genes.chr$Start,no = genes.chr$End)
         # get genes with TSS < dist from L1 features
-        closeGenes <-genes.chr[abs(as.numeric(as.character(genes.chr$tss))-feat.tss)<dist,]
+        closeGenes <-genes.chr[abs(as.numeric(as.character(genes.chr.tss))-feat.tss)<dist,]
         ## add L1 data
         closeGenes[,5] <- rep(as.character(b$ID[i]),nrow(closeGenes))
         closeGenes[,6] <- rep(feat.str,nrow(closeGenes))
