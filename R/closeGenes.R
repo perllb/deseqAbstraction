@@ -40,7 +40,7 @@ closeGenes <- function(a=NULL,b,dist=10000) {
         closeGenes[,6] <- rep(as.character(b$ID[i]),nrow(closeGenes))
         closeGenes[,7] <- rep(feat.str,nrow(closeGenes))
         closeGenes[,8] <- rep(feat.tss,nrow(closeGenes))
-        closeGenes[,9] <- genes.chr.tss-feat.tss
+        closeGenes[,9] <- as.numeric(as.character(genes.chr.tss))-feat.tss
         allclose <- rbind(allclose,closeGenes)
 
       }
