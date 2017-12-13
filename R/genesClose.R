@@ -37,11 +37,11 @@ genesClose <- function(genPos,featPos,dist=10000) {
       for (i in 1:nrow(featPos)){
 
         # get position of current L1
-        feat.chr <- as.character(featPos[i,1])
-        feat.tss <- ifelse(as.character(featPos[i,6])=="+",as.numeric(as.character(featPos[i,2])),as.numeric(as.character(featPos[i,3])))
-        feat.end <- ifelse(as.character(featPos[i,6])=="+",as.numeric(as.character(featPos[i,3])),as.numeric(as.character(featPos[i,2])))
-        feat.str <- as.character(featPos[i,6])
-        feat.name <- as.character(featPos[i,4])
+        feat.chr <- as.character(featPos$Chr[i])
+        feat.tss <- ifelse(as.character(featPos$Strand[i])=="+",as.numeric(as.character(featPos$Start[i])),as.numeric(as.character(featPos$End[i])))
+        feat.end <- ifelse(as.character(featPos$Strand[i])=="+",as.numeric(as.character(featPos$End[i])),as.numeric(as.character(featPos$Start[i])))
+        feat.str <- as.character(featPos$Strand[i])
+        feat.name <- as.character(featPos$ID[i])
         # get genes on same chromosome
         genes.chr <- genes[genes$chr == feat.chr,]
         # get genes with TSS < 50kb from L1 start
@@ -59,11 +59,11 @@ genesClose <- function(genPos,featPos,dist=10000) {
       cat("- ..complete! Genes with TSS within",dist,"bps from each features TSS is computed.\n")
       return(allclose)
     }else{
-      print("> ERROR: Colnames of your featPos table/data.frame must be with Chr, Start, End, Strand, ID.\n> ERROR: Please change your column names.")
+      print("> ERROR: Colnames of your featPos table/data.frame must be with Chr, Start, End, Strand, ID colnames")
+      print("> ERROR: Please change your column names.")
     }
   }else{
-
-    print("> ERROR: Colnames of your genPos table/data.frame must be with Chr, Start, End, Strand, ID.\n> ERROR: Please change your column names.")
-
+    print("> ERROR: Colnames of your genPos table/data.frame must be with Chr, Start, End, Strand, ID colnames")
+    print("> ERROR: Please change your column names.")
   }
 }
