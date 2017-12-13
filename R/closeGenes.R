@@ -40,12 +40,12 @@ closeGenes <- function(a=NULL,b,dist=10000) {
         closeGenes[,6] <- rep(as.character(b$ID[i]),nrow(closeGenes))
         closeGenes[,7] <- rep(feat.str,nrow(closeGenes))
         closeGenes[,8] <- rep(feat.tss,nrow(closeGenes))
+        closeGenes[,9] <- genes.chr.tss-feat.tss
         allclose <- rbind(allclose,closeGenes)
 
       }
 
-      colnames(allclose) <- c('A_chr','A_start','A_end','A_ID','A_strand','B_ID','B_strand','B_TSS')
-      allclose[,'distance'] <- as.numeric(as.character(allclose$gene_tss))-as.numeric(as.character(allclose$feature_tss))
+      colnames(allclose) <- c('A_chr','A_start','A_end','A_ID','A_strand','B_ID','B_strand','B_TSS','Distance')
       cat("- ..complete! Genes A with TSS within",dist,"bps from each features B TSS is computed.\n")
       return(allclose)
     }else{
