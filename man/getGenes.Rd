@@ -7,9 +7,9 @@
 getGenes(data, genes)
 }
 \arguments{
-\item{data:}{matrix data (can be any format, but MUST have geneID as rownames)}
+\item{data:}{matrix data (can be any format, but MUST have geneID to match 'genes' as rownames)}
 
-\item{genes:}{a vector of gene IDs that can be grepped from rownames of data}
+\item{genes:}{a vector of gene IDs that can be matched and merged with rownames of data}
 }
 \description{
 gets data for given genes. data can be of any format, as long as the genes IDs are rownames
