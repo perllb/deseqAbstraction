@@ -29,6 +29,8 @@ genesClose <- function(genPos,featPos,dist) {
   ## data frame to build
   allclose <- data.frame()
   # iterate through each feature -> get genes with TSS <50kb away)
+  cat(">> Getting genes with TSS within",dist,"bps from each given feature. This might take a couple of minutes. Patience..")
+
   for (i in 1:nrow(featPos)){
 
     # get position of current L1
@@ -51,5 +53,6 @@ genesClose <- function(genPos,featPos,dist) {
 
   colnames(allclose) <- c('geneClose','gene_chr','gene_strand','gene_tss','feature','feature_strand','feature_tss')
   allclose[,'distance'] <- as.numeric(as.character(allclose$gene_tss))-as.numeric(as.character(allclose$feature_tss))
+  cat("- ..complete! Genes with TSS within",dist,"bps from each features TSS is computed.")
   return(allclose)
 }
