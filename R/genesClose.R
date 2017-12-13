@@ -18,7 +18,7 @@ genesClose <- function(genPos,featPos,dist) {
 
   # for each gene, get TSS, remove redundant terms
   # depending on strand, get start of first or last
-  genes.tss <- ifelse(test = (stren == '+'),
+  genes.tss <- ifelse(test = (genes.strand == '+'),
                       # if + strand, get first exon start
                       yes = sapply(sapply(X = genPos$Start,FUN = function(x) strsplit(as.character(x),';')),FUN = function(l) l[[1]]),
                       # if - strand, get last exon end
