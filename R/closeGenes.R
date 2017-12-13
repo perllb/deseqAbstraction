@@ -16,7 +16,7 @@ closeGenes <- function(a=NULL,b,dist=10000) {
     library(RCurl)
     a <- read.delim(text = getURL(paste("https://raw.githubusercontent.com/perllb/deseqAbstraction/master/data/gencode.v25.annotation.proteinCoding.Transcript.bed",sep = "")),header=F)
     colnames(a) <- c("Chr","Start","End","ID",".","Strand")
-    cat("> Protein coding transcripts downloaded")
+    cat("> Protein coding transcripts downloaded!\n")
   }
   if('Chr' %in% colnames(a) & 'Strand' %in% colnames(a) & 'Start' %in% colnames(a) & 'End' %in% colnames(a) & 'ID' %in% colnames(a)){
     if('Chr' %in% colnames(b) & 'Strand' %in% colnames(b) & 'Start' %in% colnames(b) & 'End' %in% colnames(b) & 'ID' %in% colnames(b)){
@@ -29,17 +29,13 @@ closeGenes <- function(a=NULL,b,dist=10000) {
       for (i in 1:nrow(b)){
 
         # get position of current L1
-        feat.chr <- as.character(b$Chr[i])
         feat.tss <- ifelse(as.character(b$Strand[i])=="+",as.numeric(as.character(b$Start[i])),as.numeric(as.character(b$End[i])))
-        feat.end <- ifelse(as.character(b$Strand[i])=="+",as.numeric(as.character(b$End[i])),as.numeric(as.character(b$Start[i])))
-        feat.str <- as.character(b$Strand[i])
-        feat.name <- as.character(b$ID[i])
         # get genes on same chromosome
-        genes.chr <- a[a$Chr == feat.chr,]
+        genes.chr <- a[a$Chr == as.character(b$Chr[i]),]
         genes.chr.tss <- ifelse(genes.chr$Strand=="+",yes = genes.chr$Start,no = genes.chr$End)
         # get genes with TSS < dist from L1 features
         closeGenes <-genes.chr[abs(as.numeric(as.character(genes.chr.tss))-feat.tss)<dist,]
-        ## add L1 data
+        ## add close feature data
         closeGenes[,5] <- rep(as.character(b$ID[i]),nrow(closeGenes))
         closeGenes[,6] <- rep(feat.str,nrow(closeGenes))
         closeGenes[,7] <- rep(feat.tss,nrow(closeGenes))
@@ -47,7 +43,7 @@ closeGenes <- function(a=NULL,b,dist=10000) {
 
       }
 
-      colnames(allclose) <- c('A_Close','A_chr','A_strand','A_tss','B','B_strand','B_tss')
+      colnames(allclose) <- c('A_chr','A_start','A_end','A_ID','B','B_strand','B_TSS')
       allclose[,'distance'] <- as.numeric(as.character(allclose$gene_tss))-as.numeric(as.character(allclose$feature_tss))
       cat("- ..complete! Genes A with TSS within",dist,"bps from each features B TSS is computed.\n")
       return(allclose)
