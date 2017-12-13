@@ -157,7 +157,7 @@ deseqAbs <- R6Class("deseqAbs",
 
                       sampleToSample = function() {
 
-                        sampleToSample(self$VST,self$colData$samples)
+                        sampleToSample(self$VST,samples = paste(self$colData$samples,self$colData$condition,sep=" :"))
 
                       },
 
