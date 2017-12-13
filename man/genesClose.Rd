@@ -4,18 +4,18 @@
 \alias{genesClose}
 \title{genesClose : Get genes close to features}
 \usage{
-genesClose(genPos, featPos, dist)
+genesClose(genPos, featPos, dist = 10000)
 }
 \arguments{
-\item{pos:}{position of all genes of interest (e.g. deseqAbsObj$pos). Must have $Chr, $Start, $End columns and gene names as rownames. If the annotation is collapsed (such as after featureCounts), only on tss (the most extreme) is used for each gene.}
+\item{genPos:}{position of all genes of interest in Bed format. Must have $Chr, $Start, $End $ID $Strand columns. If the annotation is collapsed (such as after featureCounts), only on tss (the most extreme) is used for each gene.}
 
-\item{feat:}{a .bed file with position that genes should be close to (bed: chr - start - end - ID - . - strand)}
+\item{featPos:}{a .bed file with position that genes should be close to (bed: chr - start - end - ID - . - strand). Must have $Chr, $Start, $End $ID $Strand column names.}
 
-\item{distance:}{how far from features should a gene be to be included?}
+\item{dist:}{how far from features should a gene be to be included?}
 }
 \description{
-Plots scatter plot with log2FC on log2(baseMean), and marks significant genes
+Get genes (or other features) close to some other features (.bed). Must have $Chr $Start $End $Strand $ID as column names. In case of collaped positions, such as from featureCounts output, the first TSS will be used, and alternative transcripts are ignored. For including all transcript variants, a bed file with one line for each transcript of each gene is optimal.
 }
 \examples{
-closeGenes <- enesClose(pos = desqAobj$pos, feat=L1.up.bed, distance = 10000 )
+closeGenes <- enesClose(pos = gencode.genes, feat=L1.up, distance = 10000 )
 }
