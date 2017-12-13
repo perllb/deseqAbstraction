@@ -13,22 +13,6 @@ genesClose <- function(genPos,featPos,dist=10000) {
   if('Chr' %in% colnames(genPos) & 'Strand' %in% colnames(genPos) & 'Start' %in% colnames(genPos) & 'End' %in% colnames(genPos) & 'ID' %in% colnames(genPos)){
     if('Chr' %in% colnames(featPos) & 'Strand' %in% colnames(featPos) & 'Start' %in% colnames(featPos) & 'End' %in% colnames(featPos) & 'ID' %in% colnames(featPos)){
 
-      # for each gene, get chromsome, remove redundant terms
-      genes.chr <- sapply(sapply(X = genPos$Chr,FUN = function(x) strsplit(as.character(x),';')),FUN = function(l) l[[1]])
-
-      # for each gene, get strand, remove redundant terms
-      genes.strand <- sapply(sapply(X = genPos$Strand,FUN = function(x) strsplit(as.character(x),';')),FUN = function(l) l[[1]])
-
-      # for each gene, get TSS, remove redundant terms
-      # depending on strand, get start of first or last
-      genes.tss <- ifelse(test = (genes.strand == '+'),
-                          # if + strand, get first exon start
-                          yes = sapply(sapply(X = genPos$Start,FUN = function(x) strsplit(as.character(x),';')),FUN = function(l) l[[1]]),
-                          # if - strand, get last exon end
-                          no = sapply(sapply(X = genPos$End,FUN = function(x) strsplit(as.character(x),';')),FUN = function(l) l[[length(x = l)]]))
-
-      genes <- data.frame(gene=genPos$ID,chr=genes.chr,strand=genes.strand,tss=genes.tss)
-
       ## data frame to build
       allclose <- data.frame()
       # iterate through each feature -> get genes with TSS <50kb away)
@@ -43,7 +27,7 @@ genesClose <- function(genPos,featPos,dist=10000) {
         feat.str <- as.character(featPos$Strand[i])
         feat.name <- as.character(featPos$ID[i])
         # get genes on same chromosome
-        genes.chr <- genes[genes$chr == feat.chr,]
+        genes.chr <- genPos[genPos$Chr == feat.chr,]
         # get genes with TSS < 50kb from L1 start
         closeGenes <-genes.chr[abs(as.numeric(as.character(genes.chr$tss))-feat.tss)<dist,]
         ## add L1 data
