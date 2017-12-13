@@ -17,6 +17,7 @@ closeGenes <- function(a=NULL,b,d=10000) {
     a <- read.delim(text = getURL(paste("https://raw.githubusercontent.com/perllb/deseqAbstraction/master/data/gencode.v25.annotation.proteinCoding.Transcript.bed",sep = "")),header=F)
     colnames(a) <- c("Chr","Start","End","ID",".","Strand")
     cat("> Gencode v25 protein-coding transcripts .bed downloaded!\n")
+    cat("> (By default, this bed file is used, as it provides coordinates for each protein-coding transcript of gencode.v25 genes.. If you wish to use an alternative gene file, it can be provided as an a = <annotation file> argument to this function. Beware of format..\n")
   }
   if('Chr' %in% colnames(a) & 'Strand' %in% colnames(a) & 'Start' %in% colnames(a) & 'End' %in% colnames(a) & 'ID' %in% colnames(a)){
     if('Chr' %in% colnames(b) & 'Strand' %in% colnames(b) & 'Start' %in% colnames(b) & 'End' %in% colnames(b) & 'ID' %in% colnames(b)){
