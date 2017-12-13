@@ -16,7 +16,7 @@ closeGenes <- function(a=NULL,b,dist=10000) {
     library(RCurl)
     a <- read.delim(text = getURL(paste("https://raw.githubusercontent.com/perllb/deseqAbstraction/master/data/gencode.v25.annotation.proteinCoding.Transcript.bed",sep = "")),header=F)
     colnames(a) <- c("Chr","Start","End","ID",".","Strand")
-    cat("> Protein coding transcripts downloaded!\n")
+    cat("> Gencode v25 protein-coding transcripts .bed downloaded!\n")
   }
   if('Chr' %in% colnames(a) & 'Strand' %in% colnames(a) & 'Start' %in% colnames(a) & 'End' %in% colnames(a) & 'ID' %in% colnames(a)){
     if('Chr' %in% colnames(b) & 'Strand' %in% colnames(b) & 'Start' %in% colnames(b) & 'End' %in% colnames(b) & 'ID' %in% colnames(b)){
@@ -36,14 +36,15 @@ closeGenes <- function(a=NULL,b,dist=10000) {
         # get genes with TSS < dist from L1 features
         closeGenes <-genes.chr[abs(as.numeric(as.character(genes.chr.tss))-feat.tss)<dist,]
         ## add close feature data
-        closeGenes[,5] <- rep(as.character(b$ID[i]),nrow(closeGenes))
-        closeGenes[,6] <- rep(feat.str,nrow(closeGenes))
-        closeGenes[,7] <- rep(feat.tss,nrow(closeGenes))
+        closeGenes[,5] <- closeGenes$Strand
+        closeGenes[,6] <- rep(as.character(b$ID[i]),nrow(closeGenes))
+        closeGenes[,7] <- rep(feat.str,nrow(closeGenes))
+        closeGenes[,8] <- rep(feat.tss,nrow(closeGenes))
         allclose <- rbind(allclose,closeGenes)
 
       }
 
-      colnames(allclose) <- c('A_chr','A_start','A_end','A_ID','B','B_strand','B_TSS')
+      colnames(allclose) <- c('A_chr','A_start','A_end','A_ID','A_strand','B_ID','B_strand','B_TSS')
       allclose[,'distance'] <- as.numeric(as.character(allclose$gene_tss))-as.numeric(as.character(allclose$feature_tss))
       cat("- ..complete! Genes A with TSS within",dist,"bps from each features B TSS is computed.\n")
       return(allclose)
