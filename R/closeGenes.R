@@ -37,7 +37,7 @@ closeGenes <- function(a=NULL,b,d=10000) {
         closeGenes <-genes.chr[abs(as.numeric(as.character(genes.chr.tss))-feat.tss)<d,]
 
         atss <- ifelse(closeGenes$Strand=="+",yes = closeGenes$Start,no = closeGenes$End)
-        closedf <- data.frame(A_ID=closeGenes$ID,A_chr=closeGenes$Chr,A_Start=closeGenes$Start,
+        closedf <- data.frame(A_ID=trimws(closeGenes$ID),A_chr=closeGenes$Chr,A_Start=closeGenes$Start,
                               A_End=closeGenes$End,A_TSS=atss,A_Strand=closeGenes$Strand,
                               B_ID=rep(as.character(b$ID[i]),nrow(closeGenes)),
                               B_TSS=rep(feat.tss,nrow(closeGenes)),B_Strand=rep(feat.str,nrow(closeGenes)),Distance=atss-feat.tss)
