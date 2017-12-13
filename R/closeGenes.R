@@ -14,7 +14,7 @@ closeGenes <- function(a=NULL,b,d=10000) {
   if(is.null(a)){
     cat("> Downloading the gencode v25 annotation of protein-coding transcripts..\n")
     library(RCurl)
-    a <- read.delim(text = getURL(paste("https://raw.githubusercontent.com/perllb/deseqAbstraction/master/data/gencode.v25.annotation.proteinCoding.Transcript.bed",sep = "")),header=F)
+    a <- read.delim(text = getURL(paste("https://raw.githubusercontent.com/perllb/deseqAbstraction/master/data/gencode.v25.annotation.proteinCoding.Transcript.transcript_name.bed",sep = "")),header=F)
     colnames(a) <- c("Chr","Start","End","ID",".","Strand")
     cat("> Gencode v25 protein-coding transcripts .bed downloaded!\n")
   }
