@@ -1,6 +1,6 @@
 #' @name closeGenes
 #' @description Get genes (or other features) close to some other features (.bed). TSS used.
-#' @param a: a .bed position of all genes of interest. Must have $Chr, $Start, $End $ID $Strand column names! TSS of the transcrips will be used
+#' @param a: by default the gencode proteincoding transcripts will be used. Has to be a .bed position of all genes of interest. Must have $Chr, $Start, $End $ID $Strand column names! TSS of the transcrips will be used.
 #' @param b: a .bed position of all features of interest. Must have $Chr, $Start, $End $ID $Strand column names! TSS of the features will be used
 #' @param dist: how many basepairs from features B should a feature A be to be included? Default = 10000bps
 #' @title closeGenes : Get close features (genes )
@@ -8,8 +8,13 @@
 #' @examples
 #' closeGenes <- enesClose(a = gencode.transcripts, b = L1s.up, distance = 50000 )
 
-closeGenes <- function(a,b,dist=10000) {
+closeGenes <- function(a=NULL,b,dist=10000) {
 
+  # If a is NULL, then get gencode proteincoding transcript bed file
+  if(is.null(a)){
+    library(RCurl)
+    return(read.delim(text = getURL(paste("https://raw.githubusercontent.com/perllb/deseqAbstraction/master/data/",genome,".repeats.features.txt",sep = "")),header=F))
+  }
   if('Chr' %in% colnames(a) & 'Strand' %in% colnames(a) & 'Start' %in% colnames(a) & 'End' %in% colnames(a) & 'ID' %in% colnames(a)){
     if('Chr' %in% colnames(b) & 'Strand' %in% colnames(b) & 'Start' %in% colnames(b) & 'End' %in% colnames(b) & 'ID' %in% colnames(b)){
 
