@@ -41,7 +41,7 @@ closeGenes <- function(a=NULL,b,d=10000) {
                               A_End=closeGenes$End,A_TSS=atss,A_Strand=closeGenes$Strand,
                               B_ID=rep(as.character(b$ID[i]),nrow(closeGenes)),
                               B_TSS=rep(feat.tss,nrow(closeGenes)),B_Strand=rep(feat.str,nrow(closeGenes)),Distance=atss-feat.tss)
-        allclose <- rbind(allclose,closeGenes)
+        allclose <- rbind(allclose,closedf)
 
       }
 
