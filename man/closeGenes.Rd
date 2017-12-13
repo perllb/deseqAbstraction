@@ -4,10 +4,10 @@
 \alias{closeGenes}
 \title{closeGenes : Get close features (genes )}
 \usage{
-closeGenes(a, b, dist = 10000)
+closeGenes(a = NULL, b, dist = 10000)
 }
 \arguments{
-\item{a:}{a .bed position of all genes of interest. Must have $Chr, $Start, $End $ID $Strand column names! TSS of the transcrips will be used}
+\item{a:}{by default the gencode proteincoding transcripts will be used. Has to be a .bed position of all genes of interest. Must have $Chr, $Start, $End $ID $Strand column names! TSS of the transcrips will be used.}
 
 \item{b:}{a .bed position of all features of interest. Must have $Chr, $Start, $End $ID $Strand column names! TSS of the features will be used}
 
