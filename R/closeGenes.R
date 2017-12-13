@@ -2,13 +2,13 @@
 #' @description Get genes (or other features) close to some other features (.bed). TSS used.
 #' @param a: by default the gencode proteincoding transcripts will be used. Has to be a .bed position of all genes of interest. Must have $Chr, $Start, $End $ID $Strand column names! TSS of the transcrips will be used.
 #' @param b: a .bed position of all features of interest. Must have $Chr, $Start, $End $ID $Strand column names! TSS of the features will be used
-#' @param dist: how many basepairs from features B should a feature A be to be included? Default = 10000bps
+#' @param d: how many basepairs from features B should a feature A be to be included? Default = 10000bps
 #' @title closeGenes : Get close features (genes )
 #' @export closeGenes
 #' @examples
-#' closeGenes <- enesClose(a = gencode.transcripts, b = L1s.up, distance = 50000 )
+#' closeGenes <- enesClose(a = gencode.transcripts, b = L1s.up, d = 50000 )
 
-closeGenes <- function(a=NULL,b,dist=10000) {
+closeGenes <- function(a=NULL,b,d=10000) {
 
   # If a is NULL, then get gencode proteincoding transcript bed file
   if(is.null(a)){
@@ -24,7 +24,7 @@ closeGenes <- function(a=NULL,b,dist=10000) {
       ## data frame to build
       allclose <- data.frame()
       # iterate through each feature -> get genes with TSS <50kb away)
-      cat(">> Getting genes with TSS within",dist,"bps from each given feature. This might take a couple of minutes. Patience..\n")
+      cat(">> Getting genes with TSS within",d,"bps from each given feature. This might take a couple of minutes. Patience..\n")
 
       for (i in 1:nrow(b)){
 
@@ -33,20 +33,19 @@ closeGenes <- function(a=NULL,b,dist=10000) {
         # get genes on same chromosome
         genes.chr <- a[a$Chr == as.character(b$Chr[i]),]
         genes.chr.tss <- ifelse(genes.chr$Strand=="+",yes = genes.chr$Start,no = genes.chr$End)
-        # get genes with TSS < dist from L1 features
-        closeGenes <-genes.chr[abs(as.numeric(as.character(genes.chr.tss))-feat.tss)<dist,]
-        ## add close feature data
-        closeGenes[,5] <- closeGenes$Strand
-        closeGenes[,6] <- rep(as.character(b$ID[i]),nrow(closeGenes))
-        closeGenes[,7] <- rep(feat.str,nrow(closeGenes))
-        closeGenes[,8] <- rep(feat.tss,nrow(closeGenes))
-        closeGenes[,9] <- as.numeric(as.character(genes.chr.tss))-feat.tss
+        # get genes with TSS < d from L1 features
+        closeGenes <-genes.chr[abs(as.numeric(as.character(genes.chr.tss))-feat.tss)<d,]
+
+        atss <- ifelse(closeGenes$Strand=="+",yes = closeGenes$Start,no = closeGenes$End)
+        closedf <- data.frame(A_ID=closeGenes$ID,A_chr=closeGenes$Chr,A_Start=closeGenes$Start,
+                              A_End=closeGenes$End,A_TSS=atss,A_Strand=closeGenes$Strand,
+                              B_ID=rep(as.character(b$ID[i]),nrow(closeGenes)),
+                              B_TSS=rep(feat.tss,nrow(closeGenes)),B_Strand=rep(feat.str,nrow(closeGenes)),Distance=atss-feat.tss)
         allclose <- rbind(allclose,closeGenes)
 
       }
 
-      colnames(allclose) <- c('A_chr','A_start','A_end','A_ID','A_strand','B_ID','B_strand','B_TSS','Distance')
-      cat("- ..complete! Genes A with TSS within",dist,"bps from each features B TSS is computed.\n")
+      cat("- ..complete! Genes A with TSS within",d,"bps from each features B TSS is computed.\n")
       return(allclose)
     }else{
       print("> ERROR: Colnames of your 'b' table/data.frame must be with Chr, Start, End, Strand, ID colnames")

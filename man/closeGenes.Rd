@@ -4,18 +4,18 @@
 \alias{closeGenes}
 \title{closeGenes : Get close features (genes )}
 \usage{
-closeGenes(a = NULL, b, dist = 10000)
+closeGenes(a = NULL, b, d = 10000)
 }
 \arguments{
 \item{a:}{by default the gencode proteincoding transcripts will be used. Has to be a .bed position of all genes of interest. Must have $Chr, $Start, $End $ID $Strand column names! TSS of the transcrips will be used.}
 
 \item{b:}{a .bed position of all features of interest. Must have $Chr, $Start, $End $ID $Strand column names! TSS of the features will be used}
 
-\item{dist:}{how many basepairs from features B should a feature A be to be included? Default = 10000bps}
+\item{d:}{how many basepairs from features B should a feature A be to be included? Default = 10000bps}
 }
 \description{
 Get genes (or other features) close to some other features (.bed). TSS used.
 }
 \examples{
-closeGenes <- enesClose(a = gencode.transcripts, b = L1s.up, distance = 50000 )
+closeGenes <- enesClose(a = gencode.transcripts, b = L1s.up, d = 50000 )
 }
