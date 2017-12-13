@@ -2,9 +2,9 @@
 
 export(PCAplotter)
 export(baseMeanBar)
+export(closeGenes)
 export(deseqAbs)
 export(deseqTE)
-export(genesClose)
 export(getAverage)
 export(getGenes)
 export(getSign)
