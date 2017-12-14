@@ -36,6 +36,7 @@ closeGenes <- function(a=NULL,b,d=10000) {
         genes.chr.tss <- ifelse(genes.chr$Strand=="+",yes = genes.chr$Start,no = genes.chr$End)
         # get genes with TSS < d from L1 features
         closeGenes <-genes.chr[abs(as.numeric(as.character(genes.chr.tss))-feat.tss)<d,]
+        closeGenes <- closeGenes[!duplicated(closeGenes),]
 
         atss <- ifelse(closeGenes$Strand=="+",yes = closeGenes$Start,no = closeGenes$End)
         closedf <- data.frame(A_ID=trimws(closeGenes$ID),A_chr=closeGenes$Chr,A_Start=closeGenes$Start,
