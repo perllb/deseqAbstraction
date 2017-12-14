@@ -165,7 +165,6 @@ deseqAbs <- R6Class("deseqAbs",
                       # if nonAssigned = T, then also plot all reads that are NOT assigned to the given database
                       readsAssigned = function(summaryFile=NULL,nonAssigned=F) {
 
-
                         if (is.null(summaryFile)) {
                           sum <- read.delim(paste(self$filename, ".summary", sep = ""))
                         } else {

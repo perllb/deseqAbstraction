@@ -37,7 +37,7 @@ meanPlot <- function(exp,test,c1 = "condition 1",c2 = "condition 2",p=.05,l=0,id
        ylab=paste("log2(mean ",c2,")",sep=""))
   title(main=paste(c2," vs. ",c1,sep=""))
   mtext(text = paste("p-adj < ",p,", log2(fc) > ",l,sep=""),side = 3)
-  legend("bottomright",legend = c(paste("up (",length(u),")",sep=""),paste("down (",length(d),")",sep = ""),paste("not significant (",n,")",sep = "")),pch=16,col=c("firebrick3","steelblue4","black"),bty='n')
+  legend("bottomright",legend = c(paste("up (",length(u),")",sep=""),paste("down (",length(d),")",sep = ""),paste("not significant (",n,")",sep = "")),pch=16,col=c("firebrick3","steelblue4","black"))
 
   if(id==T) {
 
