@@ -24,7 +24,7 @@ sampleToSample <- function(data,samples=NULL) {
   }
   colnames(sampleDistMatrix) <- NULL
 
-  colors <- colorRampPalette(colors = c("red","white","Blue"))(25)
+  colors <- colorRampPalette(brewer.pal(11,"RdBu"))(100)
   par(mar=c(17,5,5,7))
   pheatmap(sampleDistMatrix,
            clustring_distance_rows=sampleDist,

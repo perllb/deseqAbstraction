@@ -59,7 +59,7 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=1,z=FALSE,cl
       mycolors <- list(a = mycolors)
       names(mycolors) <- n1
 
-      pheatmap(plotData, annotation_col = df, annotation_colors = mycolors,fontsize_row = 4, cluster_rows = T, show_rownames = rowShow, cluster_cols = cluster_col,scale = scale)
+      pheatmap(plotData, annotation_col = df, annotation_colors = mycolors,fontsize_row = 4, cluster_rows = T, show_rownames = rowShow, cluster_cols = cluster_col,scale = scale,color = rev(colorRampPalette(brewer.pal(10,"RdBu"))(100)))
 
     } else if (!is.null(a1) & !is.null(a2)) {
 
@@ -78,7 +78,7 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=1,z=FALSE,cl
       mycolors <- list(a = mycolors,b = mycolors2)
       names(mycolors) <- c(n1,n2)
 
-      pheatmap(plotData, annotation_col = df, annotation_colors = mycolors,fontsize_row = 4, cluster_rows = T, show_rownames = rowShow, cluster_cols = cluster_col,scale = scale)
+      pheatmap(plotData, annotation_col = df, annotation_colors = mycolors,fontsize_row = 4, cluster_rows = T, show_rownames = rowShow, cluster_cols = cluster_col,scale = scale,color = rev(colorRampPalette(brewer.pal(10,"RdBu"))(100)))
 
 
     } else if (!is.null(a2) & is.null(a1)) {
@@ -94,10 +94,10 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=1,z=FALSE,cl
       mycolors <- list(a = mycolors)
       names(mycolors) <- n1
 
-      pheatmap(plotData, annotation_col = df, annotation_colors = mycolors,fontsize_row = 4, cluster_rows = T, show_rownames = rowShow, cluster_cols = cluster_col,scale = scale)
+      pheatmap(plotData, annotation_col = df, annotation_colors = mycolors,fontsize_row = 4, cluster_rows = T, show_rownames = rowShow, cluster_cols = cluster_col,scale = scale,color = rev(colorRampPalette(brewer.pal(10,"RdBu"))(100)))
 
     } else {
-      pheatmap(plotData, cluster_rows = T, fontsize_row = 4,  show_rownames = rowShow, cluster_cols = cluster_col,scale = scale)
+      pheatmap(plotData, cluster_rows = T, fontsize_row = 4,  show_rownames = rowShow, cluster_cols = cluster_col,scale = scale,color = rev(colorRampPalette(brewer.pal(10,"RdBu"))(100)))
     }
 
     return(rownames(plotData))
