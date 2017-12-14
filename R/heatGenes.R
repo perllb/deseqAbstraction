@@ -31,8 +31,7 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=1,z=FALSE,cl
     cat("ERROR: Data is not in correct format. Must be matrix or DESeq object")
   } else {
 
-    match <- paste(genes,collapse = "$|^")
-    genes.exp <- data[grep(match,rownames(data)),]
+    genes.exp <- getGenes(data = data,genes = genes)
 
     ## get standard deviation of each gene
     sd.exp <- apply(genes.exp,1,sd)

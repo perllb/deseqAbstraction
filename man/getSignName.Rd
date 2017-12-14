@@ -4,7 +4,7 @@
 \alias{getSignName}
 \title{getSign IDs of genes that are sign. up or down}
 \usage{
-getSignName(x, p, l)
+getSignName(x, p, l = 0)
 }
 \arguments{
 \item{x:}{object of results(dds)}
