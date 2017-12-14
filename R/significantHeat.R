@@ -44,7 +44,7 @@ mostSignificantHeat <- function(data,test,ntop=50,a1=NULL,a2=NULL,n1=NULL,n2=NUL
       rownames(df) <- colnames(data)
       colnames(df) <- n1
 
-      cols <- colorRampPalette(brewer.pal(9, "Set2"))
+      cols <- colorRampPalette(brewer.pal(9, "Dark2"))
       mycolors <- cols(length(unique(a1)))
       names(mycolors) <- unique(a1)
       mycolors <- list(a = mycolors)
@@ -63,7 +63,7 @@ mostSignificantHeat <- function(data,test,ntop=50,a1=NULL,a2=NULL,n1=NULL,n2=NUL
       mycolors <- cols(length(unique(a1)))
       names(mycolors) <- unique(a1)
 
-      cols <- colorRampPalette(brewer.pal(9, "Set3"))
+      cols <- colorRampPalette(brewer.pal(9, "Dark2"))
       mycolors2 <- cols(length(unique(a2)))
       names(mycolors2) <- unique(a2)
 

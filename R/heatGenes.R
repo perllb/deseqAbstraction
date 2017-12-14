@@ -53,7 +53,7 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=1,z=FALSE,cl
       rownames(df) <- colnames(data)
       colnames(df) <- n1
 
-      cols <- colorRampPalette(brewer.pal(8, "Set2"))
+      cols <- colorRampPalette(brewer.pal(8, "Set1"))
       mycolors <- cols(length(unique(a1)))
       names(mycolors) <- unique(a1)
       mycolors <- list(a = mycolors)
@@ -71,7 +71,7 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=1,z=FALSE,cl
       mycolors <- cols(length(unique(a1)))
       names(mycolors) <- unique(a1)
 
-      cols <- colorRampPalette(brewer.pal(7, "Set3"))
+      cols <- colorRampPalette(brewer.pal(7, "Dark2"))
       mycolors2 <- cols(length(unique(a2)))
       names(mycolors2) <- unique(a2)
 
