@@ -9,5 +9,6 @@
 
 
 getGenes <- function(data,genes) {
-  return(merge(data.frame(genes=as.character(genes)),data.frame(data),by.x=1,by.y=0))
+  df <- merge(data.frame(genes=as.character(genes)),data.frame(data),by.x=1,by.y=0)
+  return(df[!duplicated(df),])
 }
