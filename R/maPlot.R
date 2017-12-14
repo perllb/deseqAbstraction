@@ -22,7 +22,7 @@ maPlot <- function(test,c1="cond1",c2="cond2",p=.05,l=0,id=F) {
                    no = "black")
   colVec[is.na(colVec)] <- "black" ## if NA make sure it's not counted as <p
   #size of points
-  cexVec <- ifelse(test = test$padj<p, yes = ifelse(test = (is.na(test$padj)),yes = 0.15,no = 0.4), no= 0.15)
+  cexVec <- ifelse(test = test$padj<p, yes = ifelse(test = (is.na(test$padj)),yes = 0.25,no = 0.5), no= 0.25)
 
   sign <- getSign(x = test,p = p,l = l)
   u <- nrow(sign$up)
