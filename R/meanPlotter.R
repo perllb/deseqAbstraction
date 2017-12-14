@@ -25,9 +25,9 @@ meanPlot <- function(exp,test,c1 = "condition 1",c2 = "condition 2",p=.05,l=0,id
   colVec[is.na(colVec)] <- "black" ## if NA make sure it's not counted as <p
   #size of points
   cexVec <- ifelse(test = (rownames(exp) %in% u),
-                   yes = .6,
+                   yes = .5,
                    no = ifelse(test = (rownames(exp) %in% d),
-                               yes = .6, no = .4))
+                               yes = .5, no = .3))
 
   plot(log2(exp[,1]),log2(exp[,2]),
        col=colVec,
@@ -37,7 +37,7 @@ meanPlot <- function(exp,test,c1 = "condition 1",c2 = "condition 2",p=.05,l=0,id
        ylab=paste("log2(mean ",c2,")",sep=""))
   title(main=paste(c2," vs. ",c1,sep=""))
   mtext(text = paste("p-adj < ",p,", log2(fc) > ",l,sep=""),side = 3)
-  legend("bottomright",legend = c(paste("up (",length(u),")",sep=""),paste("down (",length(d),")",sep = ""),paste("not significant (",n,")",sep = "")),pch=16,col=c("firebrick3","steelblue4","black"))
+  legend("bottomright",legend = c(paste("up (",length(u),")",sep=""),paste("down (",length(d),")",sep = ""),paste("not significant (",n,")",sep = "")),pch=16,col=c("firebrick3","steelblue4","black"),cex=.5)
 
   if(id==T) {
 
