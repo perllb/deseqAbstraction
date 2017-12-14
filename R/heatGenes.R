@@ -32,7 +32,7 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=1,z=FALSE,cl
   } else {
 
     genes.exp <- getGenes(data = data,genes = genes)
-    rownames(genes.exp) <- genes.exp[,1]
+    rownames(genes.exp) <- make.names(genes.exp[,1],unique = T)
     genes.exp <- genes.exp[,-1]
 
     ## get standard deviation of each gene
