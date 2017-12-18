@@ -52,7 +52,7 @@ deseqAbs <- R6Class("deseqAbs",
                       filename = NULL,
                       rawfile = NULL,
                       rawCounts = NULL,
-                      design =~ design,
+                      design = NULL,
                       baseMean = NULL,
                       rpkmMean = NULL,
                       geneID = NULL,
@@ -93,7 +93,7 @@ deseqAbs <- R6Class("deseqAbs",
                           self$filename <- filename
                           self$colData <- colData
                           if(!is.null(design)) {
-                            self$design <- design
+                            self$design =~ design
                           } else {
                             self$design =~ condition
                           }
