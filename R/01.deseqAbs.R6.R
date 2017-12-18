@@ -52,7 +52,6 @@ deseqAbs <- R6Class("deseqAbs",
                       filename = NULL,
                       rawfile = NULL,
                       rawCounts = NULL,
-                      design = NULL,
                       baseMean = NULL,
                       rpkmMean = NULL,
                       geneID = NULL,
@@ -65,7 +64,7 @@ deseqAbs <- R6Class("deseqAbs",
                       pos = NULL,
                       length = NULL,
 
-                      initialize = function(name = NA,filename = NA,colData = NA,design=NULL) {
+                      initialize = function(name = NA,filename = NA,colData = NA) {
 
                         ### Check if all required parameters are set!
                         if(is.null(filename)) {
@@ -92,12 +91,9 @@ deseqAbs <- R6Class("deseqAbs",
                           self$name <- name
                           self$filename <- filename
                           self$colData <- colData
-                          if(!is.null(design)) {
-                            self$design =~ design
-                          } else {
-                            self$design =~ condition
-                          }
+
                           self$test <- list()
+
                           self$read_file(filename)
                           self$geneID <- as.character(self$rawfile[,1])
                           self$getPos()
@@ -282,7 +278,7 @@ deseqAbs <- R6Class("deseqAbs",
                           cat(">>Running DESeq")
                           dds <- DESeqDataSetFromMatrix(countData = self$rawCounts,
                                                         colData = self$colData,
-                                                        design = self$design)
+                                                        design =~ condition)
                           self$deseq <- DESeq(dds)
                           cat("- ..complete! Access object with $deseq \n")
                         }
