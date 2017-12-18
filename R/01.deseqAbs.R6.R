@@ -52,7 +52,7 @@ deseqAbs <- R6Class("deseqAbs",
                       filename = NULL,
                       rawfile = NULL,
                       rawCounts = NULL,
-                      design = NULL,
+                      design =~ design,
                       baseMean = NULL,
                       rpkmMean = NULL,
                       geneID = NULL,
@@ -65,7 +65,7 @@ deseqAbs <- R6Class("deseqAbs",
                       pos = NULL,
                       length = NULL,
 
-                      initialize = function(name = NA,filename = NA,colData = NA,design=design) {
+                      initialize = function(name = NA,filename = NA,colData = NA,design) {
 
                         ### Check if all required parameters are set!
                         if(is.null(filename)) {
