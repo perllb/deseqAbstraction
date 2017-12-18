@@ -29,6 +29,7 @@ maPlot <- function(test,c1="cond1",c2="cond2",p=.05,l=0,id=F) {
   d <- nrow(sign$down)
   n <- nrow(test) - u - d
 
+  test$log2FoldChange[!is.finite(test$log2FoldChange)] <- 0
   plot(log2(test$baseMean),test$log2FoldChange,
        col=colVec,
        cex=cexVec,
