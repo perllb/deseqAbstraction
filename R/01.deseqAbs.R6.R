@@ -282,7 +282,7 @@ deseqAbs <- R6Class("deseqAbs",
                           cat(">>Running DESeq")
                           dds <- DESeqDataSetFromMatrix(countData = self$rawCounts,
                                                         colData = self$colData,
-                                                        design =~ self$design)
+                                                        design = self$design)
                           self$deseq <- DESeq(dds)
                           cat("- ..complete! Access object with $deseq \n")
                         }
