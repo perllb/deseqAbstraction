@@ -14,7 +14,9 @@ baseMeanBar <- function(deseqAbs,genes) {
   ## set graphical area
   par(mfrow=c(floor(sqrt(length(genes))),ceiling(sqrt(length(genes)))))
 
-  cols <- c("white","black","grey","blue","green")
+  library(RColorBrewer)
+  cols <- colorRampPalette(brewer.pal(8, "Dark2"))
+  mycolors <- cols(length(unique(deseqAbs$colData$condition)))
 
   for(gene in genes) {
 
@@ -31,7 +33,7 @@ baseMeanBar <- function(deseqAbs,genes) {
                               no = ifelse(test = padj<.01,yes = "**",
                                           no = ifelse(test = padj<.05,yes = "*",no = "NA"))))
     arrows(x0 = x[1],y0 = max(plot)*1.4,x1 = x[2],y1 = max(plot)*1.4,code=0)
-    text(x = x[1]+((x[2]-x[1])/2),y = max(plot)*1.5,labels = lab,cex = 2)
+    text(x = x[1]+((x[2]-x[1])/2),y = max(plot)*1.5,labels = lab,cex = 1)
 
 
   }
