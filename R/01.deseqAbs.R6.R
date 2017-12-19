@@ -287,6 +287,10 @@ deseqAbs <- R6Class("deseqAbs",
 
                       makeVST = function(blind=NULL) {
 
+                        if(is.null(self$deseq)){
+                          cat(">> The $deseq object is not initialized.. This has to be done before varianceStablizingTransformation..\n")
+                          self$makeDESeq()
+                        }
 
                         if(is.null(blind)) {
 
