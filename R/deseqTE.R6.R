@@ -56,7 +56,7 @@ deseqTE <- R6Class("deseqTE",
                      TE.features = NULL,
                      genome = NULL,
 
-                     initialize = function(name = NA,filename = NA,genome=NULL,filter=5,colData=NULL) {
+                     initialize = function(name = NA,filename = NA,genome=NULL,filter=5,colData=NULL,design=NULL) {
 
                        if(is.null(genome)) {
                          cat(">ERROR: you did not enter genome. please insert genome = hg38 or mm10!")
@@ -82,14 +82,14 @@ deseqTE <- R6Class("deseqTE",
                          self$name <- name
                          self$filename <- filename
                          self$colData <- colData
-
                          self$test <- list()
-
                          self$read_file(filename,filter = filter)
                          self$geneID <- as.character(self$rawfile[,1])
                          self$getPos()
                          self$getRawCounts()
-
+                         if(!is.null(design)){
+                           self$design <- design
+                         } else { self$design <- formula(~condition)}
                          cat(">>Reading genomic RepeatMasker feature for ",genome,"\n")
                          self$genome = genome
                          self$TE.features <- self$getFeatures(genome)
