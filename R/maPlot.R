@@ -7,7 +7,7 @@
 #' @title maPlot - my awesome function #2
 #' @export maPlot
 #' @examples
-#' test <- results(dds,contrast = c("condition","genex-KO","WT"))
+#' test <- results(dds,contrast = c("condition","gene-KO","WT"))
 #' maPlot(test = test, c1 = "KO", c2 = "WT" )
 
 maPlot <- function(test,c1="cond1",c2="cond2",p=.05,l=0,id=F) {
