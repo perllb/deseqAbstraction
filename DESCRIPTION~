@@ -1,0 +1,10 @@
+Package: deseqAbstraction
+Title: A set of functions to make DESeq pipes more smooth
+Version: 0.2
+Authors@R: person("Per Ludvik", "Brattås", email = "per_ludvik.brattaas@med.lu.se", role = c("aut", "cre"))
+Description: Provides functions for DESeq analysis
+Depends: R (>= 3.1)
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
