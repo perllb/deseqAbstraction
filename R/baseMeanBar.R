@@ -13,7 +13,8 @@
 baseMeanBar <- function(deseqAbs,genes,cond=NULL) {
   
   ## set graphical area
-  par(mfrow=c(floor(sqrt(length(genes)+1)),ceiling(sqrt(length(genes)))))
+  row <- ifelse(test = sqrt(length(genes))%%1 > .5,yes = floor(sqrt(length(genes)))+1,no = floor(sqrt(length(genes)))) 
+  par(mfrow=c(row,ceiling(sqrt(length(genes)))))
   library(RColorBrewer)
   cols <- colorRampPalette(brewer.pal(8, "Dark2"))
 
