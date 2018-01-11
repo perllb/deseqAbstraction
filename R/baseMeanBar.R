@@ -47,13 +47,13 @@ baseMeanBar <- function(deseqAbs,genes,cond=NULL) {
   else {
     data <- deseqAbs$baseMean$Mean[,cond]
     ## make colors
-    mycolors <- cols(length(unique(cond)))
+    mycolors <- cols(length(cond))
     # plot one for each gene 
     for(gene in genes) {
       
       plot <- data[gene,]
       sd <- data[gene,]
-      x <- barplot(plot,ylim=c(0,max(plot+sd)*1.5),ylab="mean normalized read counts",col = cols)
+      x <- barplot(plot,ylim=c(0,max(plot+sd)*1.5),ylab="mean normalized read counts",col = mycolors)
       arrows(x0 = x,y0 = plot,x1 = x,y1 = plot+sd,length = .1,angle = 90)
       title(main = gene)
       
