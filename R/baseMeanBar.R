@@ -13,7 +13,7 @@
 baseMeanBar <- function(deseqAbs,genes,cond=NULL) {
   
   ## set graphical area
-  par(mfrow=c(floor(sqrt(length(genes))),ceiling(sqrt(length(genes)))))
+  par(mfrow=c(floor(sqrt(length(genes)+1)),ceiling(sqrt(length(genes)))))
   library(RColorBrewer)
   cols <- colorRampPalette(brewer.pal(8, "Dark2"))
 
@@ -39,8 +39,8 @@ baseMeanBar <- function(deseqAbs,genes,cond=NULL) {
                       no = ifelse(test = padj<.0001,yes = "***",
                                   no = ifelse(test = padj<.01,yes = "**",
                                               no = ifelse(test = padj<.05,yes = "*",no = "NA"))))
-        arrows(x0 = x[1],y0 = max(plot+sd)*1.4,x1 = x[2],y1 = max(plot+sd)*1.4,code=0)
-        text(x = x[1]+((x[2]-x[1])/2),y = max(plot)*1.5,labels = lab,cex = 1)
+        arrows(x0 = x[1],y0 = max(plot+sd)*1.3,x1 = x[2],y1 = max(plot+sd)*1.3,code=0)
+        text(x = x[1]+((x[2]-x[1])/2),y = max(plot)*1.4,labels = lab,cex = 1)
       }
     }
   }
@@ -65,8 +65,8 @@ baseMeanBar <- function(deseqAbs,genes,cond=NULL) {
                       no = ifelse(test = padj<.0001,yes = "***",
                                   no = ifelse(test = padj<.01,yes = "**",
                                               no = ifelse(test = padj<.05,yes = "*",no = "NA"))))
-        arrows(x0 = x[1],y0 = max(plot+sd)*1.4,x1 = x[2],y1 = max(plot+sd)*1.4,code=0)
-        text(x = x[1]+((x[2]-x[1])/2),y = max(plot)*1.5,labels = lab,cex = 1)
+        arrows(x0 = x[1],y0 = max(plot+sd)*1.3,x1 = x[2],y1 = max(plot+sd)*1.3,code=0)
+        text(x = x[1]+((x[2]-x[1])/2),y = max(plot+sd)*1.4,labels = lab,cex = 1)
       }
     }
   }
