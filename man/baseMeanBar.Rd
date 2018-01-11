@@ -4,12 +4,14 @@
 \alias{baseMeanBar}
 \title{baseMeanBar: Barplot of your genes of interest!}
 \usage{
-baseMeanBar(deseqAbs, genes)
+baseMeanBar(deseqAbs, genes, cond = NULL)
 }
 \arguments{
 \item{deseqAbs:}{deseqAbs object with baseMean and test data}
 
 \item{genes:}{a vector of gene IDs to be extracted from rownames of data}
+
+\item{cond:}{a vector with condition names to use (must match column names of baseMean df)}
 }
 \description{
 barplot of gene expression

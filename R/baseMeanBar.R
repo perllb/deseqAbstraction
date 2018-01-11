@@ -16,21 +16,23 @@ baseMeanBar <- function(deseqAbs,genes,cond=NULL) {
   par(mfrow=c(floor(sqrt(length(genes))),ceiling(sqrt(length(genes)))))
   library(RColorBrewer)
   cols <- colorRampPalette(brewer.pal(8, "Dark2"))
-  mycolors <- cols(length(unique(deseqAbs$colData$condition)))
-  
+
   # if no condition defined, run default
   if ( is.null(cond) ) {
+
+    ## make colors
+    mycolors <- cols(length(unique(deseqAbs$colData$condition)))
     # plot one for each gene 
     for(gene in genes) {
   
       plot <- deseqAbs$baseMean$Mean[gene,]
       sd <- deseqAbs$baseMean$SD[gene,]
-      x <- barplot(plot,ylim=c(0,max(plot+sd)*1.5),ylab="mean normalized read counts",col = cols)
+      x <- barplot(plot,ylim=c(0,max(plot+sd)*1.5),ylab="mean normalized read counts",col = mycolors)
       arrows(x0 = x,y0 = plot,x1 = x,y1 = plot+sd,length = .1,angle = 90)
       title(main = gene)
   
       ## if more than two conditions, then skip plotting errorbars  
-      if(ncol(deseqAbs$baseMean$Mean)<1) {
+      if(ncol(deseqAbs$baseMean$Mean)<3) {
         padj <- deseqAbs$test$Default[gene,]$padj
     
         lab <- ifelse(test = is.na(padj) | padj > .05,yes = "NA",
@@ -44,6 +46,8 @@ baseMeanBar <- function(deseqAbs,genes,cond=NULL) {
   }
   else {
     data <- deseqAbs$baseMean$Mean[,cond]
+    ## make colors
+    mycolors <- cols(length(unique(cond)))
     # plot one for each gene 
     for(gene in genes) {
       
@@ -54,7 +58,7 @@ baseMeanBar <- function(deseqAbs,genes,cond=NULL) {
       title(main = gene)
       
       ## if more than two conditions, then skip plotting errorbars  
-      if(ncol(data)<1) {
+      if(ncol(data)<3) {
         padj <- deseqAbs$test$Default[gene,]$padj
         
         lab <- ifelse(test = is.na(padj) | padj > .05,yes = "NA",
