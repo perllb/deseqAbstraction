@@ -119,6 +119,7 @@ deseqAbs <- R6Class("deseqAbs",
 
                       sampleQC = function() {
 
+                        par(mar=c(4,4,4,4))
                         if(is.null(self$VST) | is.null(self$deseq)) {
                           cat(">>First: Run fullAuto() for normalization and diffex testing.. \n")
                           self$fullAuto()
@@ -141,7 +142,7 @@ deseqAbs <- R6Class("deseqAbs",
                         }else {
                           cat(">ERROR! could not run QC.. $VST or $deseq is NULL!\n")
                         }
-
+                        par(mar=c(4,4,4,4))
                       },
 
                       significantHeat = function(test=self$test$Default) {
@@ -316,9 +317,6 @@ deseqAbs <- R6Class("deseqAbs",
                           cat(paste(" - ..complete! ",bl," variance stabilizing transformation \n",sep = ""))
 
                         }
-
-
-
                       },
 
                       # name: name of test
@@ -417,11 +415,14 @@ deseqAbs <- R6Class("deseqAbs",
                           }else if(!is.null(self$colData)) {
                             colnames(self$rawCounts) <- make.names(names = self$colData$condition,unique = T)
                           }
+                          
+                          par(mar=c(4,4,4,4))
                           self$makeDESeq()
                           self$makeDiffex()
                           self$makeVST(blind = F)
                           self$makeRPKM()
                           self$getAverage()
+                          par(mar=c(4,4,4,4))
 
                         }else {
 
