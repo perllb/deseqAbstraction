@@ -326,6 +326,10 @@ deseqAbs <- R6Class("deseqAbs",
                       # n1: condition 2, as index (integer) of the condition in vector from resultsNames(x$deseq)
                       makeDiffex = function(name=NULL,c1=NULL,c2=NULL,n1=NULL,n2=NULL) {
 
+                        if(is.null(self$deseq)){
+                          cat(">> Do DESeq is declared for this object. Has to be done before running diffex..")
+                          self$makeDESeq()
+                        }
                         # if no specific conditions input, do default conditions
                         if(is.null(n1) & is.null(c1)) {
 
