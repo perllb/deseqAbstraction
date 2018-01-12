@@ -473,7 +473,7 @@ deseqAbs <- R6Class("deseqAbs",
                           }
                         }
                         cat(">>> meanBar: plot your genes:\n")
-                        cat(">>",genes)
+                        cat(">>",genes,".. \n")
                         
                         ## set graphical area
                         row <- ifelse(test = sqrt(length(genes))%%1 > .5,yes = floor(sqrt(length(genes)))+1,no = floor(sqrt(length(genes)))) 
@@ -484,24 +484,24 @@ deseqAbs <- R6Class("deseqAbs",
                         # if no condition defined, run default
                         if ( is.null(cond) ) {
                           if(rpkm) {
-                            data <- deseqAbs$rpkmMean$Mean
+                            data <- self$rpkmMean$Mean
                           } else {
-                            data <- deseqAbs$baseMean$Mean 
+                            data <- self$baseMean$Mean 
                           }
-                          mycolors <- cols(length(unique(deseqAbs$colData$condition)))
-                          padj.a <- deseqAbs$test$Default$padj
-                          names(padj.a) <- rownames(deseqAbs$test$Default)
+                          mycolors <- cols(length(unique(self$colData$condition)))
+                          padj.a <- self$test$Default$padj
+                          names(padj.a) <- rownames(self$test$Default)
                         } else {
                           if(rpkm) {
-                            data <- deseqAbs$rpkmMean$Mean[,cond]
+                            data <- self$rpkmMean$Mean[,cond]
                           } else {
-                            data <- deseqAbs$baseMean$Mean[,cond]
+                            data <- self$baseMean$Mean[,cond]
                           }
                           mycolors <- cols(length(cond))
                           str <- paste()
-                          deseqAbs$makeDiffex(name='tmptest',c1=cond[1],c2=cond[2])
-                          padj.a <- deseqAbs$test$tmptest$padj
-                          names(padj.a) <- rownames(deseqAbs$test$tmptest)
+                          self$makeDiffex(name='tmptest',c1=cond[1],c2=cond[2])
+                          padj.a <- self$test$tmptest$padj
+                          names(padj.a) <- rownames(self$test$tmptest)
                         }
                         
                         # plot one for each gene 
