@@ -19,11 +19,18 @@ baseMeanBar <- function(deseqAbs,genes,cond=NULL) {
   cols <- colorRampPalette(brewer.pal(8, "Greys"))
 
   # if no condition defined, run default
-  if ( is.null(cond) ) {data <- deseqAbs$baseMean$Mean[,cond]} else {data <- deseqAbs$baseMean$Mean}
+  if ( is.null(cond) ) {
+    data <- deseqAbs$baseMean$Mean
+    mycolors <- cols(length(unique(deseqAbs$colData$condition)))
+    padj <- deseqAbs$test$Default[gene,]$padj 
+  } else {
+    data <- deseqAbs$baseMean$Mean[,cond]
+    mycolors <- cols(length(cond))
+    str <- paste()
+    deseqAbs$makeDiffex(name='tmptest',c1=cond[1],c2=cond[2])
+    padj <- deseqAbs$test$tmptest$padj
+  }
 
-  ## make colors
-  mycolors <- ifelse(is.null(cond),yes=cols(length(unique(deseqAbs$colData$condition))),no = cols(length(cond)))
-  
   # plot one for each gene 
   for(gene in genes) {
 
@@ -35,12 +42,7 @@ baseMeanBar <- function(deseqAbs,genes,cond=NULL) {
 
     ## if more than two conditions, then skip plotting errorbars  
     if(ncol(data)<3) {
-      if (is.null(cond)) { 
-        padj <- deseqAbs$test$Default[gene,]$padj 
-      } else {
-        padj <- deseqAbs$makeDiffex(c1=cond[1],c2=cond[2])$padj
-      }
-  
+      
       lab <- ifelse(test = is.na(padj) | padj > .05,yes = "NA",
                     no = ifelse(test = padj<.0001,yes = "***",
                                 no = ifelse(test = padj<.01,yes = "**",
