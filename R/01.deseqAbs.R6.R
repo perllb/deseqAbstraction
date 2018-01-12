@@ -483,12 +483,20 @@ deseqAbs <- R6Class("deseqAbs",
                         
                         # if no condition defined, run default
                         if ( is.null(cond) ) {
-                          data <- ifelse(rpkm,deseqAbs$rpkmMean$Mean,deseqAbs$baseMean$Mean)
+                          if(rpkm) {
+                            data <- deseqAbs$rpkmMean$Mean
+                          } else {
+                            data <- deseqAbs$baseMean$Mean 
+                          }
                           mycolors <- cols(length(unique(deseqAbs$colData$condition)))
                           padj.a <- deseqAbs$test$Default$padj
                           names(padj.a) <- rownames(deseqAbs$test$Default)
                         } else {
-                          data <- ifelse(rpkm,deseqAbs$rpkmMean$Mean[,cond],deseqAbs$baseMean$Mean[,cond])
+                          if(rpkm) {
+                            data <- deseqAbs$rpkmMean$Mean[,cond]
+                          } else {
+                            data <- deseqAbs$baseMean$Mean[,cond]
+                          }
                           mycolors <- cols(length(cond))
                           str <- paste()
                           deseqAbs$makeDiffex(name='tmptest',c1=cond[1],c2=cond[2])
