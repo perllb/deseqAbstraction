@@ -22,13 +22,15 @@ baseMeanBar <- function(deseqAbs,genes,cond=NULL) {
   if ( is.null(cond) ) {
     data <- deseqAbs$baseMean$Mean
     mycolors <- cols(length(unique(deseqAbs$colData$condition)))
-    padj <- deseqAbs$test$Default[gene,]$padj 
+    padj.a <- deseqAbs$test$Default$padj
+    names(padj.a) <- rownames(deseqAbs$test$Default)
   } else {
     data <- deseqAbs$baseMean$Mean[,cond]
     mycolors <- cols(length(cond))
     str <- paste()
     deseqAbs$makeDiffex(name='tmptest',c1=cond[1],c2=cond[2])
-    padj <- deseqAbs$test$tmptest$padj
+    padj.a <- deseqAbs$test$tmptest$padj
+    names(padj.a) <- rownames(deseqAbs$test$tmptest)
   }
 
   # plot one for each gene 
@@ -40,6 +42,7 @@ baseMeanBar <- function(deseqAbs,genes,cond=NULL) {
     arrows(x0 = x,y0 = plot,x1 = x,y1 = plot+sd,length = .1,angle = 90)
     title(main = gene)
 
+    padj <- padj.a[gene]
     ## if more than two conditions, then skip plotting errorbars  
     if(ncol(data)<3) {
       
