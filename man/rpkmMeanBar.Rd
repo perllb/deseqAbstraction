@@ -4,12 +4,14 @@
 \alias{rpkmMeanBar}
 \title{rpkmMeanBar: Barplot of your genes of interest!}
 \usage{
-rpkmMeanBar(deseqAbs, genes)
+rpkmMeanBar(deseqAbs, genes, cond = NULL)
 }
 \arguments{
 \item{deseqAbs:}{deseqAbs object with rpkmMean and test data}
 
 \item{genes:}{a vector of gene IDs to be extracted from rownames of data}
+
+\item{cond:}{a vector of conditions to plot}
 }
 \description{
 barplot of gene expression

@@ -2,6 +2,7 @@
 #' @description barplot of gene expression
 #' @param deseqAbs: deseqAbs object with rpkmMean and test data
 #' @param genes: a vector of gene IDs to be extracted from rownames of data
+#' @param cond: a vector of conditions to plot
 #' @title rpkmMeanBar: Barplot of your genes of interest!
 #' @export rpkmMeanBar
 #' @examples
@@ -9,7 +10,7 @@
 #' genes <- c("DNMT1","TRIM28","PAX6","DCX","SOX2","AGO2")
 #' rpkmMeanBar(dnmt,genes)
 
-rpkmMeanBar <- function(deseqAbs,genes) {
+rpkmMeanBar <- function(deseqAbs,genes,cond=NULL) {
   
   ## set graphical area
   row <- ifelse(test = sqrt(length(genes))%%1 > .5,yes = floor(sqrt(length(genes)))+1,no = floor(sqrt(length(genes)))) 
