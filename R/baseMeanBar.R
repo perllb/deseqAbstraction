@@ -28,7 +28,7 @@ baseMeanBar <- function(deseqAbs,genes,cond=NULL) {
   
       plot <- deseqAbs$baseMean$Mean[gene,]
       sd <- deseqAbs$baseMean$SD[gene,]
-      x <- barplot(plot,ylim=c(0,max(plot+sd)*1.5),ylab="mean normalized read counts",col = mycolors,las=2)
+      x <- barplot(plot,ylim=c(0,max(plot+sd)*1.25),ylab="mean normalized read counts",col = mycolors,las=2)
       arrows(x0 = x,y0 = plot,x1 = x,y1 = plot+sd,length = .1,angle = 90)
       title(main = gene)
   
@@ -40,8 +40,8 @@ baseMeanBar <- function(deseqAbs,genes,cond=NULL) {
                       no = ifelse(test = padj<.0001,yes = "***",
                                   no = ifelse(test = padj<.01,yes = "**",
                                               no = ifelse(test = padj<.05,yes = "*",no = "NA"))))
-        arrows(x0 = x[1],y0 = max(plot+sd)*1.3,x1 = x[2],y1 = max(plot+sd)*1.3,code=0)
-        text(x = x[1]+((x[2]-x[1])/2),y = max(plot)*1.4,labels = lab,cex = 1)
+        arrows(x0 = x[1],y0 = max(plot+sd)*1.1,x1 = x[2],y1 = max(plot+sd)*1.1,code=0)
+        text(x = x[1]+((x[2]-x[1])/2),y = max(plot)*1.2,labels = lab,cex = 1)
       }
     }
   }
@@ -54,7 +54,7 @@ baseMeanBar <- function(deseqAbs,genes,cond=NULL) {
       
       plot <- data[gene,]
       sd <- data[gene,]
-      x <- barplot(plot,ylim=c(0,max(plot+sd)*1.5),ylab="mean normalized read counts",col = mycolors,las=2)
+      x <- barplot(plot,ylim=c(0,max(plot+sd)*1.25),ylab="mean normalized read counts",col = mycolors,las=2)
       arrows(x0 = x,y0 = plot,x1 = x,y1 = plot+sd,length = .1,angle = 90)
       title(main = gene)
       
@@ -66,8 +66,8 @@ baseMeanBar <- function(deseqAbs,genes,cond=NULL) {
                       no = ifelse(test = padj<.0001,yes = "***",
                                   no = ifelse(test = padj<.01,yes = "**",
                                               no = ifelse(test = padj<.05,yes = "*",no = "NA"))))
-        arrows(x0 = x[1],y0 = max(plot+sd)*1.3,x1 = x[2],y1 = max(plot+sd)*1.3,code=0)
-        text(x = x[1]+((x[2]-x[1])/2),y = max(plot+sd)*1.4,labels = lab,cex = 1)
+        arrows(x0 = x[1],y0 = max(plot+sd)*1.1,x1 = x[2],y1 = max(plot+sd)*1.1,code=0)
+        text(x = x[1]+((x[2]-x[1])/2),y = max(plot+sd)*1.2,labels = lab,cex = 1)
       }
     }
   }
