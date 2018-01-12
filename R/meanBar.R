@@ -12,6 +12,9 @@
 
 meanBar <- function(deseqAbs,genes,cond=NULL,rpkm=FALSE) {
   
+  cat(">>> meanBar: plot your genes:\n")
+  cat(">>",genes)
+  
   ## set graphical area
   row <- ifelse(test = sqrt(length(genes))%%1 > .5,yes = floor(sqrt(length(genes)))+1,no = floor(sqrt(length(genes)))) 
   par(mfrow=c(row,ceiling(sqrt(length(genes)))),mar=c(7,5,4,4))
