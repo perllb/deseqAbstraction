@@ -342,7 +342,10 @@ deseqAbs <- R6Class("deseqAbs",
                           cat(paste("-- Testing ",c1," vs. ",c2,"..\n",sep = ""))
 
                           if(!is.null(name)) {
-
+                            if(is.null(self$deseq)) {
+                              cat(">>DESeq not run on this object.. To do diffex, deseq has to be run.. ")
+                              self$makeDESEQ()
+                            }
                             self$test[[name]] <- results(self$deseq,contrast = c("condition",c1,c2))
 
                           } else {
