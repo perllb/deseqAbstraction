@@ -25,8 +25,10 @@ meanBar <- function(deseqAbs,genes,cond=NULL,rpkm=FALSE) {
   if ( is.null(cond) ) {
     if(rpkm) {
       data <- deseqAbs$rpkmMean$Mean
+      sd.a <- deseqAbs$rpkmMean$SD
     } else {
       data <- deseqAbs$baseMean$Mean 
+      sd.a <- deseqAbs$baseMean$SD
     }
     mycolors <- cols(length(unique(deseqAbs$colData$condition)))
     padj.a <- deseqAbs$test$Default$padj
@@ -34,8 +36,10 @@ meanBar <- function(deseqAbs,genes,cond=NULL,rpkm=FALSE) {
   } else {
     if(rpkm) {
       data <- deseqAbs$rpkmMean$Mean[,cond]
+      sd.a <- deseqAbs$rpkmMean$SD[,cond]
     } else {
       data <- deseqAbs$baseMean$Mean[,cond]
+      sd.a <- deseqAbs$baseMean$SD[,cond]
     }
     mycolors <- cols(length(cond))
     str <- paste()
@@ -48,7 +52,7 @@ meanBar <- function(deseqAbs,genes,cond=NULL,rpkm=FALSE) {
   for(gene in genes) {
     
     plot <- data[gene,]
-    sd <- data[gene,]
+    sd <- sd.a[gene,]
     x <- barplot(plot,ylim=c(0,max(plot+sd)*1.25),ylab="",col = mycolors,las=2)
     ylab <- ifelse(rpkm,"RPKM mean","Mean normalized read counts")
     mtext(ylab,side = 2,line = 4,cex = .6)
