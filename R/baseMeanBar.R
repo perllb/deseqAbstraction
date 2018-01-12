@@ -16,7 +16,7 @@ baseMeanBar <- function(deseqAbs,genes,cond=NULL) {
   row <- ifelse(test = sqrt(length(genes))%%1 > .5,yes = floor(sqrt(length(genes)))+1,no = floor(sqrt(length(genes)))) 
   par(mfrow=c(row,ceiling(sqrt(length(genes)))))
   library(RColorBrewer)
-  cols <- colorRampPalette(brewer.pal(8, "Dark2"))
+  cols <- colorRampPalette(brewer.pal(8, "Greys"))
 
   # if no condition defined, run default
   if ( is.null(cond) ) {
