@@ -1,15 +1,14 @@
-#' @name rpkmMeanBar
+#' @name meanBar
 #' @description barplot of gene expression
 #' @param deseqAbs: deseqAbs object with rpkmMean and test data
 #' @param genes: a vector of gene IDs to be extracted from rownames of data
 #' @param cond: a vector of conditions to plot
 #' @param rpkm: Set to TRUE if RPKM should be plotted instead of baseMean
-#' @title rpkmMeanBar: Barplot of your genes of interest!
-#' @export rpkmMeanBar
+#' @title meanBar: Barplot of your genes of interest!
+#' @export meanBar
 #' @examples
-#' deseqAbs <- dnmt
 #' genes <- c("DNMT1","TRIM28","PAX6","DCX","SOX2","AGO2")
-#' rpkmMeanBar(dnmt,genes)
+#' meanBar(dnmt,genes)
 
 meanBar <- function(deseqAbs,genes,cond=NULL,rpkm=FALSE) {
   
