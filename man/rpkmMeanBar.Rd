@@ -2,12 +2,12 @@
 % Please edit documentation in R/rpkmMeanBar.R
 \name{rpkmMeanBar}
 \alias{rpkmMeanBar}
-\title{baseMeanBar: Barplot of your genes of interest!}
+\title{rpkmMeanBar: Barplot of your genes of interest!}
 \usage{
 rpkmMeanBar(deseqAbs, genes)
 }
 \arguments{
-\item{deseqAbs:}{deseqAbs object with baseMean and test data}
+\item{deseqAbs:}{deseqAbs object with rpkmMean and test data}
 
 \item{genes:}{a vector of gene IDs to be extracted from rownames of data}
 }
