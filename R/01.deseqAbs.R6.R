@@ -327,7 +327,7 @@ deseqAbs <- R6Class("deseqAbs",
                       makeDiffex = function(name=NULL,c1=NULL,c2=NULL,n1=NULL,n2=NULL) {
 
                         if(is.null(self$deseq)){
-                          cat(">> Do DESeq is declared for this object. Has to be done before running diffex..")
+                          cat(">> DESeq is not run on this object. This has to be done before running diffex..")
                           self$makeDESeq()
                         }
                         # if no specific conditions input, do default conditions
@@ -346,10 +346,6 @@ deseqAbs <- R6Class("deseqAbs",
                           cat(paste("-- Testing ",c1," vs. ",c2,"..\n",sep = ""))
 
                           if(!is.null(name)) {
-                            if(is.null(self$deseq)) {
-                              cat(">>DESeq not run on this object.. To do diffex, deseq has to be run.. ")
-                              self$makeDESEQ()
-                            }
                             self$test[[name]] <- results(self$deseq,contrast = c("condition",c1,c2))
 
                           } else {
