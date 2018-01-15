@@ -390,7 +390,7 @@ deseqAbs <- R6Class("deseqAbs",
                       makeRPKM = function() {
 
                         cat(">>Computing RPKM..\n")
-                        self$rpkm <- 10^9*(t(t(self$rawCounts) %*% diag(1/as.vector(self$length))) %*% diag(1/as.vector(colSums(self$rawCounts))))
+                        self$rpkm <- 10^9*t(t(genc.hg38$rawCounts/as.numeric(genc.hg38$length))/as.numeric(colSums(genc.hg38$rawCounts)))
                         rownames(self$rpkm) <- self$geneID
                         if(!is.null(self$sampleNames)) {
                           colnames(self$rpkm) <- make.names(names = self$sampleNames,unique = T)
