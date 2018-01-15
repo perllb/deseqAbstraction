@@ -1,16 +1,16 @@
 #' @name meanBar
 #' @description barplot of gene expression
-#' @param deseqAbs: deseqAbs object with rpkmMean and test data
+#' @param deseqAbs: deseqAbs object with FPKMMean and test data
 #' @param genes: a vector of gene IDs to be extracted from rownames of data
 #' @param cond: a vector of conditions to plot
-#' @param rpkm: Set to TRUE if RPKM should be plotted instead of baseMean
+#' @param FPKM: Set to TRUE if FPKM should be plotted instead of baseMean
 #' @title meanBar: Barplot of your genes of interest!
 #' @export meanBar
 #' @examples
 #' genes <- c("DNMT1","TRIM28","PAX6","DCX","SOX2","AGO2")
 #' meanBar(dnmt,genes)
 
-meanBar <- function(deseqAbs,genes,cond=NULL,rpkm=FALSE) {
+meanBar <- function(deseqAbs,genes,cond=NULL,FPKM=FALSE) {
   
   cat(">>> meanBar: plot your genes:\n")
   cat(">>",genes,"\n")
@@ -23,9 +23,9 @@ meanBar <- function(deseqAbs,genes,cond=NULL,rpkm=FALSE) {
   
   # if no condition defined, run default
   if ( is.null(cond) ) {
-    if(rpkm) {
-      data <- deseqAbs$rpkmMean$Mean
-      se.a <- deseqAbs$rpkmMean$SE
+    if(FPKM) {
+      data <- deseqAbs$FPKMMean$Mean
+      se.a <- deseqAbs$FPKMMean$SE
     } else {
       data <- deseqAbs$baseMean$Mean 
       se.a <- deseqAbs$baseMean$SE
@@ -34,9 +34,9 @@ meanBar <- function(deseqAbs,genes,cond=NULL,rpkm=FALSE) {
     padj.a <- deseqAbs$test$Default$padj
     names(padj.a) <- rownames(deseqAbs$test$Default)
   } else {
-    if(rpkm) {
-      data <- deseqAbs$rpkmMean$Mean[,cond]
-      se.a <- deseqAbs$rpkmMean$SE[,cond]
+    if(FPKM) {
+      data <- deseqAbs$FPKMMean$Mean[,cond]
+      se.a <- deseqAbs$FPKMMean$SE[,cond]
     } else {
       data <- deseqAbs$baseMean$Mean[,cond]
       se.a <- deseqAbs$baseMean$SE[,cond]
@@ -54,7 +54,7 @@ meanBar <- function(deseqAbs,genes,cond=NULL,rpkm=FALSE) {
     plot <- data[gene,]
     se <- se.a[gene,]
     x <- barplot(plot,ylim=c(0,max(plot+se)*1.25),ylab="",col = mycolors,las=2)
-    ylab <- ifelse(rpkm,"RPKM mean","Mean normalized read counts")
+    ylab <- ifelse(FPKM,"FPKM mean","Mean normalized read counts")
     mtext(ylab,side = 2,line = 4,cex = .6)
     arrows(x0 = x,y0 = plot,x1 = x,y1 = plot+se,length = .1,angle = 90)
     title(main = gene)

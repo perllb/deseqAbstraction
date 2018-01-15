@@ -28,19 +28,19 @@ require(DESeq2)
 #' dnmt$makeDiffex()
 #' dnmt$test
 #' dnmt$makeVST()
-#' dnmt$makeRPKM()
+#' dnmt$makeFPKM()
 #' @field name the name of the experiment
 #' @field filename the name of the raw featurecount output
 #' @field rawfile the raw featurecount file
 #' @field rawCounts the count matrix (removing position and length info column 1-6) with ID rownames
 #' @field baseMean list of data.frames: Mean and SD: mean and SD of normalized count data
-#' @field rpkmMean list of data.frames: Mean and SD: mean and SD of RPKM
+#' @field FPKMMean list of data.frames: Mean and SD: mean and SD of FPKM
 #' @field geneID geneIDs
 #' @field colData a data.frame with condition information
 #' @field sampleNames a vector given by user to provide suitable sampleNames to replace filenames from featureCounts
 #' @field VST the output from varianceStabilizingTransformation(dds)
 #' @field deseq the output from DESeq(dds)
-#' @field rpkm matrix with rpkm values for all genes
+#' @field FPKM matrix with FPKM values for all genes
 #' @field test output from diffex analysis results(dds)
 #' @field pos position data for each gene
 #' @field length of each gene
@@ -54,13 +54,13 @@ deseqAbs <- R6Class("deseqAbs",
                       rawCounts = NULL,
                       design = NULL,
                       baseMean = NULL,
-                      rpkmMean = NULL,
+                      FPKMMean = NULL,
                       geneID = NULL,
                       colData = NULL,
                       sampleNames = NULL,
                       VST = NULL,
                       deseq = NULL,
-                      rpkm = NULL,
+                      FPKM = NULL,
                       test = NULL,
                       pos = NULL,
                       length = NULL,
@@ -214,7 +214,7 @@ deseqAbs <- R6Class("deseqAbs",
                       getAverage = function() {
 
                         self$getAverageReads()
-                        self$getAverageRPKM()
+                        self$getAverageFPKM()
 
                       },
 
@@ -242,25 +242,25 @@ deseqAbs <- R6Class("deseqAbs",
                         }
                       },
 
-                      getAverageRPKM = function() {
+                      getAverageFPKM = function() {
 
-                        ## RPKM
-                        if(is.null(self$rpkm)) {self$makeRPKM() }
+                        ## FPKM
+                        if(is.null(self$FPKM)) {self$makeFPKM() }
 
                         if(length(levels(self$deseq$condition))>sum(duplicated(self$deseq$condition))) {
                           cat(">Warning: Some of your levels do not have replicates..\n")
                         } else {
-                          if(!is.null(self$rpkm)) {
-                          cat(">>Computing mean RPKM of each condition\n")
-                          baseMeanPerLvl <- sapply( levels(factor(self$colData$condition)), function(lvl) rowMeans( self$rpkm[,self$colData$condition == lvl] ) )
-                          baseSDPerLvl <- sapply( levels(factor(self$colData$condition)), function(lvl) apply( self$rpkm[,self$colData$condition == lvl],1,sd ) )
-                          baseSDPerLvl <- sapply( levels(self$colData$condition), function(lvl) apply( self$rpkm[,self$colData$condition == lvl],1,sd) )
+                          if(!is.null(self$FPKM)) {
+                          cat(">>Computing mean FPKM of each condition\n")
+                          baseMeanPerLvl <- sapply( levels(factor(self$colData$condition)), function(lvl) rowMeans( self$FPKM[,self$colData$condition == lvl] ) )
+                          baseSDPerLvl <- sapply( levels(factor(self$colData$condition)), function(lvl) apply( self$FPKM[,self$colData$condition == lvl],1,sd ) )
+                          baseSDPerLvl <- sapply( levels(self$colData$condition), function(lvl) apply( self$FPKM[,self$colData$condition == lvl],1,sd) )
                           baseSEPerLvl <- sapply( levels(self$colData$condition), 
-                                                  function(lvl) apply( self$rpkm[,self$colData$condition == lvl],1,
+                                                  function(lvl) apply( self$FPKM[,self$colData$condition == lvl],1,
                                                                        function(dat) sd(dat)/sqrt(length(dat))))
                           
                           colnames(baseSDPerLvl) <- colnames(baseSDPerLvl)
-                          self$rpkmMean <- list(Mean=baseMeanPerLvl,SD=baseSDPerLvl,SE=baseSEPerLvl)
+                          self$FPKMMean <- list(Mean=baseMeanPerLvl,SD=baseSDPerLvl,SE=baseSEPerLvl)
                           cat("- ..complete! Mean normalized expression computed for each condition. access mean with $baseMean$Mean, and st.dev with $baseMean$SD \n")
                           }
                         }
@@ -387,17 +387,17 @@ deseqAbs <- R6Class("deseqAbs",
 
                       },
 
-                      makeRPKM = function() {
+                      makeFPKM = function() {
 
-                        cat(">>Computing RPKM..\n")
-                        self$rpkm <- 10^9*t(t(genc.hg38$rawCounts/as.numeric(genc.hg38$length))/as.numeric(colSums(genc.hg38$rawCounts)))
-                        rownames(self$rpkm) <- self$geneID
+                        cat(">>Computing FPKM..\n")
+                        self$FPKM <- 10^9*t(t(genc.hg38$rawCounts/as.numeric(genc.hg38$length))/as.numeric(colSums(genc.hg38$rawCounts)))
+                        rownames(self$FPKM) <- self$geneID
                         if(!is.null(self$sampleNames)) {
-                          colnames(self$rpkm) <- make.names(names = self$sampleNames,unique = T)
+                          colnames(self$FPKM) <- make.names(names = self$sampleNames,unique = T)
                         }else if(!is.null(self$colData)) {
-                          colnames(self$rpkm) <- make.names(names = self$colData$condition,unique = T)
+                          colnames(self$FPKM) <- make.names(names = self$colData$condition,unique = T)
                         }
-                        cat("- ..complete! RPKM computed. Access with $rpkm.\n")
+                        cat("- ..complete! FPKM computed. Access with $FPKM.\n")
 
                       },
 
@@ -436,7 +436,7 @@ deseqAbs <- R6Class("deseqAbs",
                           self$makeDESeq()
                           self$makeDiffex()
                           self$makeVST(blind = F)
-                          self$makeRPKM()
+                          self$makeFPKM()
                           self$getAverage()
                           par(mar=c(4,4,4,4))
 
@@ -474,18 +474,18 @@ deseqAbs <- R6Class("deseqAbs",
                         }
                       },
                       
-                      meanBars = function(genes,cond=NULL,rpkm=FALSE) {
+                      meanBars = function(genes,cond=NULL,FPKM=FALSE) {
                       
-                        if(rpkm) {
-                          if(is.null(self$rpkmMean)) {
-                            self$getAverageRPKM()
+                        if(FPKM) {
+                          if(is.null(self$FPKMMean)) {
+                            self$getAverageFPKM()
                           }
                         } else {
                           if(is.null(self$baseMean)) {
                             self$getAverageReads()
                           }
                         }
-                        meanBar(deseqAbs = self,genes = genes,cond = cond,rpkm = rpkm)
+                        meanBar(deseqAbs = self,genes = genes,cond = cond,FPKM = FPKM)
                       }
 ))
 
