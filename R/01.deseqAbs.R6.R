@@ -65,7 +65,7 @@ deseqAbs <- R6Class("deseqAbs",
                       pos = NULL,
                       length = NULL,
 
-                      initialize = function(name = NA,filename = NA,colData = NA,design=NULL) {
+                      initialize = function(name = NULL,filename = NULL,colData = NULL,design=NULL) {
 
                         ### Check if all required parameters are set!
                         if(is.null(filename)) {
