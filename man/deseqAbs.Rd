@@ -27,7 +27,7 @@ Class a simple interface to deseq data
 
 \item{\code{baseMean}}{list of data.frames: Mean and SD: mean and SD of normalized count data}
 
-\item{\code{rpkmMean}}{list of data.frames: Mean and SD: mean and SD of RPKM}
+\item{\code{FPKMMean}}{list of data.frames: Mean and SD: mean and SD of FPKM}
 
 \item{\code{geneID}}{geneIDs}
 
@@ -39,7 +39,7 @@ Class a simple interface to deseq data
 
 \item{\code{deseq}}{the output from DESeq(dds)}
 
-\item{\code{rpkm}}{matrix with rpkm values for all genes}
+\item{\code{FPKM}}{matrix with FPKM values for all genes}
 
 \item{\code{test}}{output from diffex analysis results(dds)}
 
@@ -64,6 +64,6 @@ dnmt$deseq
 dnmt$makeDiffex()
 dnmt$test
 dnmt$makeVST()
-dnmt$makeRPKM()
+dnmt$makeFPKM()
 }
 \keyword{Deseq}

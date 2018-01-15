@@ -4,16 +4,16 @@
 \alias{meanBar}
 \title{meanBar: Barplot of your genes of interest!}
 \usage{
-meanBar(deseqAbs, genes, cond = NULL, rpkm = FALSE)
+meanBar(deseqAbs, genes, cond = NULL, FPKM = FALSE)
 }
 \arguments{
-\item{deseqAbs:}{deseqAbs object with rpkmMean and test data}
+\item{deseqAbs:}{deseqAbs object with FPKMMean and test data}
 
 \item{genes:}{a vector of gene IDs to be extracted from rownames of data}
 
 \item{cond:}{a vector of conditions to plot}
 
-\item{rpkm:}{Set to TRUE if RPKM should be plotted instead of baseMean}
+\item{FPKM:}{Set to TRUE if FPKM should be plotted instead of baseMean}
 }
 \description{
 barplot of gene expression

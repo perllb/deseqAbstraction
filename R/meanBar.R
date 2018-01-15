@@ -31,6 +31,10 @@ meanBar <- function(deseqAbs,genes,cond=NULL,FPKM=FALSE) {
       se.a <- deseqAbs$baseMean$SE
     }
     mycolors <- cols(length(unique(deseqAbs$colData$condition)))
+    if(is.null(deseqAbs$test$Default)){ 
+      cat(">> To plot significance stars between the two conditions, Diffex must be run..\n")
+      deseqAbs$makeDiffex() 
+    }
     padj.a <- deseqAbs$test$Default$padj
     names(padj.a) <- rownames(deseqAbs$test$Default)
   } else {
