@@ -91,7 +91,12 @@ deseqAbs <- R6Class("deseqAbs",
 
                           self$name <- name
                           self$filename <- filename
+                          
+                          #make sure to factorize colData
+                          cols <- names(colData)
+                          colData[,cols] <- lapply(colData[,cols],factor)
                           self$colData <- colData
+                          
                           self$test <- list()
                           self$read_file(filename)
                           self$geneID <- as.character(self$rawfile[,1])
@@ -145,9 +150,9 @@ deseqAbs <- R6Class("deseqAbs",
                         par(mar=c(4,4,4,4))
                       },
 
-                      significantHeat = function(test=self$test$Default) {
+                      significantHeat = function(test=self$test$Default,ntop=NULL) {
 
-                        mostSignificantHeat(data=self$VST,test=test)
+                        mostSignificantHeat(data=self$VST,test=test,ntop=ntop)
 
                       },
 
@@ -241,11 +246,10 @@ deseqAbs <- R6Class("deseqAbs",
                         if(length(levels(self$deseq$condition))>sum(duplicated(self$deseq$condition))) {
                           cat(">Warning: Some of your levels do not have replicates..\n")
                         } else {
-
                           if(!is.null(self$rpkm)) {
                           cat(">>Computing mean RPKM of each condition\n")
-                          baseMeanPerLvl <- sapply( levels(self$colData$condition), function(lvl) rowMeans( self$rpkm[,self$colData$condition == lvl] ) )
-                          baseSDPerLvl <- sapply( levels(self$colData$condition), function(lvl) apply( self$rpkm[,self$colData$condition == lvl],1,sd ) )
+                          baseMeanPerLvl <- sapply( levels(factor(self$colData$condition)), function(lvl) rowMeans( self$rpkm[,self$colData$condition == lvl] ) )
+                          baseSDPerLvl <- sapply( levels(factor(self$colData$condition)), function(lvl) apply( self$rpkm[,self$colData$condition == lvl],1,sd ) )
                           baseSDPerLvl <- sapply( levels(self$colData$condition), function(lvl) apply( self$rpkm[,self$colData$condition == lvl],1,sd) )
                           colnames(baseSDPerLvl) <- colnames(baseSDPerLvl)
                           self$rpkmMean <- list(Mean=baseMeanPerLvl,SD=baseSDPerLvl)
