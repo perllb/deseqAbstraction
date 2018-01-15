@@ -232,8 +232,12 @@ deseqAbs <- R6Class("deseqAbs",
                           cat(">>Computing mean normalized counts of each condition\n")
                           baseMeanPerLvl <- sapply( levels(self$deseq$condition), function(lvl) rowMeans( counts(self$deseq,normalized=TRUE)[,self$deseq$condition == lvl] ) )
                           baseSDPerLvl <- sapply( levels(self$deseq$condition), function(lvl) apply( counts(self$deseq,normalized=TRUE)[,self$deseq$condition == lvl],1,sd ) )
+                          baseSEPerLvl <- sapply( levels(self$deseq$condition), 
+                                                  function(lvl) apply( counts(self$deseq,normalized=TRUE)[,self$deseq$condition == lvl],1,
+                                                                       function(dat) sd(dat)/sqrt(length(dat))))
+                          
                           colnames(baseSDPerLvl) <- colnames(baseSDPerLvl)
-                          self$baseMean <- list(Mean=baseMeanPerLvl,SD=baseSDPerLvl)
+                          self$baseMean <- list(Mean=baseMeanPerLvl,SD=baseSDPerLvl,SE=baseSEPerLvl)
                           cat("- ..complete! Mean normalized counts computed for each condition. access mean with $baseMean$Mean, and st.dev with $baseMean$SD \n")
                         }
                       },
@@ -251,8 +255,12 @@ deseqAbs <- R6Class("deseqAbs",
                           baseMeanPerLvl <- sapply( levels(factor(self$colData$condition)), function(lvl) rowMeans( self$rpkm[,self$colData$condition == lvl] ) )
                           baseSDPerLvl <- sapply( levels(factor(self$colData$condition)), function(lvl) apply( self$rpkm[,self$colData$condition == lvl],1,sd ) )
                           baseSDPerLvl <- sapply( levels(self$colData$condition), function(lvl) apply( self$rpkm[,self$colData$condition == lvl],1,sd) )
+                          baseSEPerLvl <- sapply( levels(self$colData$condition), 
+                                                  function(lvl) apply( self$rpkm[,self$colData$condition == lvl],1,
+                                                                       function(dat) sd(dat)/sqrt(length(dat))))
+                          
                           colnames(baseSDPerLvl) <- colnames(baseSDPerLvl)
-                          self$rpkmMean <- list(Mean=baseMeanPerLvl,SD=baseSDPerLvl)
+                          self$rpkmMean <- list(Mean=baseMeanPerLvl,SD=baseSDPerLvl,SE=baseSEPerLvl)
                           cat("- ..complete! Mean normalized expression computed for each condition. access mean with $baseMean$Mean, and st.dev with $baseMean$SD \n")
                           }
                         }

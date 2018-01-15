@@ -13,7 +13,7 @@
 meanBar <- function(deseqAbs,genes,cond=NULL,rpkm=FALSE) {
   
   cat(">>> meanBar: plot your genes:\n")
-  cat(">>",genes,".. \n")
+  cat(">>",genes,".\n")
   
   ## set graphical area
   row <- ifelse(test = sqrt(length(genes))%%1 > .5,yes = floor(sqrt(length(genes)))+1,no = floor(sqrt(length(genes)))) 
@@ -25,10 +25,10 @@ meanBar <- function(deseqAbs,genes,cond=NULL,rpkm=FALSE) {
   if ( is.null(cond) ) {
     if(rpkm) {
       data <- deseqAbs$rpkmMean$Mean
-      sd.a <- deseqAbs$rpkmMean$SD
+      se.a <- deseqAbs$rpkmMean$SE
     } else {
       data <- deseqAbs$baseMean$Mean 
-      sd.a <- deseqAbs$baseMean$SD
+      se.a <- deseqAbs$baseMean$SE
     }
     mycolors <- cols(length(unique(deseqAbs$colData$condition)))
     padj.a <- deseqAbs$test$Default$padj
@@ -36,10 +36,10 @@ meanBar <- function(deseqAbs,genes,cond=NULL,rpkm=FALSE) {
   } else {
     if(rpkm) {
       data <- deseqAbs$rpkmMean$Mean[,cond]
-      sd.a <- deseqAbs$rpkmMean$SD[,cond]
+      se.a <- deseqAbs$rpkmMean$SE[,cond]
     } else {
       data <- deseqAbs$baseMean$Mean[,cond]
-      sd.a <- deseqAbs$baseMean$SD[,cond]
+      se.a <- deseqAbs$baseMean$SE[,cond]
     }
     mycolors <- cols(length(cond))
     str <- paste()
@@ -52,11 +52,11 @@ meanBar <- function(deseqAbs,genes,cond=NULL,rpkm=FALSE) {
   for(gene in genes) {
     
     plot <- data[gene,]
-    sd <- sd.a[gene,]
-    x <- barplot(plot,ylim=c(0,max(plot+sd)*1.25),ylab="",col = mycolors,las=2)
+    se <- se.a[gene,]
+    x <- barplot(plot,ylim=c(0,max(plot+se)*1.25),ylab="",col = mycolors,las=2)
     ylab <- ifelse(rpkm,"RPKM mean","Mean normalized read counts")
     mtext(ylab,side = 2,line = 4,cex = .6)
-    arrows(x0 = x,y0 = plot,x1 = x,y1 = plot+sd,length = .1,angle = 90)
+    arrows(x0 = x,y0 = plot,x1 = x,y1 = plot+se,length = .1,angle = 90)
     title(main = gene)
     
     padj <- padj.a[gene]
@@ -67,8 +67,8 @@ meanBar <- function(deseqAbs,genes,cond=NULL,rpkm=FALSE) {
                     no = ifelse(test = padj<.0001,yes = "***",
                                 no = ifelse(test = padj<.01,yes = "**",
                                             no = ifelse(test = padj<.05,yes = "*",no = "NA"))))
-      arrows(x0 = x[1],y0 = max(plot+sd)*1.1,x1 = x[2],y1 = max(plot+sd)*1.1,code=0)
-      text(x = x[1]+((x[2]-x[1])/2),y = max(plot+sd)*1.2,labels = lab,cex = 1)
+      arrows(x0 = x[1],y0 = max(plot+se)*1.1,x1 = x[2],y1 = max(plot+se)*1.1,code=0)
+      text(x = x[1]+((x[2]-x[1])/2),y = max(plot+se)*1.2,labels = lab,cex = 1)
     }
   }
   par(mar=c(4,4,4,4))
