@@ -58,7 +58,7 @@ meanBar <- function(deseqAbs,genes,cond=NULL,FPKM=FALSE) {
     plot <- data[gene,]
     se <- se.a[gene,]
     x <- barplot(plot,ylim=c(0,max(plot+se)*1.25),ylab="",col = mycolors,las=2)
-    stripchart(x = plot,method = "jitter")
+    stripchart(x = plot,method = "jitter",add=T)
     ylab <- ifelse(FPKM,"FPKM mean","Mean normalized read counts")
     mtext(ylab,side = 2,line = 4,cex = .6)
     arrows(x0 = x,y0 = plot,x1 = x,y1 = plot+se,length = .1,angle = 90)
