@@ -76,11 +76,13 @@ meanBar <- function(deseqAbs,genes,cond=NULL,FPKM=FALSE,points=FALSE) {
     # If points set to T, then add points of each sample to plot
     if(points) {
       if(FPKM) {
-        points(x=rep(x,times=table(deseqAbs$colData$condition)),y=deseqAbs$FPKM[gene,],col="black",pch=16,cex=1.3)
-        points(x=rep(x,times=table(deseqAbs$colData$condition)),y=deseqAbs$FPKM[gene,],col="white",pch=16)
+        x.s <- jitter(rep(x,times=table(deseqAbs$colData$condition)),factor=0.4)
+        points(x=x.s,y=deseqAbs$FPKM[gene,],col="black",pch=16,cex=1.3)
+        points(x=x.s,y=deseqAbs$FPKM[gene,],col="white",pch=16)
       }else{
-        points(x=rep(x,times=table(deseqAbs$colData$condition)),y=deseqAbs$normCounts[gene,],col="black",pch=16,cex=1.5)
-        points(x=rep(x,times=table(deseqAbs$colData$condition)),y=deseqAbs$normCounts[gene,],col="white",pch=16)
+        x.s <- jitter(rep(x,times=table(deseqAbs$colData$condition)),factor=0.4)
+        points(x=x.s,y=deseqAbs$normCounts[gene,],col="black",pch=16,cex=1.5)
+        points(x=x.s,y=deseqAbs$normCounts[gene,],col="white",pch=16)
       }
     }
     ylab <- ifelse(FPKM,"FPKM mean","Mean normalized read counts")
