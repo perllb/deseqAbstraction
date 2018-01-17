@@ -489,7 +489,7 @@ deseqAbs <- R6Class("deseqAbs",
                             self$getAverageReads()
                           }
                         }
-                        meanBar(deseqAbs = self,genes = genes,cond = cond,FPKM = FPKM)
+                        meanBar(deseqAbs = self,genes = genes,cond = cond,FPKM = FPKM,points=points)
                       }
 ))
 
