@@ -58,7 +58,7 @@ meanBar <- function(deseqAbs,genes,cond=NULL,FPKM=FALSE,points=FALSE) {
     
     plot <- data[gene,]
     se <- se.a[gene,]
-    x <- barplot(plot,ylim=c(0,max(plot+se)*1.25),ylab="",col = mycolors,las=2)
+    x <- barplot(plot,ylim=c(0,max(plot+se)*1.25),ylab="",col = mycolors,las=2,space = 0)
     # If points set to T, then add points of each sample to plot
     ylab <- ifelse(FPKM,"FPKM mean","Mean normalized read counts")
     mtext(ylab,side = 2,line = 4,cex = .6)

@@ -285,16 +285,20 @@ deseqAbs <- R6Class("deseqAbs",
 
                       makeDESeq = function() {
 
-                        if(!is.data.frame(self$colData)) {
-                          cat(">ERROR: Add colData data.frame! E.g: >deseqAbs$colData <- data.frame(condition = x)\n")
-                        } else {
-                          cat(">>Running DESeq")
-                          dds <- DESeqDataSetFromMatrix(countData = self$rawCounts,
-                                                        colData = self$colData,
-                                                        design = self$design)
-                          self$deseq <- DESeq(dds)
-                          self$normCounts <- counts(self$deseq,normalized=T)
-                          cat("- ..complete! Access object with $deseq \n")
+                        if(is.null(self$deseq)) {
+                          if(!is.data.frame(self$colData)) {
+                            cat(">ERROR: Add colData data.frame! E.g: >deseqAbs$colData <- data.frame(condition = x)\n")
+                          } else {
+                            cat(">>Running DESeq")
+                            dds <- DESeqDataSetFromMatrix(countData = self$rawCounts,
+                                                          colData = self$colData,
+                                                          design = self$design)
+                            self$deseq <- DESeq(dds)
+                            self$normCounts <- counts(self$deseq,normalized=T)
+                            cat("- ..complete! Access object with $deseq \n")
+                          }  
+                        }else{
+                          cat("> DESeq already run on this object, not needed to run again.. \n")
                         }
                         
                       },
