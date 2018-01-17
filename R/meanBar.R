@@ -11,6 +11,19 @@
 #' genes <- c("DNMT1","TRIM28","PAX6","DCX","SOX2","AGO2")
 #' meanBar(dnmt,genes)
 
+#' @name meanBar
+#' @description barplot of gene expression
+#' @param deseqAbs: deseqAbs object with FPKMMean and test data
+#' @param genes: a vector of gene IDs to be extracted from rownames of data
+#' @param cond: a vector of conditions to plot
+#' @param FPKM: Set to TRUE if FPKM should be plotted instead of baseMean
+#' @param points: Set to TRUE if points should be added
+#' @title meanBar: Barplot of your genes of interest!
+#' @export meanBar
+#' @examples
+#' genes <- c("DNMT1","TRIM28","PAX6","DCX","SOX2","AGO2")
+#' meanBar(dnmt,genes)
+
 meanBar <- function(deseqAbs,genes,cond=NULL,FPKM=FALSE,points=FALSE) {
   
   cat(">>> meanBar: plot your genes:\n")
@@ -56,10 +69,20 @@ meanBar <- function(deseqAbs,genes,cond=NULL,FPKM=FALSE,points=FALSE) {
   # plot one for each gene 
   for(gene in genes) {
     
+    ymax <- ifelse(FPKM,yes=max(deseqAbs$FPKM[gene,]),no = deseqAbs$normCounts[gene,])
     plot <- data[gene,]
     se <- se.a[gene,]
-    x <- barplot(plot,ylim=c(0,max(plot+se)*1.25),ylab="",col = mycolors,las=2,space = 0)
+    x <- barplot(plot,ylim=c(0,ymax*1.3),ylab="",col = mycolors,las=2,space = 0)
     # If points set to T, then add points of each sample to plot
+    if(points) {
+      if(FPKM) {
+        points(x=rep(x,times=table(deseqAbs$colData$condition)),y=deseqAbs$FPKM[gene,],col="black",pch=16,cex=1.3)
+        points(x=rep(x,times=table(deseqAbs$colData$condition)),y=deseqAbs$FPKM[gene,],col="white",pch=16)
+      }else{
+        points(x=rep(x,times=table(deseqAbs$colData$condition)),y=deseqAbs$normCounts[gene,],col="black",pch=16,cex=1.5)
+        points(x=rep(x,times=table(deseqAbs$colData$condition)),y=deseqAbs$normCounts[gene,],col="white",pch=16)
+      }
+    }
     ylab <- ifelse(FPKM,"FPKM mean","Mean normalized read counts")
     mtext(ylab,side = 2,line = 4,cex = .6)
     arrows(x0 = x,y0 = plot,x1 = x,y1 = plot+se,length = .1,angle = 90)
@@ -73,9 +96,9 @@ meanBar <- function(deseqAbs,genes,cond=NULL,FPKM=FALSE,points=FALSE) {
                     no = ifelse(test = padj<.0001,yes = "***",
                                 no = ifelse(test = padj<.01,yes = "**",
                                             no = ifelse(test = padj<.05,yes = "*",no = "NA"))))
-      arrows(x0 = x[1],y0 = max(plot+se)*1.1,x1 = x[2],y1 = max(plot+se)*1.1,code=0)
-      text(x = x[1]+((x[2]-x[1])/2),y = max(plot+se)*1.2,labels = lab,cex = 1)
+      arrows(x0 = x[1],y0 = ymax*1.1,x1 = x[2],y1 = ymax*1.1,code=0)
+      text(x = x[1]+((x[2]-x[1])/2),y = ymax*1.2,labels = lab,cex = 1)
     }
   }
-  par(mar=c(4,4,4,4))
 }
+
