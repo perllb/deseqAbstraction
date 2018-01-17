@@ -478,7 +478,7 @@ deseqAbs <- R6Class("deseqAbs",
                         }
                       },
                       
-                      meanBars = function(genes,cond=NULL,FPKM=FALSE) {
+                      meanBars = function(genes,cond=NULL,FPKM=FALSE,points=F) {
                       
                         if(FPKM) {
                           if(is.null(self$FPKMMean)) {
