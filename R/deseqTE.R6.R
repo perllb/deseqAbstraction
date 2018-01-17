@@ -571,7 +571,10 @@ deseqTE <- R6Class("deseqTE",
                            self$rawfile <- tmp[rowMeans(tmp[,7:ncol(tmp)])>filter,]
                            rem <- len-nrow(self$rawfile)
                            remain <- nrow(self$rawfile)
-                           cat("- ..complete! featureCount file filtering done.\n -- 1.Original rawfile had",len,"elements \n -- 2.After filtering",remain,"elements remain.\n -- 3.",rem,"elements removed due to < ",filter," reads on average.\n --- 4. If you want another cutoff for filtering, enter [filter = x] in call to method. \n --- 5. Access filtered file with $rawfile\n")
+                           cat("- ..complete! featureCount file filtering done.\n -- 1.Original rawfile had",len,"elements\n")
+                           cat("-- 2.After filtering",remain,"elements remain.\n -- 3.",rem,"(",(100*rem/len),"%) elements removed due to < ",filter," reads on average.\n")
+                           cat("--- 4. If you want another cutoff for filtering, enter [filter = x] in call to method. \n")
+                           cat("--- 5. Access filtered file with $rawfile\n")
 
                            # write filtered count table, so it can be read next time, instead of file with all 0-read TEs
                            write.table(x = self$rawfile,
