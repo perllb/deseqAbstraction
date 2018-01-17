@@ -52,6 +52,7 @@ deseqAbs <- R6Class("deseqAbs",
                       filename = NULL,
                       rawfile = NULL,
                       rawCounts = NULL,
+                      normCounts = NULL,
                       design = NULL,
                       baseMean = NULL,
                       FPKMMean = NULL,
@@ -292,8 +293,10 @@ deseqAbs <- R6Class("deseqAbs",
                                                         colData = self$colData,
                                                         design = self$design)
                           self$deseq <- DESeq(dds)
+                          self$normCounts <- counts(self$deseq,normalized=T)
                           cat("- ..complete! Access object with $deseq \n")
                         }
+                        
                       },
 
                       makeVST = function(blind=NULL) {

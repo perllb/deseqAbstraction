@@ -56,14 +56,26 @@ meanBar <- function(deseqAbs,genes,cond=NULL,FPKM=FALSE,points=FALSE) {
   # plot one for each gene 
   for(gene in genes) {
     
-    plot <- data[gene,]
+    mean <- data[gene,]
     se <- se.a[gene,]
-    x <- barplot(plot,ylim=c(0,max(plot+se)*1.25),ylab="",col = mycolors,las=2)
-    # If points set to T, then add points of each sample to plot
-    ylab <- ifelse(FPKM,"FPKM mean","Mean normalized read counts")
-    mtext(ylab,side = 2,line = 4,cex = .6)
-    arrows(x0 = x,y0 = plot,x1 = x,y1 = plot+se,length = .1,angle = 90)
-    title(main = gene)
+    my_data <- data.frame(cond=colnames(data),mean=mean,se=se)
+    p <- ggplot() +
+      geom_bar(data=my_data, aes(y=mean,x=cond,ymin=mean-se,ymax=mean+se), stat="identity", width = 0.1) + 
+      geom_errorbar(data=my_data, aes(y=mean,x=cond,ymin=mean-se,ymax=mean+se), width = 0.05) 
+    
+    if(FPKM){
+      data.p <- melt(deseqAbs$FPKM[gene,])
+      p2 <- p +
+        geom_point(data=data.p,aes(y=value, x=X2))  
+      ylab <- "FPKM mean"
+    }else{
+      data.p <- melt(deseqAbs$normCounts[gene,])
+      p2 <- p +
+        geom_point(data=data.p,aes(y=value, x=X2))  
+      ylab <- "Mean normalized read counts"
+    }
+    
+    p2 + theme_classic() + ylim(c(0,max(mean+se))) + labs(y=ylab,title=gene) 
     
     padj <- padj.a[gene]
     ## if more than two conditions, then skip plotting errorbars  
