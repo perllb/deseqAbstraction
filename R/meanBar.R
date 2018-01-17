@@ -72,7 +72,7 @@ meanBar <- function(deseqAbs,genes,cond=NULL,FPKM=FALSE,points=FALSE) {
     ymax <- ifelse(FPKM,yes=max(deseqAbs$FPKM[gene,]),no = max(deseqAbs$normCounts[gene,]))
     plot <- data[gene,]
     se <- se.a[gene,]
-    x <- barplot(plot,ylim=c(0,ymax*1.3),ylab="",col = mycolors,las=2,space = 0,asp=.5)
+    x <- barplot(plot,ylim=c(0,ymax*1.3),ylab="",col = mycolors,las=2,space = 0)
     # If points set to T, then add points of each sample to plot
     if(points) {
       if(FPKM) {
