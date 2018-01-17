@@ -569,7 +569,7 @@ deseqTE <- R6Class("deseqTE",
                            cat("- ..complete! featureCount file reading done. \n")
                            cat(">>Filtering low read elements..\n")
                            self$rawfile <- tmp[rowMeans(tmp[,7:ncol(tmp)])>filter,]
-                           rem <- len-lenf
+                           rem <- len-nrow(self$rawfile)
                            cat("- ..complete! featureCount file filtering done.\n -- 1.Original rawfile had",len,"elements \n -- 2.After filtering",lenf,"elements remain.\n -- 3.",rem,"elements removed due to < ",filter," reads on average.\n --- 4. If you want another cutoff for filtering, enter [filter = x] in call to method. \n --- 5. Access filtered file with $rawfile\n")
 
                            # write filtered count table, so it can be read next time, instead of file with all 0-read TEs
