@@ -96,7 +96,7 @@ deseqAbs <- R6Class("deseqAbs",
                           cols <- names(colData)
                           colData[,cols] <- lapply(colData[,cols],factor)
                           self$colData <- colData
-                          
+                          self$sampleNames <- colData$samples
                           self$test <- list()
                           self$read_file(filename)
                           self$geneID <- as.character(self$rawfile[,1])
@@ -177,7 +177,6 @@ deseqAbs <- R6Class("deseqAbs",
                         } else {
                           sum <- read.delim(summaryFile)
                         }
-
                         if (!is.null(self$colData$samples)) {
                           colnames(sum) <- c("a", as.character(self$colData$samples))
                         }
@@ -198,8 +197,6 @@ deseqAbs <- R6Class("deseqAbs",
                           text(x = x-.4, y = plot * 1.1, labels = format(assigned,scientific=T),srt=90,pos = 4)
                           options(scipen=0)
                         }
-
-
                       },
 
                       getPos = function() {
