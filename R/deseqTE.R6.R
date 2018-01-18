@@ -343,9 +343,12 @@ deseqTE <- R6Class("deseqTE",
                              x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
                              legend("topleft",legend = rev(c("LINE","SINE","LTR")),fill=rev(col),bty='n')
                              title("Percentage of reads mapping to EREs / genome")
+                             
 
                            }
+                           return(plotPerc)
                          }
+                         return(plotPerc)
                        }
                        return(plotPerc)
                      },
