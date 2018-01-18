@@ -3,41 +3,44 @@
 #' @param tab: data.frame to plot!
 #' @param cond: a vector of conditions to group data
 #' @param points: Set to TRUE if points should be added
+#' @param jitter: set to TRUE if jitter should be applied to points 
 #' @param ylab: enter ylab for plot!
 #' @title meanBarGeneric: Barplot of your genes of interest!
 #' @export meanBarGeneric
 #' @example
 #' meanBarGeneric(table,points=deeq$colData$cond,points=T)
 
-meanBarGeneric <- function(tab,cond=NULL,points=FALSE,ylab='y') {
+meanBarGeneric <- function(tab,cond=NULL,points=FALSE,jitter=F,ylab='') {
   
+  cond <- factor(cond)
   par(mar=c(6,6,6,6))
   
   if(is.null(tab)){ 
-    cat('>>> ERROR: Insert tab!\n')
-    stop()
-  }
+    stop(">>> ERROR: Insert tab!")
+  } 
   if(!is.data.frame(tab)){ 
-    cat('>>> ERROR: tab must be data frame! Each row is a feature, Columns are samples\n')
-    stop()
+    stop('>>> ERROR: tab must be data frame! Each row is a feature, Columns are samples')
   }
   
   cat(">>> meanBarGeneric: plot your data frame!\n")
   
   if(is.vector(tab)){n.genes<-1} else { n.genes <- nrow(tab) }
   
-  ## set graphical area
+  ## set graphical area and colors
   row <- ifelse(test = sqrt(n.genes)%%1 > .5,yes = floor(sqrt(n.genes))+1,no = floor(sqrt(n.genes))) 
   par(mfrow=c(row,ceiling(sqrt(n.genes))),mar=c(7,5,4,4))
   library(RColorBrewer)
   cols <- colorRampPalette(brewer.pal(8, "Greys"))
+  mycolors <- cols(length(cond))
   
   data <-sapply( levels(cond), function(lvl) rowMeans( tab[,cond == lvl] ) )
   se.a <-sapply( levels(cond), 
                   function(lvl) apply( tab[,cond == lvl],1,
                                        function(dat) sd(dat)/sqrt(length(dat))))
-  
-  mycolors <- cols(length(cond))
+  if(!is.matrix(data)) {
+    data <- data.frame(t(data))
+    se.a <- data.frame(t(se.a))
+  }
   
   # plot one for each gene 
   for(gene in rownames(tab)) {
@@ -45,10 +48,15 @@ meanBarGeneric <- function(tab,cond=NULL,points=FALSE,ylab='y') {
     ymax <- max(tab[gene,])
     plot <- data[gene,]
     se <- se.a[gene,]
-    x <- barplot(plot,ylim=c(0,ymax*1.3),ylab="",col = mycolors,las=2,space = 0)
+    x <- barplot(plot,ylim=c(0,ymax*1.3),ylab="",col = mycolors,las=2,space = 0,main=gene)
     # If points set to T, then add points of each sample to plot
     if(points) {
+      if(jitter){
         x.s <- jitter(as.numeric(cond)-x[1],factor=0.4)
+      }else {
+        x.s <- as.numeric(cond)-x[1]
+      }
+        
         points(x=x.s,y=tab[gene,],col="black",pch=16,cex=1.5)
         points(x=x.s,y=tab[gene,],col="white",pch=16)
     }
