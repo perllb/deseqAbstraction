@@ -347,6 +347,7 @@ deseqTE <- R6Class("deseqTE",
                            }
                          }
                        }
+                       return(plotPerc)
                      },
 
                      upSubFamily = function(p=.05,l=0,n=10) {

@@ -198,6 +198,7 @@ deseqAbs <- R6Class("deseqAbs",
                           text(x = x-.4, y = plot * 1.1, labels = format(assigned,scientific=T),srt=90,pos = 4)
                           options(scipen=0)
                         }
+                        return(plot)
                       },
 
                       getPos = function() {
