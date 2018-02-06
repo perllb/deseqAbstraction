@@ -55,7 +55,8 @@ deseqTE <- R6Class("deseqTE",
                      filteredRawfile = NULL,
                      TE.features = NULL,
                      genome = NULL,
-                     TE.countFeatures = NULL, # ID of TE, without the unique _x number
+                     TE.IDsub = NULL, # ID of TE, without the unique _x number
+                     TE.fams = NULL,  # nonID of TE subfam, with fam and class, in same order as countData
 
                      initialize = function(name = NA,filename = NA,genome=NULL,filter=5,colData=NULL,design=NULL) {
 
@@ -86,6 +87,7 @@ deseqTE <- R6Class("deseqTE",
                          self$test <- list()
                          self$read_file(filename,filter = filter)
                          self$geneID <- as.character(self$rawfile[,1])
+                         self$TE.IDsub <- getSubID(self$geneID)
                          self$getPos()
                          self$getRawCounts()
                          if(!is.null(design)){
@@ -94,10 +96,21 @@ deseqTE <- R6Class("deseqTE",
                          cat(">>Reading genomic RepeatMasker feature for ",genome,"\n")
                          self$genome = genome
                          self$TE.features <- self$getFeatures(genome)
+                         self$TE.fams <- self$get_famANDclass(self$geneID)
                          cat("- ..complete! Genomic RepeatMasker feature for ",genome,"read.. stored in $TE.features")
                          
                        }
                       },
+
+                     # find family and class of each subfam in argument list
+                     get_famANDclass = function(IDlist=NULL) {
+                       if(is.null(self$TE.features)){
+                         self$TE.features <- self$getFeatures(self$genome)
+                       }
+                       library(plyr)
+                       return(join(x=data.frame(V1=IDlist),y=data.frame(apply(self$TE.features,2,as.character),stringsAsFactors = F)))
+                       
+                     }
 
                      ## Class, family and subfam can be vectors
                      percentTE = function(summaryFile=NULL,family=NULL,TEclass=NULL,subfam=NULL,allsamples=F) {
@@ -233,6 +246,11 @@ deseqTE <- R6Class("deseqTE",
 
                        }else{
 
+                         # compute mean of each condition if not done..
+                         if(is.null(self$baseMean$Mean)){
+                           cat("> To calculate percentages condition-wise, average read count of each condition must be calculated. This might take a couple of minutes..\n")
+                           self$getAverageReads()
+                         }
                          library(RColorBrewer)
                          cols <- colorRampPalette(brewer.pal(9, "Set1"))
 
