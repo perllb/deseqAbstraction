@@ -96,7 +96,7 @@ deseqTE <- R6Class("deseqTE",
                          cat(">>Reading genomic RepeatMasker feature for ",genome,"\n")
                          self$genome = genome
                          self$TE.features <- self$getFeatures(genome)
-                         self$TE.fams <- self$get_famANDclass(self$geneID)
+                         self$TE.fams <- self$get_famANDclass(self$TE.IDsub)
                          cat("- ..complete! Genomic RepeatMasker feature for ",genome,"read.. stored in $TE.features")
                          
                        }
