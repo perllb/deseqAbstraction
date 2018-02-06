@@ -55,6 +55,7 @@ deseqTE <- R6Class("deseqTE",
                      filteredRawfile = NULL,
                      TE.features = NULL,
                      genome = NULL,
+                     TE.countFeatures = NULL, # ID of TE, without the unique _x number
 
                      initialize = function(name = NA,filename = NA,genome=NULL,filter=5,colData=NULL,design=NULL) {
 
@@ -94,8 +95,7 @@ deseqTE <- R6Class("deseqTE",
                          self$genome = genome
                          self$TE.features <- self$getFeatures(genome)
                          cat("- ..complete! Genomic RepeatMasker feature for ",genome,"read.. stored in $TE.features")
-
-
+                         
                        }
                       },
 
@@ -136,7 +136,7 @@ deseqTE <- R6Class("deseqTE",
                            rownames(df) <- subfam
                            colnames(df) <- paste(self$colData$condition,self$colData$samples,sep = ":s")
 
-                           plotPerc <- as.matrix(df*100/tot.map)
+                           plotPerc <- as.matrix(t(t(df*100)/tot.map))
                            col <- cols(nrow(plotPerc))
                            x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
                            legend("topleft",legend = rev(subfam),fill=rev(col),bty='n')
@@ -158,7 +158,7 @@ deseqTE <- R6Class("deseqTE",
                            rownames(df) <- family
                            colnames(df) <- paste(self$colData$condition,self$colData$samples,sep = ":s")
 
-                           plotPerc <- as.matrix(df*100/tot.map)
+                           plotPerc <- as.matrix(t(t(df*100)/tot.map))
                            col <- cols(nrow(plotPerc))
                            x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
                            legend("topleft",legend = rev(family),fill=rev(col),bty='n')
@@ -179,7 +179,7 @@ deseqTE <- R6Class("deseqTE",
                            rownames(df) <- TEclass
                            colnames(df) <- paste(self$colData$condition,self$colData$samples,sep = ":s")
 
-                           plotPerc <- as.matrix(df*100/tot.map)
+                           plotPerc <- as.matrix(t(t(df*100)/tot.map))
                            col <- cols(nrow(plotPerc))
                            x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
                            legend("topleft",legend = rev(TEclass),fill=rev(col),bty='n')
@@ -205,7 +205,7 @@ deseqTE <- R6Class("deseqTE",
 
                              df <- t(data.frame(LINE=map.LINE,SINE=map.SINE,LTR=map.LTR,SVA=map.SVA))
                              colnames(df) <- make.names(names = paste(self$colData$condition,self$colData$samples,sep=":s"),unique = T)
-                             plotPerc <- df*100/tot.map
+                             plotPerc <- as.matrix(t(t(df*100)/tot.map))
                              col <- c("darkolivegreen3","indianred4","steelblue","tan4")
                              x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
                              legend("topleft",legend = rev(c("LINE","SINE","LTR","SVA")),fill=rev(col),bty = 'n')
@@ -215,7 +215,7 @@ deseqTE <- R6Class("deseqTE",
 
                              df <- t(data.frame(LINE=map.LINE,SINE=map.SINE,LTR=map.LTR))
                              colnames(df) <- make.names(names = paste(self$colData$condition,self$colData$samples,sep=":s"),unique = T)
-                             plotPerc <- df*100/tot.map
+                             plotPerc <- as.matrix(t(t(df*100)/tot.map))
                              col <- c("darkolivegreen3","indianred4","steelblue","tan4")
                              x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
                              legend("topleft",legend = rev(c("LINE","SINE","LTR")),fill=rev(col),bty='n')
@@ -257,7 +257,7 @@ deseqTE <- R6Class("deseqTE",
                            rownames(df) <- subfam
                            colnames(df) <- unique(as.character(self$colData$condition))
 
-                           plotPerc <- as.matrix(df*100/tot.map)
+                           plotPerc <- as.matrix(t(t(df*100)/tot.map))
                            col <- cols(nrow(plotPerc))
                            x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
                            legend("topleft",legend = rev(subfam),fill=rev(col),bty='n')
@@ -279,7 +279,7 @@ deseqTE <- R6Class("deseqTE",
                            rownames(df) <- family
                            colnames(df) <- unique(as.character(self$colData$condition))
 
-                           plotPerc <- as.matrix(df*100/tot.map)
+                           plotPerc <- as.matrix(t(t(df*100)/tot.map))
                            col <- cols(nrow(plotPerc))
                            x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
                            legend("topleft",legend = rev(family),fill=rev(col),bty='n')
@@ -302,7 +302,7 @@ deseqTE <- R6Class("deseqTE",
                            rownames(df) <- TEclass
                            colnames(df) <- unique(as.character(self$colData$condition))
 
-                           plotPerc <- as.matrix(df*100/tot.map)
+                           plotPerc <- as.matrix(t(t(df*100)/tot.map))
                            col <- cols(nrow(plotPerc))
                            x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
                            legend("topleft",legend = rev(TEclass),fill=rev(col),bty='n')
@@ -328,7 +328,7 @@ deseqTE <- R6Class("deseqTE",
 
                              df <- t(data.frame(LINE=map.LINE,SINE=map.SINE,LTR=map.LTR,SVA=map.SVA))
                              colnames(df) <- unique(as.character(self$colData$condition))
-                             plotPerc <- df*100/tot.map
+                             plotPerc <- as.matrix(t(t(df*100)/tot.map))
                              col <- c("darkolivegreen3","indianred4","steelblue","tan4")
                              x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
                              legend("topleft",legend = rev(c("LINE","SINE","LTR","SVA")),fill=rev(col),bty = 'n')
@@ -338,7 +338,7 @@ deseqTE <- R6Class("deseqTE",
 
                              df <- t(data.frame(LINE=map.LINE,SINE=map.SINE,LTR=map.LTR))
                              colnames(df) <- unique(as.character(self$colData$condition))
-                             plotPerc <- df*100/tot.map
+                             plotPerc <- as.matrix(t(t(df*100)/tot.map))
                              col <- c("darkolivegreen3","indianred4","steelblue","tan4")
                              x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
                              legend("topleft",legend = rev(c("LINE","SINE","LTR")),fill=rev(col),bty='n')
