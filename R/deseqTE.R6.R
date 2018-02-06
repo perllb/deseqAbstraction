@@ -110,7 +110,7 @@ deseqTE <- R6Class("deseqTE",
                        library(plyr)
                        return(join(x=data.frame(V1=IDlist),y=data.frame(apply(self$TE.features,2,as.character),stringsAsFactors = F)))
                        
-                     }
+                     },
 
                      ## Class, family and subfam can be vectors
                      percentTE = function(summaryFile=NULL,family=NULL,TEclass=NULL,subfam=NULL,allsamples=F) {
