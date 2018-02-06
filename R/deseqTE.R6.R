@@ -526,7 +526,11 @@ deseqTE <- R6Class("deseqTE",
 
                        greps <- paste(TEclass,collapse = "$|^")
                        TEclass.features <- as.character(self$TE.features[grep(greps,self$TE.features$V2),1])
-                       return(data[grep(paste(TEclass.features,collapse = "|^"),rownames(data)),])
+                       if(length(TEclass.features)>0){
+                         return(data[grep(paste(TEclass.features,collapse = "|^"),rownames(data)),])  
+                       }
+                       else{return(NULL)}
+                       
 
                      },
 
@@ -534,7 +538,8 @@ deseqTE <- R6Class("deseqTE",
 
                        greps <- paste(family,collapse = "$|^")
                        family.features <- as.character(self$TE.features[grep(greps,self$TE.features$V3),1])
-                       return(data[grep(paste(family.features,collapse = "|^"),rownames(data)),])
+                       if(length(family.features)>0) { return(data[grep(paste(family.features,collapse = "|^"),rownames(data)),]) }
+                       else{return(NULL)}
 
                      },
 
