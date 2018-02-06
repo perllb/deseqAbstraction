@@ -147,10 +147,14 @@ deseqTE <- R6Class("deseqTE",
                          ## Family?
                          if(!is.null(family)) {
 
+                           
                            dfr <- matrix(nrow=length(family),ncol=length(self$rawCounts[1,]))
                            idx <- 1
                            for (curr in family) {
                              map <- colSums(self$getFamily(self$rawCounts,curr))
+                             if(is.null(map)){
+                               stop(">Error: Given family is not found in RepeatMasker annotation:",curr,"...\n")
+                             }
                              dfr[idx,] <- map
                              idx <- idx+1
                            }
@@ -172,6 +176,9 @@ deseqTE <- R6Class("deseqTE",
                            for (curr in TEclass) {
                              if(curr=="SVA") {curr <- "Retroposon"}
                              map <- colSums(self$getTEClass(self$rawCounts,curr))
+                             if(is.null(map)){
+                               stop(">Error: Given class is not found in RepeatMasker annotation:",curr,"...\n")
+                             }
                              dfr[idx,] <- map
                              idx <- idx+1
                            }
@@ -250,6 +257,9 @@ deseqTE <- R6Class("deseqTE",
                            idx <- 1
                            for (curr in subfam) {
                              map <- colSums(self$getSubFamily(self$baseMean$Mean,curr))
+                             if(is.null(map)){
+                               stop(">Error: Given subfamily is not found in RepeatMasker annotation:",curr,"...\n")
+                             }
                              dfr[idx,] <- map
                              idx <- idx+1
                            }
@@ -272,6 +282,9 @@ deseqTE <- R6Class("deseqTE",
                            idx <- 1
                            for (curr in family) {
                              map <- colSums(self$getFamily(self$baseMean$Mean,curr))
+                             if(is.null(map)){
+                               stop(">Error: Given family is not found in RepeatMasker annotation:",curr,"...\n")
+                             }
                              dfr[idx,] <- map
                              idx <- idx+1
                            }
@@ -295,6 +308,9 @@ deseqTE <- R6Class("deseqTE",
                            for (curr in TEclass) {
                              if(curr=="SVA") {curr <- "Retroposon"}
                              map <- colSums(self$getTEClass(self$baseMean$Mean,curr))
+                             if(is.null(map)){
+                               stop(">Error: Given class is not found in RepeatMasker annotation:",curr,"...\n")
+                             }
                              dfr[idx,] <- map
                              idx <- idx+1
                            }
