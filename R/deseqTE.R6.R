@@ -103,7 +103,7 @@ deseqTE <- R6Class("deseqTE",
                      percentTE = function(summaryFile=NULL,family=NULL,TEclass=NULL,subfam=NULL,allsamples=F) {
 
                        ## If allsamples is F, print condition-wise (else print all samples)
-                       if(!allsamples) {
+                       if(allsamples) {
 
                          library(RColorBrewer)
                          cols <- colorRampPalette(brewer.pal(9, "Set1"))
