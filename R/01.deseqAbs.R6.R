@@ -151,7 +151,7 @@ deseqAbs <- R6Class("deseqAbs",
                         par(mar=c(4,4,4,4))
                       },
 
-                      significantHeat = function(test=self$test$Default,ntop=NULL) {
+                      significantHeat = function(test=self$test$Default,ntop=50) {
 
                         mostSignificantHeat(data=assay(self$VST),test=test,ntop=ntop)
 
