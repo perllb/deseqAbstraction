@@ -42,7 +42,7 @@ fc.file.path <- paste(path,fc.file,sep = "")
 ```
 
 
-#### 2. Clean up sample names (Highly recommended to do this properly, this is a bad example with bad filenames)
+#### 2. Define sample names (Highly recommended to do this properly, this is a bad example with bad filenames)
 ```{r}
 
 head <- read.delim(file = fc.file.path,header = T,nrows = 1,skip = 1)
@@ -53,21 +53,16 @@ cnames <- colnames(head[,-c(1:6)])
 newnames <- gsub(pattern = "X.projects.fs1.medpvb.backup.projects.iN.d24.Aligned_hg38_STAR_mMap.hg38.mMap.",replacement = "",x = cnames)
 newnames <- gsub(pattern = "_L004Aligned.sortedByCoord.out.bam",replacement = "",x = newnames)
 newnames <- gsub(pattern = "_L005Aligned.sortedByCoord.out.bam",replacement = "",x = newnames)
-newnames <- gsub(pattern = "_L006Aligned.sortedByCoord.out.bam",replacement = "",x = newnames)
-
-```{r }
-# 3. add these modified sample names to the object
-iN$sampleNames <- newnames
+sampleNames <- gsub(pattern = "_L006Aligned.sortedByCoord.out.bam",replacement = "",x = newnames)
 
 ```
 
-```
 
-#### 2. Make colData data.frame that well describes the data
+#### 3. colData data.frame that describes the data
 
 ```{r}
 # make one vector describing if the sample has REST inhibition or not
-rest <- ifelse((grepl("REST",iN$sampleNames)),yes = "RESTi",no="")
+rest <- ifelse((grepl("REST",sampleNames)),yes = "RESTi",no="")
 # cell type of sample?
 cell <- c(rep("C2",18),rep("HFL1",6))
 # describe vector construct of sample
@@ -76,18 +71,20 @@ vector <- c(rep("pB_miR_pA",3),rep("pBpA",3),rep("",3),rep(c("pBpA","pB+pA"),3),
 cond <- paste(cell,vector,rest,sep = "_")
 # make a data.frame with these vectors and store as colData
 # here, you always should have the main design as "condition" 
-iN$colData <- data.frame(condition=cond,cell=cell,vector=vector,rest=rest)
-iN$sampleNames <- make.names(names = cond,unique = T)
+colData <- data.frame(condition=cond,cell=cell,vector=vector,rest=rest,samples=sampleNames)
+
+
 ```
 
+### 4. create deseqAbs object
 ```{r }
 # generate deseqAbs object
-iN <- deseqAbs$new(name = "iN-d25",filename = fc.file.path)
+iN <- deseqAbs$new(name = "iN-d24",filename = fc.file.path,colData=colData)
 
 ```
 
 
-#### 4.  Run DESeq pipeline
+#### 5.  Run DESeq pipeline
 ##### - You can try to do this in one function $fullAuto(). 
 ##### - Full auto has four main steps:
 ##### (1) - create DEseq object (access with $deseq)
@@ -103,13 +100,13 @@ iN <- deseqAbs$new(name = "iN-d25",filename = fc.file.path)
 ## run pipeline
 iN$fullAuto()
 
-## by default, fullAuto do blind dispersion estimates, which is good if many genes are expected to have very different counts in different conditions.
-## if not, it might be better to do non-blind estimates, which can be manually done by calling makeVST() with blind = F.
+## by default, fullAuto do blind dispersion estimates, which is good if relatively few genes are expected to have very different counts in different conditions.
+## if many genes are expected to have differential expression, it might be better to do non-blind estimates, which can be manually done by calling makeVST() with blind = F.
 iN$makeVST(blind=T)
 
 # take a peak at normalized data generated
 # rpkm
-head(iN$rpkm)
+head(iN$FPKM)
 # varianceStablizingTransformed
 head(iN$VST)
 # default diffex
@@ -117,7 +114,21 @@ head(iN$test$Default)
 
 ```
 
-#### 5. Differential expression
+#### 6. Visualize data
+#### 6.1 PCA and sample-to-sample
+
+```{r}
+
+# plot PCA without labels on points
+PCAplotter(dat = iN$VST,title = "NCBI top 5000",ntop = 5000,color = iN$colData$rest,shape=iN$colData$vector)
+
+# plot PCA with labels
+PCAplotter(dat = iN$VST,title = "NCBI top 5000",ntop = 5000,color = iN$colData$rest,shape=iN$colData$vector,label = iN$colData$cell)
+
+
+```
+
+#### 7. Differential expression
 ##### By default, the fullAuto() function makes a diffex analysis with the last level vs the first level of the last variables in the design formula colData (design vector)
 ##### However, if you have many conditions you may want to test other pairwise combinations
 
@@ -131,61 +142,87 @@ if(!dir.exists(deseq.res.path)) {
   
 }
 
+```
+
+#### 8. test pBpA+RESTi vs pBpA (no RESTi)
+```{r }
 # get the names of the conditions 
 conds <- gsub(pattern = "condition",replacement = "",resultsNames(iN$deseq))
 # list condition names with index
 cbind(conds,1:length(conds))
 
-# Test RESTi+pBpA vs. pBpA (without RESTi)
+# Test RESTi+pBpA (7th condition) vs. pBpA (6th condition) (without RESTi)
 c1 <- conds[7]
 c2 <- conds[6]
-iN$makeDiffex(name = "RESTi",c1 = c1,c2 = c2)
+
+iN$makeDiffex(name = paste(c2,c1,sep=".vs."),c1 = c1,c2 = c2)
 head(iN$test$RESTi)
 # write diffex table sorted on p-adj
 write.table(x = iN$test$RESTi[order(iN$test$RESTi$padj),],file = paste(deseq.res.path,c1,"_vs._",c2,".Diffex.txt",sep = ""),quote = F,sep = "\t")
 
-# Test RESTi+pBpA vs. RESTi (without pBpA)
-c1 <- conds[7]
-c2 <- conds[2]
+meanPlot(ex = iN$baseMean$Mean[,c(c2,c1)],p = .00001,c1=c1,c2=c2,test = iN$test$C2_pBpA_RESTi.vs.C2_pBpA_)
+
+maPlot(test = iN$test$C2_pBpA_RESTi.vs.C2_pBpA_,c1 = c1,c2 = c2,p = .0001)
+
+```
+
+#### 9. test pBpA+RESTi vs RESTi (no pBpA)
+```{r }
+
+# Test RESTi+pBpA  (7th) vs. RESTi (2nd ) (without pBpA)
+c1 <- conds[7] #pBpA + RESTi
+c2 <- conds[2] #RESTi only
 iN$makeDiffex(name = "pBpA",c1 = c1,c2 = c2)
 head(iN$test$pBpA)
 # write diffex table sorted on p-adj
 write.table(x = iN$test$pBpA[order(iN$test$pBpA$padj),],file = paste(deseq.res.path,c1,"_vs._",c2,".Diffex.txt",sep = ""),quote = F,sep = "\t")
 
-```
-
-
-#### 6. Visualize data
-#### 6.1 PCA and sample-to-sample
-
-```{r}
-
-# plot PCA without labels on points
-PCAplotter(dat = iN$VST,title = "NCBI top 5000",ntop = 5000,color = iN$colData$rest,shape=iN$colData$vector)
-
-# plot PCA with labels
-PCAplotter(dat = iN$VST,title = "NCBI top 5000",ntop = 5000,color = iN$colData$rest,shape=iN$colData$vector,label = iN$colData$cell)
-
-# sample-to-sample distance
-sampleToSample(data = iN$VST)
+meanPlot(exp = iN$baseMean$Mean[,c(c2,c1)],test = iN$test$pBpA,c1 = c1,c2 = c2,p = .0001)
+maPlot(test = iN$test$pBpA,c1 = c1,c2 = c2,p = .0001)
 
 ```
 
-#### 6.2 maPlot
+#### 10. test pBpA+RESTi vs pBmirpA 
+```{r }
+cbind(conds,1:length(conds))
 
-```{r}
+# Test RESTi+pBpA  (7th) vs. pBmirPA (3nd)
+c1 <- conds[7] #pBpA + RESTi
+c2 <- conds[3] #RESTi only
+iN$makeDiffex(name = "pBmiRpA",c1 = c1,c2 = c2)
+head(iN$test$pBmiRpA)
 
-# make maPlot: color genes if they have p-adj and log2fc below/above given values (p and l) 
+# write diffex table sorted on p-adj
+write.table(x = iN$test$pBmiRpA[order(iN$test$pBmiRpA$padj),],file = paste(deseq.res.path,c1,"_vs._",c2,".Diffex.txt",sep = ""),quote = F,sep = "\t")
 
-# maPlot with the RESTi
-maPlot(test = iN$test$RESTi,c1 = "pBpA+RESTi",c2 = "pBpA only",l = 1,p = .001)
+meanPlot(exp = iN$baseMean$Mean[,c(c2,c1)],test = iN$test$pBmiRpA,c1 = c1,c2 = c2,p = .0001)
+maPlot(test = iN$test$pBmiRpA,c1 = c1,c2 = c2,p = .0001)
 
-# maPlot with the pBpA - test
-maPlot(test = iN$test$pBpA,"pBpA+RESTi","RESTi only",l = 1,p = .001)
 
 ```
 
-#### 5.3 volcano plot
+
+#### 11. test pBpA+RESTi vs pBmirpA+RESTi
+```{r }
+cbind(conds,1:length(conds))
+
+# Test RESTi+pBpA  (7th) vs. pBmirPA (3nd)
+c1 <- conds[7] #pBpA + RESTi
+c2 <- conds[4] #RESTi only
+iN$makeDiffex(name = "pBmiRpA.RESTi",c1 = c1,c2 = c2)
+head(iN$test$pBmiRpA.RESTi)
+
+# write diffex table sorted on p-adj
+write.table(x = iN$test$pBmiRpA.RESTi[order(iN$test$pBmiRpA.RESTi$padj),],file = paste(deseq.res.path,c1,"_vs._",c2,".Diffex.txt",sep = ""),quote = F,sep = "\t")
+
+meanPlot(exp = iN$baseMean$Mean[,c(c2,c1)],test = iN$test$pBmiRpA.RESTi,c1 = c1,c2 = c2,p = .0001)
+maPlot(test = iN$test$pBmiRpA.RESTi,c1 = c1,c2 = c2,p = .00001)
+
+
+```
+
+
+#### 12. volcano plot
 
 ```{r}
 
@@ -204,7 +241,7 @@ volcanoPlot(test = iN$test$pBpA,max = 100,p = .0001)
 
 ```
 
-#### 5.4 heatmaps 1: Plot expression of most significantly changed genes (selected on p-adj from user-defined diffex-test) 
+#### 13. heatmaps 1: Plot expression of most significantly changed genes (selected on p-adj from user-defined diffex-test) 
 ```{r}
 
 # plot top significant genes in RESTi
