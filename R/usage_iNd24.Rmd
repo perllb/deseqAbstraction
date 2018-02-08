@@ -1,0 +1,300 @@
+---
+  title: "usage deseqAbstraction - iNd24 example"
+author: "Per Ludvik Brattaas"
+date: "November 7, 2017"
+output:
+  html_document: default
+pdf_document:
+  latex_engine: xelatex
+---
+  
+  ```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Tutorial on deseqAbstraction
+## Analysing iN-d24 RNA-sequencing data
+
+### Easy analysis and visualization of featureCount 
+
+#### 1. Setup of workspace
+
+
+```{r setup workspace, message = FALSE}
+
+# clean environment and workspace
+rm(list=ls())
+gc()
+
+# load deseqAbstraction and DESeq2 package
+library(devtools)
+install_github("perllb/deseqAbstraction")
+library(deseqAbstraction)
+library(DESeq2)
+
+# path to project
+path <- "/home/pbrattaas/LocalData/iN-Janelle/"
+
+# path and filename of raw featureCounts file
+fc.file <- "Data/Quant/hg38.mMap.NCBI.Exon.txt"
+fc.file.path <- paste(path,fc.file,sep = "")
+```
+
+
+#### 2. Clean up sample names (Highly recommended to do this properly, this is a bad example with bad filenames)
+```{r}
+
+head <- read.delim(file = fc.file.path,header = T,nrows = 1,skip = 1)
+# 1. take the column names of the rawCount table from featureCounts
+cnames <- colnames(head[,-c(1:6)])
+
+# 2. remove the substrings that are not needed for identifying the samples, noise from filenames
+newnames <- gsub(pattern = "X.projects.fs1.medpvb.backup.projects.iN.d24.Aligned_hg38_STAR_mMap.hg38.mMap.",replacement = "",x = cnames)
+newnames <- gsub(pattern = "_L004Aligned.sortedByCoord.out.bam",replacement = "",x = newnames)
+newnames <- gsub(pattern = "_L005Aligned.sortedByCoord.out.bam",replacement = "",x = newnames)
+newnames <- gsub(pattern = "_L006Aligned.sortedByCoord.out.bam",replacement = "",x = newnames)
+
+```{r }
+# 3. add these modified sample names to the object
+iN$sampleNames <- newnames
+
+```
+
+```
+
+#### 2. Make colData data.frame that well describes the data
+
+```{r}
+# make one vector describing if the sample has REST inhibition or not
+rest <- ifelse((grepl("REST",iN$sampleNames)),yes = "RESTi",no="")
+# cell type of sample?
+cell <- c(rep("C2",18),rep("HFL1",6))
+# describe vector construct of sample
+vector <- c(rep("pB_miR_pA",3),rep("pBpA",3),rep("",3),rep(c("pBpA","pB+pA"),3),rep("pB_miR_pA",3),rep("",3),rep("pA+pB",3))
+# condition (main design vector) had all info
+cond <- paste(cell,vector,rest,sep = "_")
+# make a data.frame with these vectors and store as colData
+# here, you always should have the main design as "condition" 
+iN$colData <- data.frame(condition=cond,cell=cell,vector=vector,rest=rest)
+iN$sampleNames <- make.names(names = cond,unique = T)
+```
+
+```{r }
+# generate deseqAbs object
+iN <- deseqAbs$new(name = "iN-d25",filename = fc.file.path)
+
+```
+
+
+#### 4.  Run DESeq pipeline
+##### - You can try to do this in one function $fullAuto(). 
+##### - Full auto has four main steps:
+##### (1) - create DEseq object (access with $deseq)
+##### (2) - Do diffex analysis (access with $test)
+##### (3) - Do varianceStablizingTransformation (access with $VST)
+##### (4) - Do RPKM normalization (access with $rpkm)
+
+##### - However, for this automation, it is critical that your deseqAbs object has
+##### (1) - the raw featureCount file in the correct format
+##### (2) - the colData data.frame with at least one column called "condition", which contain the grouping of your samples, that will later be used for diffex anaysis
+
+```{r}
+## run pipeline
+iN$fullAuto()
+
+## by default, fullAuto do blind dispersion estimates, which is good if many genes are expected to have very different counts in different conditions.
+## if not, it might be better to do non-blind estimates, which can be manually done by calling makeVST() with blind = F.
+iN$makeVST(blind=T)
+
+# take a peak at normalized data generated
+# rpkm
+head(iN$rpkm)
+# varianceStablizingTransformed
+head(iN$VST)
+# default diffex
+head(iN$test$Default)
+
+```
+
+#### 5. Differential expression
+##### By default, the fullAuto() function makes a diffex analysis with the last level vs the first level of the last variables in the design formula colData (design vector)
+##### However, if you have many conditions you may want to test other pairwise combinations
+
+```{r}
+
+## Create directory to print diffex result matrices
+deseq.res.path <- paste(path,"Results/DEseq/",sep = "")
+if(!dir.exists(deseq.res.path)) {
+  
+  dir.create(path = deseq.res.path)
+  
+}
+
+# get the names of the conditions 
+conds <- gsub(pattern = "condition",replacement = "",resultsNames(iN$deseq))
+# list condition names with index
+cbind(conds,1:length(conds))
+
+# Test RESTi+pBpA vs. pBpA (without RESTi)
+c1 <- conds[7]
+c2 <- conds[6]
+iN$makeDiffex(name = "RESTi",c1 = c1,c2 = c2)
+head(iN$test$RESTi)
+# write diffex table sorted on p-adj
+write.table(x = iN$test$RESTi[order(iN$test$RESTi$padj),],file = paste(deseq.res.path,c1,"_vs._",c2,".Diffex.txt",sep = ""),quote = F,sep = "\t")
+
+# Test RESTi+pBpA vs. RESTi (without pBpA)
+c1 <- conds[7]
+c2 <- conds[2]
+iN$makeDiffex(name = "pBpA",c1 = c1,c2 = c2)
+head(iN$test$pBpA)
+# write diffex table sorted on p-adj
+write.table(x = iN$test$pBpA[order(iN$test$pBpA$padj),],file = paste(deseq.res.path,c1,"_vs._",c2,".Diffex.txt",sep = ""),quote = F,sep = "\t")
+
+```
+
+
+#### 6. Visualize data
+#### 6.1 PCA and sample-to-sample
+
+```{r}
+
+# plot PCA without labels on points
+PCAplotter(dat = iN$VST,title = "NCBI top 5000",ntop = 5000,color = iN$colData$rest,shape=iN$colData$vector)
+
+# plot PCA with labels
+PCAplotter(dat = iN$VST,title = "NCBI top 5000",ntop = 5000,color = iN$colData$rest,shape=iN$colData$vector,label = iN$colData$cell)
+
+# sample-to-sample distance
+sampleToSample(data = iN$VST)
+
+```
+
+#### 6.2 maPlot
+
+```{r}
+
+# make maPlot: color genes if they have p-adj and log2fc below/above given values (p and l) 
+
+# maPlot with the RESTi
+maPlot(test = iN$test$RESTi,c1 = "pBpA+RESTi",c2 = "pBpA only",l = 1,p = .001)
+
+# maPlot with the pBpA - test
+maPlot(test = iN$test$pBpA,"pBpA+RESTi","RESTi only",l = 1,p = .001)
+
+```
+
+#### 5.3 volcano plot
+
+```{r}
+
+# generate volcanoplot RESTi 
+volcanoPlot(test = iN$test$RESTi)
+
+# cut y-axis 
+volcanoPlot(test = iN$test$RESTi,max = 100)
+
+# generate volcanoplot pBpA
+volcanoPlot(test = iN$test$pBpA,p = .0001)
+
+# cut y-axis 
+volcanoPlot(test = iN$test$pBpA,max = 100,p = .0001)
+
+
+```
+
+#### 5.4 heatmaps 1: Plot expression of most significantly changed genes (selected on p-adj from user-defined diffex-test) 
+```{r}
+
+# plot top significant genes in RESTi
+mostSignificantHeat(data = assay(iN$VST),test = iN$test$RESTi)
+
+# plot top significant genes, top 20
+mostSignificantHeat(data = assay(iN$VST),test = iN$test$pBpA,ntop = 20)
+
+# plot top significant genes, top 20, with annotation of columns
+mostSignificantHeat(data = assay(iN$VST),test = iN$test$RESTi,ntop = 20,a1 = iN$colData$condition,n1 = "Condition")
+
+## plot top significant genes, top 50, with two annotation of columns
+mostSignificantHeat(data = assay(iN$VST),test = iN$test$RESTi,ntop = 50,a1 = iN$colData$vector,n1 = "Vector",a2 = iN$colData$rest,n2 = "Rest")
+
+```
+
+#### 5.4 heatmaps 2: Plot the most variable genes (over all samples given..)
+```{r }
+
+# plot most variable genes
+mostVariableHeat(data = assay(iN$VST))
+
+# plot most variable genes
+mostVariableHeat(data = assay(iN$VST),ntop = 10,a1 = iN$colData$vector,n1 = "Vector",a2 = iN$colData$rest,n2 = "REST")
+
+
+```
+
+#### 5.4 heatmaps 3: plot a given set of genes
+
+```{r}
+
+genes <- c("LPPR4", "NEFH", "BOC", "TRPC6", "GPRIN1", "ST8SIA2", "PTK2B", "UCHL1", "CTNNA1", "PLCG1", "SEMA6C", "DSCAML1")
+
+# sd defines cutoff for standard deviation (sd = 1 plots only genes with sd > 1). Set sd=-1 of all genes should be plotted
+heatGenes(data = assay(iN$VST),genes = genes,sd = .5)
+
+# if you want to normalize expression on each row (z-score), set z = T
+heatGenes(data = assay(iN$VST),genes = genes,sd = -1,z = T)
+
+# add column annotations
+heatGenes(data = assay(iN$VST),genes = genes,sd = -1,z = F,a1 = iN$colData$vector,n1 = "Vector",a2 = iN$colData$rest,n2 = "REST")
+
+
+```
+
+#### Choose a subset of conditions/samples to plot
+
+```{r}
+
+## plot only C2 samples
+
+# get index of those
+idx <- grep("C2",iN$sampleNames)
+
+# plot most variable genes - of the C2 samples
+mostVariableHeat(data = assay(iN$VST)[,idx],ntop = 10,a1 = iN$colData$vector[idx],n1 = "Vector",a2 = iN$colData$rest[idx],n2 = "REST")
+
+## plot only pBpA samples
+
+# get index of those
+idx <- grep("pBpA",iN$sampleNames)
+
+# plot most variable genes - of the pBpA samples
+mostVariableHeat(data = assay(iN$VST)[,idx],ntop = 30,a1 = iN$colData$vector[idx],n1 = "Vector",a2 = iN$colData$rest[idx],n2 = "REST")
+
+
+```
+
+#### 6. get average (and standard deviation) of expression levels of all genes within each condition
+
+```{r}
+base <- getAverage(iN$deseq)
+head(base$Mean)
+head(base$SD)
+
+```
+
+#### 7. Get significant genes (of RESTi test)
+```{r}
+
+# Get diffex-data of genes with p-adj < 0.001 and log2FC more/less than 0.2
+sign <- getSign(x = iN$test$RESTi,p = .001,l = .2)
+up <- sign$up
+down <- sign$down
+
+# Get names of genes with p-adj < 0.01 and log2FC more/less than .1
+signID <- getSignName(x = iN$test$RESTi,p = .01,l = .2)
+upID <- signID$up
+downID <- signID$down
+
+```
+
