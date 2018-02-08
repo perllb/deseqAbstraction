@@ -1,6 +1,6 @@
 #' @name meanPlot
 #' @description Plots scatter plot with log2(cond1) vs. log2(cond2), and marks significant genes
-#' @param deseqAbs: deseqAbs object
+#' @param exp: data.frame with average expression of genes (rows) in conditions (cols). Two columns only! if you experiment has more conditions, then select columns first.
 #' @param c1: string describing condition 1 in results deseq test
 #' @param c2: string describing condition 2 in results deseq test
 #' @param id: If TRUE, you can identify points and label their names. FALSE by default#'
@@ -10,23 +10,13 @@
 #' exp <- getAverage(dds)
 #' maPlot(exp = exp, c1 = "KO", c2 = "CTR" )
 
-meanPlot <- function(deseqAbs,c1 = NULL,c2 = NULL,p=.05,l=0,id=F) {
+meanPlot <- function(exp,test,c1 = "condition 1",c2 = "condition 2",p=.05,l=0,id=F) {
 
-  if(is.null(c1) || is.null(c2)){
-    stop("Set conditions!")
-  }
-  
-  name <- paste(c1,c2,sep = ".vs.")
-  deseqAbs$makeDiffex(name = name,c1 = c1,c2 = c2)
-  test <- deseqAbs$test$name
-  
   sign <- getSignName(x = test,p = p,l = l)
   u <- sign$up
   d <- sign$down
   n <- nrow(exp) - length(u) - length(d)
 
-  exp <- deseqAbs$baseMean$Mean[,c(c2,c1)]
-  
   #color up and down sign..
   colVec <- ifelse(test = (rownames(exp) %in% u),
                    yes = "firebrick3",
