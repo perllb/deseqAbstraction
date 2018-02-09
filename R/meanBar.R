@@ -31,7 +31,7 @@ meanBar <- function(deseqAbs,genes,cond=NULL,FPKM=FALSE,points=FALSE) {
   
   ## set graphical area
   row <- ifelse(test = sqrt(length(genes))%%1 > .5,yes = floor(sqrt(length(genes)))+1,no = floor(sqrt(length(genes)))) 
-  par(mfrow=c(row,ceiling(sqrt(length(genes)))),mar=c(7,5,4,4))
+  par(mfrow=c(row,ceiling(sqrt(length(genes)))),mar=c(10,5,4,4))
   library(RColorBrewer)
   cols <- colorRampPalette(brewer.pal(8, "Greys"))
   
@@ -86,7 +86,7 @@ meanBar <- function(deseqAbs,genes,cond=NULL,FPKM=FALSE,points=FALSE) {
       }
     }
     ylab <- ifelse(FPKM,"FPKM mean","Mean normalized read counts")
-    mtext(ylab,side = 2,line = 4,cex = .6)
+    mtext(ylab,side = 2,line = 4,cex = .9)
     arrows(x0 = x,y0 = plot,x1 = x,y1 = plot+se,length = .1,angle = 90)
     title(main = gene)
     
