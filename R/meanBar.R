@@ -86,7 +86,7 @@ meanBar <- function(deseqAbs,genes,cond=NULL,FPKM=FALSE,points=FALSE) {
       }
     }
     ylab <- ifelse(FPKM,"FPKM mean","Mean normalized read counts")
-    mtext(ylab,side = 2,line = 4,cex = .9)
+    mtext(ylab,side = 2,line = 4,cex = .6)
     arrows(x0 = x,y0 = plot,x1 = x,y1 = plot+se,length = .1,angle = 90)
     title(main = gene)
     
