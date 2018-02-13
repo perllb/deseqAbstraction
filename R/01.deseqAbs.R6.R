@@ -106,13 +106,14 @@ deseqAbs <- R6Class("deseqAbs",
                             self$sampleNames <- colnames
                           }
                             
-                          colnames(self$rawCounts) <- self$sampleNames
                           
                           self$test <- list()
                           self$read_file(filename)
                           self$geneID <- as.character(self$rawfile[,1])
                           self$getPos()
                           self$getRawCounts()
+                          colnames(self$rawCounts) <- self$sampleNames
+                          
                           if(!is.null(design)){
                             self$design <- design
                           } else { self$design <- formula(~condition)}
