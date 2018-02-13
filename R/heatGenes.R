@@ -64,7 +64,8 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=.001,z=FALSE
       df <- data.frame(Var1 = factor(a1))
       rownames(df) <- colnames(data)
       colnames(df) <- n1
-
+      names(plotData) <- rownames(df)
+      
       mycolors <- a1col[1:length(unique(a1))]
       names(mycolors) <- unique(a1)
       mycolors <- list(a = mycolors)
@@ -77,7 +78,8 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=.001,z=FALSE
       df <- data.frame(Var1 = factor(a1),Var2 = factor(a2))
       rownames(df) <- colnames(data)
       colnames(df) <- c(n1,n2)
-
+      names(plotData) <- rownames(df)
+      
       mycolors <- a1col[1:length(unique(a1))]
       names(mycolors) <- unique(a1)
 
@@ -96,7 +98,8 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=.001,z=FALSE
       df <- data.frame(Var1 = factor(a1))
       rownames(df) <- colnames(data)
       colnames(df) <- n1
-
+      names(plotData) <- rownames(df)
+      
       mycolors <- a1col[1:length(unique(a1))]
       names(mycolors) <- unique(a1)
       mycolors <- list(a = mycolors)
