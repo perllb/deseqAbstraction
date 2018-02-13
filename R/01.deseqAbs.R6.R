@@ -307,7 +307,7 @@ deseqAbs <- R6Class("deseqAbs",
                       makeVST = function(blind=NULL) {
 
                         if(is.null(self$deseq)){
-                          cat(">> The $deseq object is not initialized.. This has to be done before varianceStablizingTransformation..\n")
+                          cat(">> The $deseq object is not initialized on this instance.. This has to be done before varianceStablizingTransformation..\n")
                           self$makeDESeq()
                         }
 
@@ -326,12 +326,21 @@ deseqAbs <- R6Class("deseqAbs",
                           cat(paste(">>Performing ",bl," variance stabilizing transformation \n",sep = ""))
                           self$VST <- varianceStabilizingTransformation(self$deseq,blind = blind)
 
+                          # add colnames of VST assay dataframe
+                          # if SampleNames given (which they should be upon initialization, set to colnames)
                           if(!is.null(self$sampleNames)) {
-                            colnames(assay(self$VST)) <- make.names(self$sampleNames,unique = T)
+                            # add condition to sample names
+                            colnames <- paste(self$colData$condition,self$sampleNames,sep=" : ")
+                            # if there will be duplicates, make unique
+                            if(length(which(duplicated(colnames)))>0) {
+                              names(assay(self$VST)) <- make.names(colnames,unique = T)
+                            } else {
+                              names(assay(self$VST)) <- colnames
+                            }
+                          # if No sampleNames exist, use colData conditions only. 
                           }else if(!is.null(self$colData)) {
-                            colnames(assay(self$VST)) <- make.names(names = as.character(self$colData$condition),unique = T)
+                            names(assay(self$VST)) <- make.names(names = as.character(self$colData$condition),unique = T)
                           }
-
                           cat(paste(" - ..complete! ",bl," variance stabilizing transformation \n",sep = ""))
 
                         }
@@ -398,9 +407,9 @@ deseqAbs <- R6Class("deseqAbs",
                         self$FPKM <- 10^9*t(t(self$rawCounts/as.numeric(self$length))/as.numeric(colSums(self$rawCounts)))
                         rownames(self$FPKM) <- self$geneID
                         if(!is.null(self$sampleNames)) {
-                          colnames(self$FPKM) <- make.names(names = self$sampleNames,unique = T)
+                          names(self$FPKM) <- make.names(names = self$sampleNames,unique = T)
                         }else if(!is.null(self$colData)) {
-                          colnames(self$FPKM) <- make.names(names = self$colData$condition,unique = T)
+                          names(self$FPKM) <- make.names(names = self$colData$condition,unique = T)
                         }
                         cat("- ..complete! FPKM computed. Access with $FPKM.\n")
 
