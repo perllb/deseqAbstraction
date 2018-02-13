@@ -81,7 +81,7 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=.001,z=FALSE
       mycolors <- a1col[1:length(unique(a1))]
       names(mycolors) <- unique(a1)
 
-      mycolors2 <- a2col[length(unique(a2))]
+      mycolors2 <- a2col[1:length(unique(a2))]
       names(mycolors2) <- unique(a2)
 
       mycolors <- list(a = mycolors,b = mycolors2)
