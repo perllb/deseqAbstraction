@@ -97,7 +97,17 @@ deseqAbs <- R6Class("deseqAbs",
                           cols <- names(colData)
                           colData[,cols] <- lapply(colData[,cols],factor)
                           self$colData <- colData
-                          self$sampleNames <- colData$samples
+                          
+                          # sample names, must be unique
+                          colnames <- paste(colData$condition,colDat$samples,sep = ": ")
+                          if(length(which(duplicated(colnames)))>0){
+                            self$sampleNames <- make.names(colnames,unique = T)
+                          } else {
+                            self$sampleNames <- colnames
+                          }
+                            
+                          colnames(self$rawCounts) <- self$sampleNames
+                          
                           self$test <- list()
                           self$read_file(filename)
                           self$geneID <- as.character(self$rawfile[,1])
