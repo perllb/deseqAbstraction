@@ -87,8 +87,8 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=.001,z=FALSE
       mycolors <- list(a = mycolors,b = mycolors2)
       names(mycolors) <- c(n1,n2)
 
-      pheatmap(plotData, annotation_col = df, annotation_colors = mycolors,border_color = NA,kmeans_k=k,cutree_rows=cutreeR,cutree_cols=cutreeC,fontsize_row = 4, cluster_rows = T, show_rownames = rowShow, cluster_cols = cluster_col,scale = scale,color = rev(colorRampPalette(brewer.pal(10,heatCol))(200)))
-
+     pheatmap(plotData, annotation_col = df, annotation_colors = mycolors,border_color = NA,kmeans_k=k,cutree_rows=cutreeR,cutree_cols=cutreeC,fontsize_row = 4, cluster_rows = T, show_rownames = rowShow, cluster_cols = cluster_col,scale = scale,color = rev(colorRampPalette(brewer.pal(10,heatCol))(200)))
+'
 
     } else if (!is.null(a2) & is.null(a1)) {
 

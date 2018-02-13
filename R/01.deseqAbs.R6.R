@@ -338,7 +338,7 @@ deseqAbs <- R6Class("deseqAbs",
                               names(assay(self$VST)) <- colnames
                             }
                           # if No sampleNames exist, use colData conditions only. 
-                          }else if(!is.null(self$colData)) {
+                          }else if(!is.null(self$colData$condition)) {
                             names(assay(self$VST)) <- make.names(names = as.character(self$colData$condition),unique = T)
                           }
                           cat(paste(" - ..complete! ",bl," variance stabilizing transformation \n",sep = ""))
