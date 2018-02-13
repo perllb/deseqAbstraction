@@ -1,11 +1,10 @@
 ### deseqAbstraction
-#### function library for standard deseq pipelines
-#### deseqAbs object to ease every analysis and handling of data
-#### tutorials for usage found in repository: usageTutorial
-- install.packages("devtools")
-- library(devtools)
-- install_github("perllb/deseqAbstraction")
-- library(deseqAbstraction)
+ - Object-oriented analysis of RNA-seq data in R! 
+ - For standard deseq pipelines - made really easy and comfortable.
+ - deseqAbs object to ease every analysis, handling and visualization of RNA-seq data
+ - Based on DESeq2
+ - <b>Main usage tutorial: Usage.pdf or Usage.html in deseqAbstraction (current) directory. </b>
+ - More usage tutorials found in usageTutorials/deseqAbs repository!
 
 
 
