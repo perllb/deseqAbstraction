@@ -25,7 +25,7 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=.001,z=FALSE
   library(pheatmap)
   library(graphics)
   library(RColorBrewer)
-
+  
   if(!is.matrix(data) & !is.data.frame(data)) {
     data <- assay(data)
   }
@@ -34,6 +34,11 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=.001,z=FALSE
     cat("ERROR: Data is not in correct format. Must be matrix or DESeq object")
   } else {
 
+    # Set annotation colors (9 colors)
+    a1col <- c("#BD1212",	"#00008B", 	"#228B22", "#D2691E","#BC8F8F",	"#FFE4B5",  "#808000", 	"#FFD700",	"#20B2AA")
+            # red ,   dark blue, forest green, chocolate, rosy brown, moccasin  ,  olive green, gold,ligth sea
+    a2col <- c("#FAEBD7",      "	#8B4513" ,    "#B0C4DE",         "#B0C4DE",  "#000080" ,"	#6495ED",   "#008080","#00FF00", 	"#F0E68C")
+            # antique white, saddle brown , ligth steel blue,  slate brue,  navy , corn flower blue, teal  ,  lime,      khaki
     ## Change to RdYlBu (if RedBlue == F)
     heatCol <- ifelse(redBlue,yes = "RdBu",no = "RdYlBu")
     
@@ -60,8 +65,7 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=.001,z=FALSE
       rownames(df) <- colnames(data)
       colnames(df) <- n1
 
-      cols <- colorRampPalette(brewer.pal(7, "Set1"))
-      mycolors <- cols(length(unique(a1)))
+      mycolors <- a1col[1:length(unique(a1))]
       names(mycolors) <- unique(a1)
       mycolors <- list(a = mycolors)
       names(mycolors) <- n1
@@ -74,12 +78,10 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=.001,z=FALSE
       rownames(df) <- colnames(data)
       colnames(df) <- c(n1,n2)
 
-      cols <- colorRampPalette(brewer.pal(8, "Set1"))
-      mycolors <- cols(length(unique(a1)))
+      mycolors <- a1col[1:length(unique(a1))]
       names(mycolors) <- unique(a1)
 
-      cols <- colorRampPalette(brewer.pal(8, "Dark2"))
-      mycolors2 <- cols(length(unique(a2)))
+      mycolors2 <- a2col[length(unique(a2))]
       names(mycolors2) <- unique(a2)
 
       mycolors <- list(a = mycolors,b = mycolors2)
@@ -95,8 +97,7 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=.001,z=FALSE
       rownames(df) <- colnames(data)
       colnames(df) <- n1
 
-      cols <- colorRampPalette(brewer.pal(8, "Set1"))
-      mycolors <- cols(length(unique(a1)))
+      mycolors <- a1col[1:length(unique(a1))]
       names(mycolors) <- unique(a1)
       mycolors <- list(a = mycolors)
       names(mycolors) <- n1
