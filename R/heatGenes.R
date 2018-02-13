@@ -45,7 +45,7 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=.001,z=FALSE
     plotData <- genes.exp[sd.exp > sd,]
 
     ## Show rownames? only if less that 41 genes are plotted
-    rowShow <- T; if(nrow(plotData)>80) { rowShow <- F }
+    rowShow <- T; if(nrow(plotData)>100) { rowShow <- F }
     print(paste("There are ",nrow(plotData)," genes in you gene-set with sd > ",sd,".",sep=""))
 
     ## scale by row?
@@ -57,7 +57,7 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=.001,z=FALSE
       rownames(df) <- colnames(data)
       colnames(df) <- n1
 
-      cols <- colorRampPalette(brewer.pal(8, "Set1"))
+      cols <- colorRampPalette(brewer.pal(7, "Set1"))
       mycolors <- cols(length(unique(a1)))
       names(mycolors) <- unique(a1)
       mycolors <- list(a = mycolors)
@@ -71,11 +71,11 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=.001,z=FALSE
       rownames(df) <- colnames(data)
       colnames(df) <- c(n1,n2)
 
-      cols <- colorRampPalette(brewer.pal(9, "Set1"))
+      cols <- colorRampPalette(brewer.pal(8, "Set1"))
       mycolors <- cols(length(unique(a1)))
       names(mycolors) <- unique(a1)
 
-      cols <- colorRampPalette(brewer.pal(7, "Dark2"))
+      cols <- colorRampPalette(brewer.pal(8, "Dark2"))
       mycolors2 <- cols(length(unique(a2)))
       names(mycolors2) <- unique(a2)
 
@@ -92,7 +92,7 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=.001,z=FALSE
       rownames(df) <- colnames(data)
       colnames(df) <- n1
 
-      cols <- colorRampPalette(brewer.pal(9, "Set1"))
+      cols <- colorRampPalette(brewer.pal(8, "Set1"))
       mycolors <- cols(length(unique(a1)))
       names(mycolors) <- unique(a1)
       mycolors <- list(a = mycolors)
