@@ -99,7 +99,7 @@ deseqAbs <- R6Class("deseqAbs",
                           self$colData <- colData
                           
                           # sample names, must be unique
-                          colnames <- paste(colData$condition,colDat$samples,sep = ": ")
+                          colnames <- paste(colData$condition,colData$samples,sep = ": ")
                           if(length(which(duplicated(colnames)))>0){
                             self$sampleNames <- make.names(colnames,unique = T)
                           } else {

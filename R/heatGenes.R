@@ -20,7 +20,7 @@
 #' heatGenes(data = assay(vst),genes = genes, sd = 1, a1 = colData$cellLine, a2 = colData$treatment,n1 = "Cell Line",n2 = "Treatment",z = T)
 
 
-heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=.001,z=FALSE,cluster_col=T,k=NA,cutreeR=1,cutreeC=1,redBlue=T) {
+heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=.001,z=FALSE,cluster_col=T,k=NA,cutreeR=1,cutreeC=1,redBlue=T,breaks=NA) {
 
   library(pheatmap)
   library(graphics)
@@ -35,12 +35,18 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=.001,z=FALSE
   } else {
 
     # Set annotation colors (9 colors)
-    a1col <- c( "#808000", 	"#FFD700",	"#20B2AA",	"#228B22", "#D2691E","#BC8F8F",	"#FFE4B5", "#BD1212",	"#00008B")
-            #  olive green, gold,ligth sea, forest green, chocolate, rosy brown, moccasin  , red ,   dark blue, 
+    a1col <- c( "#808000", 	"#FFD700",	"#20B2AA",	"#D2691E","#BC8F8F",	"#FFE4B5", "#BD1212",	"#00008B")
+            #  olive green, gold,ligth sea, forest green, rosy brown, moccasin  , red ,   dark blue, 
     a2col <- c("#FAEBD7",      "#8B4513" ,    "#B0C4DE",         "#B0C4DE",  "#000080" ,"	#6495ED",   "#008080","#00FF00", 	"#F0E68C")
             # antique white, saddle brown , ligth steel blue,  slate brue,  navy , corn flower blue, teal  ,  lime,      khaki
     ## Change to RdYlBu (if RedBlue == F)
     heatCol <- ifelse(redBlue,yes = "RdBu",no = "RdYlBu")
+    
+    if(!is.na(breaks[1])) {
+      heatScaleCol <- rev(colorRampPalette(brewer.pal(10,heatCol))(length(breaks)))
+    }else {
+      heatScaleCol <- rev(colorRampPalette(brewer.pal(10,heatCol))(200))
+    }
     
     genes.exp <- getGenes(data = data,genes = genes)
     rownames(genes.exp) <- make.names(genes.exp[,1],unique = T)
@@ -71,7 +77,7 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=.001,z=FALSE
       mycolors <- list(a = mycolors)
       names(mycolors) <- n1
   
-      pheatmap(plotData, annotation_col = df, annotation_colors = mycolors,border_color = NA,kmeans_k=k,cutree_rows=cutreeR,cutree_cols=cutreeC, cluster_rows = T, show_rownames = rowShow, cluster_cols = cluster_col,scale = scale,color = rev(colorRampPalette(brewer.pal(10,"RdBu"))(100)))
+      pheatmap(plotData, annotation_col = df, breaks = breaks, annotation_colors = mycolors,border_color = NA,kmeans_k=k,cutree_rows=cutreeR,cutree_cols=cutreeC, cluster_rows = T, show_rownames = rowShow, cluster_cols = cluster_col,scale = scale,color = heatScaleCol)
 
     } else if (!is.null(a1) & !is.null(a2)) {
 
@@ -89,7 +95,7 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=.001,z=FALSE
       mycolors <- list(a = mycolors,b = mycolors2)
       names(mycolors) <- c(n1,n2)
 
-     pheatmap(plotData, annotation_col = df, annotation_colors = mycolors,border_color = NA,kmeans_k=k,cutree_rows=cutreeR,cutree_cols=cutreeC,cluster_rows = T, show_rownames = rowShow, cluster_cols = cluster_col,scale = scale,color = rev(colorRampPalette(brewer.pal(10,heatCol))(200)))
+     pheatmap(plotData, annotation_col = df, annotation_colors = mycolors,border_color = NA,kmeans_k=k,cutree_rows=cutreeR,cutree_cols=cutreeC,cluster_rows = T, show_rownames = rowShow, cluster_cols = cluster_col,scale = scale,color = heatScaleCol,breaks = breaks)
 
 
     } else if (!is.null(a2) & is.null(a1)) {
@@ -105,10 +111,10 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=.001,z=FALSE
       mycolors <- list(a = mycolors)
       names(mycolors) <- n1
 
-      pheatmap(plotData, annotation_col = df, annotation_colors = mycolors,border_color = NA,kmeans_k=k,cutree_rows=cutreeR,cutree_cols=cutreeC,cluster_rows = T, show_rownames = rowShow, cluster_cols = cluster_col,scale = scale,color = rev(colorRampPalette(brewer.pal(10,heatCol))(200)))
+      pheatmap(plotData, annotation_col = df, annotation_colors = mycolors,border_color = NA,kmeans_k=k,cutree_rows=cutreeR,cutree_cols=cutreeC,cluster_rows = T, show_rownames = rowShow, cluster_cols = cluster_col,scale = scale,color = heatScaleCol,breaks = breaks)
 
     } else {
-      pheatmap(plotData, cluster_rows = T,  show_rownames = rowShow,border_color = NA,kmeans_k=k,cutree_rows=cutreeR,cutree_cols=cutreeC, cluster_cols = cluster_col,scale = scale,color = rev(colorRampPalette(brewer.pal(10,heatCol))(200)))
+      pheatmap(plotData, cluster_rows = T,  show_rownames = rowShow,border_color = NA,kmeans_k=k,cutree_rows=cutreeR,cutree_cols=cutreeC, cluster_cols = cluster_col,scale = scale,color = heatScaleCol,breaks = breaks)
     }
 
     return(rownames(plotData))
