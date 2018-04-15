@@ -37,7 +37,7 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=.001,z=FALSE
     # Set annotation colors (9 colors)
     a1col <- c( "#808000", 	"#FFD700",	"#20B2AA",	"#D2691E","#BC8F8F",	"#FFE4B5", "#BD1212",	"#00008B")
             #  olive green, gold,ligth sea, forest green, rosy brown, moccasin  , red ,   dark blue, 
-    a2col <- c("#FAEBD7",      "#8B4513" ,    "#B0C4DE",         "#B0C4DE",  "#000080" ,"	#6495ED",   "#008080","#00FF00", 	"#F0E68C")
+    a2col <- c("#FAEBD7",      "#8B4513" ,         "#B0C4DE",  "#000080" ,"	#6495ED",   "#008080","#00FF00", 	"#F0E68C")
             # antique white, saddle brown , ligth steel blue,  slate brue,  navy , corn flower blue, teal  ,  lime,      khaki
     ## Change to RdYlBu (if RedBlue == F)
     heatCol <- ifelse(redBlue,yes = "RdBu",no = "RdYlBu")
