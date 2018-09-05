@@ -98,7 +98,7 @@ deseqTE <- R6Class("deseqTE",
                          self$TE.features <- self$getFeatures(genome)
                          self$TE.fams <- self$get_famANDclass(self$TE.IDsub)
                          cat("- ..complete! Genomic RepeatMasker feature for ",genome,"read.. stored in $TE.features")
-                         
+
                        }
                       },
 
@@ -109,7 +109,7 @@ deseqTE <- R6Class("deseqTE",
                        }
                        library(plyr)
                        return(join(x=data.frame(V1=IDlist),y=data.frame(apply(self$TE.features,2,as.character),stringsAsFactors = F)))
-                       
+
                      },
 
                      ## Class, family and subfam can be vectors
@@ -160,7 +160,7 @@ deseqTE <- R6Class("deseqTE",
                          ## Family?
                          if(!is.null(family)) {
 
-                           
+
                            dfr <- matrix(nrow=length(family),ncol=length(self$rawCounts[1,]))
                            idx <- 1
                            for (curr in family) {
@@ -377,7 +377,7 @@ deseqTE <- R6Class("deseqTE",
                              x <- barplot(plotPerc,ylim = c(0,max(colSums(plotPerc))*1.5),col=col,ylab="% reads mapping TE / mapping to genome",las=2)
                              legend("topleft",legend = rev(c("LINE","SINE","LTR")),fill=rev(col),bty='n')
                              title("Percentage of reads mapping to EREs / genome")
-                             
+
 
                            }
                            return(plotPerc)
@@ -547,7 +547,7 @@ deseqTE <- R6Class("deseqTE",
                          curr.sig <- rbind(curr.up,curr.down)
 
                           if(nrow(curr.sig)>0){
-                           points(log2(curr.sig$baseMean),curr.sig$log2FoldChange,col=col[idx],pch=16,cex=.8)
+                           points(log2(curr.sig$baseMean),curr.sig$log2FoldChange,col=col[idx],pch=1,cex=.8)
                          }
 
                          idx <- idx+1
@@ -561,10 +561,10 @@ deseqTE <- R6Class("deseqTE",
                        greps <- paste(TEclass,collapse = "$|^")
                        TEclass.features <- as.character(self$TE.features[grep(greps,self$TE.features$V2),1])
                        if(length(TEclass.features)>0){
-                         return(data[grep(paste(TEclass.features,collapse = "|^"),rownames(data)),])  
+                         return(data[grep(paste(TEclass.features,collapse = "|^"),rownames(data)),])
                        }
                        else{return(NULL)}
-                       
+
 
                      },
 
@@ -591,7 +591,7 @@ deseqTE <- R6Class("deseqTE",
 
                      },
 
-                     read_file = function(filename,filter=5) {
+                     read_file = function(filename,filter=3) {
                        path <- filename
                        if(!is.na(filename)) {
 
@@ -615,7 +615,7 @@ deseqTE <- R6Class("deseqTE",
                            rem <- len-nrow(self$rawfile)
                            remain <- nrow(self$rawfile)
                            cat("- ..complete! featureCount file filtering done.\n -- 1.Original rawfile had",len,"elements\n")
-                           cat("-- 2.After filtering",remain,"elements remain.\n -- 3.",rem,"(",(100*rem/len),"%) elements removed due to < ",filter," reads on average.\n")
+                           cat("--  2.After filtering",remain,"elements remain.\n -- 3.",rem,"(",(100*rem/len),"%) elements removed due to < ",filter," reads on average.\n")
                            cat("--- 4. If you want another cutoff for filtering, enter [filter = x] in call to method. \n")
                            cat("--- 5. Access filtered file with $rawfile\n")
 
