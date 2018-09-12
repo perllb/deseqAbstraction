@@ -1,7 +1,7 @@
 #' @name GO_geneFC
 #' @description Do GO term enrichement and analysis for a list of genes
 #' @param dds: deseq object
-#' @param species: only hg38 annotation currently supported, mm10 coming soon..
+#' @param species: only human (hsa) annotation currently supported, mm10 coming soon..
 #' @param BP: test for biological process terms
 #' @param MF: test for molecular function terms
 #' @param CC: test for cellular compartment terms
@@ -10,10 +10,10 @@
 #' @export GO_geneFC
 #' @examples
 #' dabs <- deseqAbs$new(name="drugTest",colData=colDat,file=pathToFeatureCountsOutput)
-#' GO_pathview(dabs = dabs,species = "hg38",BP=T,MF=F,CC=F,sameDir=T)
+#' GO_pathview(dabs = dabs,species = "hsa",BP=T,MF=F,CC=F,sameDir=T)
 
 
-GO_geneFC <- function(dabs=NULL,species="hg38",BP=T,MF=F,CC=F,sameDir=T) {
+GO_geneFC <- function(dabs=NULL,species="hsa",BP=T,MF=F,CC=F,sameDir=T) {
   
   ### Dependencies:
   #source("https://bioconductor.org/biocLite.R")

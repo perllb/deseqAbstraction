@@ -1,15 +1,15 @@
 #' @name GO_pathview
 #' @description Do GO term enrichement and analysis for a list of genes (pathway analysis and plots)
 #' @param dds: deseq object
-#' @param species: only hg38 annotation currently supported, mm10 coming soon
+#' @param species: only human (hsa) annotation currently supported, mm10 coming soon
 #' @param Npathways: How many pathways to plot
 #' @title GOanalysis in R  - pathways
 #' @export GO_pathview
 #' @examples
 #' dabs <- deseqAbs$new(name="drugTest",colData=colDat,file=pathToFeatureCountsOutput)
-#' GO_pathview(dabs = dabs,species = "hg38",Npathways = 4)
+#' GO_pathview(dabs = dabs,species = "hsa",Npathways = 4)
 
-GO_pathview <- function(dabs=NULL,species="hg38",Npathways=5) {
+GO_pathview <- function(dabs=NULL,species="hsa",Npathways=5) {
   
   ### Dependencies:
   #source("https://bioconductor.org/biocLite.R")
@@ -73,11 +73,11 @@ GO_pathview <- function(dabs=NULL,species="hg38",Npathways=5) {
   
   # Define plotting function for applying later
   
-  plot_pathway = function(pid) pathview(gene.data=fc, pathway.id=pid, species="hsa", new.signature=FALSE)
+  plot_pathway = function(pid) pathview(gene.data=fc, pathway.id=pid, species=species, new.signature=FALSE)
   
   # plot multiple pathways (plots saved to disk and returns a throwaway list object)
   detach("package:dplyr",unload = T)
-  tmp = sapply(keggresids, function(pid) pathview(gene.data=fc, pathway.id=pid, species="hsa"))
+  tmp = sapply(keggresids, function(pid) pathview(gene.data=fc, pathway.id=pid, species=species))
   
   #### Less
   # Get the pathways
@@ -97,10 +97,10 @@ GO_pathview <- function(dabs=NULL,species="hg38",Npathways=5) {
   
   # Define plotting function for applying later
   
-  plot_pathway = function(pid) pathview(gene.data=fc, pathway.id=pid, species="hsa", new.signature=FALSE)
+  plot_pathway = function(pid) pathview(gene.data=fc, pathway.id=pid, species=species, new.signature=FALSE)
   
   detach("package:dplyr",unload = T)
   # plot multiple pathways (plots saved to disk and returns a throwaway list object)
-  tmp = sapply(keggresids, function(pid) pathview(gene.data=fc, pathway.id=pid, species="hsa"))
+  tmp = sapply(keggresids, function(pid) pathview(gene.data=fc, pathway.id=pid, species=species))
   
 }
