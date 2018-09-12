@@ -1,4 +1,3 @@
-
 #' @name GO_topGO_rank
 #' @description Do GO term enrichement and analysis for a list of genes
 #' @param dds: deseq object
@@ -17,7 +16,7 @@
 
 
 
-GO_topGO_geneSet_rank <- function(dabs=NULL,org="hsa",term="BP",nodeSize=5,rank="log2fc",sigCut=1) {
+GO_topGO_rank <- function(dabs=NULL,org="hsa",term="BP",nodeSize=5,rank="log2fc",sigCut=1) {
   
   #source("http://bioconductor.org/biocLite.R")
   #biocLite("topGO")

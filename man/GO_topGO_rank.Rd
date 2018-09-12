@@ -2,11 +2,10 @@
 % Please edit documentation in R/GO_topGO_rank.R
 \name{GO_topGO_rank}
 \alias{GO_topGO_rank}
-\alias{GO_topGO_geneSet_rank}
 \title{GOanalysis in R - topGO enrichment test terms RANK based}
 \usage{
-GO_topGO_geneSet_rank(dabs = NULL, org = "hsa", term = "BP",
-  nodeSize = 5, rank = "log2fc", sigCut = 1)
+GO_topGO_rank(dabs = NULL, org = "hsa", term = "BP", nodeSize = 5,
+  rank = "log2fc", sigCut = 1)
 }
 \arguments{
 \item{dds:}{deseq object}
