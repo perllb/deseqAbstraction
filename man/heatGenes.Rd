@@ -5,7 +5,8 @@
 \title{HeatGenes: Heatmap of your genes of interest!}
 \usage{
 heatGenes(data, genes, a1 = NULL, a2 = NULL, n1 = NULL, n2 = NULL,
-  sd = 1, z = FALSE, cluster_col = T)
+  sd = 0.001, z = FALSE, cluster_col = T, k = NA, cutreeR = 1,
+  cutreeC = 1, redBlue = T, breaks = NA)
 }
 \arguments{
 \item{data:}{deseq matrix data (with varianceStablizing, rlog etc - eg. assay(vsd)}
@@ -25,6 +26,12 @@ heatGenes(data, genes, a1 = NULL, a2 = NULL, n1 = NULL, n2 = NULL,
 \item{z:}{logical operator. if TRUE, normalize by row (z-score). if FALSE (default), then plot normalized expression values}
 
 \item{cluster_col:}{logical operator: if TRUE (default), cluster columns, if FALSE do not cluster columns}
+
+\item{k:}{number of clusters in k-means}
+
+\item{cutreeR:}{number of cuts in rowtree}
+
+\item{cutreeC:}{number of cuts in Coltree}
 }
 \description{
 Plots heatmap showing the expression of the genes of given gene-list and having sd above given value

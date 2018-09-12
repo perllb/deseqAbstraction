@@ -4,8 +4,8 @@
 \alias{volcanoPlot}
 \title{volcano plot}
 \usage{
-volcanoPlot(test, max = NULL, p = 0.05, title = "transcriptome changes",
-  id = F)
+volcanoPlot(test, max = NULL, p = 0.05,
+  title = "transcriptome changes", id = F)
 }
 \arguments{
 \item{test:}{output object from results() of DESeq2}

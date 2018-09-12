@@ -4,7 +4,7 @@
 \alias{meanBar}
 \title{meanBar: Barplot of your genes of interest!}
 \usage{
-meanBar(deseqAbs, genes, cond = NULL, FPKM = FALSE)
+meanBar(deseqAbs, genes, cond = NULL, FPKM = FALSE, points = FALSE)
 }
 \arguments{
 \item{deseqAbs:}{deseqAbs object with FPKMMean and test data}
@@ -14,11 +14,27 @@ meanBar(deseqAbs, genes, cond = NULL, FPKM = FALSE)
 \item{cond:}{a vector of conditions to plot}
 
 \item{FPKM:}{Set to TRUE if FPKM should be plotted instead of baseMean}
+
+\item{points:}{Set to TRUE if points should be added}
+
+\item{deseqAbs:}{deseqAbs object with FPKMMean and test data}
+
+\item{genes:}{a vector of gene IDs to be extracted from rownames of data}
+
+\item{cond:}{a vector of conditions to plot}
+
+\item{FPKM:}{Set to TRUE if FPKM should be plotted instead of baseMean}
+
+\item{points:}{Set to TRUE if points should be added}
 }
 \description{
 barplot of gene expression
+
+barplot of gene expression
 }
 \examples{
+genes <- c("DNMT1","TRIM28","PAX6","DCX","SOX2","AGO2")
+meanBar(dnmt,genes)
 genes <- c("DNMT1","TRIM28","PAX6","DCX","SOX2","AGO2")
 meanBar(dnmt,genes)
 }
