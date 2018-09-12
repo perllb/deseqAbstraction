@@ -1,4 +1,3 @@
-
 #' @name GO_topGO_geneSet
 #' @description Do GO term enrichement and analysis for a list of genes
 #' @param dds: deseq object
