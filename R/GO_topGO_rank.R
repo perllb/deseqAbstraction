@@ -22,6 +22,9 @@ GO_topGO_rank <- function(dabs=NULL,org="hsa",term="BP",nodeSize=5,rank="log2fc"
   #biocLite("topGO")
   library(topGO)
   library(dplyr)
+  library(org.Hs.eg.db)
+  library(AnnotationDbi)
+  
   
   if(rank=="padj" && sigCut==1){
     print(">> WARNING: using p-adj as ranking and sigCut is set to 1 (default)! This will select all genes as significant.. better change rank to 'log2fc' or change sigCut to e.g. 0.01")

@@ -27,6 +27,8 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   }
   res <- dabs$test$Default
   
+  library(org.Hs.eg.db)
+  library(AnnotationDbi)
   # convert symbol to entrez and name
   res$entrez = mapIds(org.Hs.eg.db,
                       keys=row.names(res), 
