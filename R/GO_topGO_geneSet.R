@@ -35,9 +35,6 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   #biocLite("topGO")
   library(topGO)
   
-  BPterms <- ls(GOBPTerm)
-  head(BPterms)
-  
   if(is.null(dabs$normCounts)){
     dabs$makeDESeq()
     if(is.null(dabs$normCounts)){
@@ -49,6 +46,12 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   library(genefilter)
   selProbes <- genefilter(dabs$normCounts, filterfun(pOverA(0.20, log2(40)), function(x) (IQR(x) > 0.25)))
   eset <- dabs$normCounts[selProbes, ]
+  eset_entrez = mapIds(org.Hs.eg.db,
+                          keys=rownames(eset), 
+                          column="ENTREZID",
+                          keytype="SYMBOL",
+                          multiVals="first")
+  
   print(paste("> Filtering low abundance reads: ",nrow(eset)," out of ",nrow(dabs$normCounts)," genes remain..",sep = ""))
   
   ## panther annotation
@@ -63,7 +66,7 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   }
   
   # Get mapping of all entrez ids to GO terms
-  allEntrez <- as.vector(res$entrez)
+  allEntrez <- as.vector(eset_entrez)
   unloadNamespace("tidyverse")
   unloadNamespace("modelr")
   unloadNamespace("broom")
@@ -105,18 +108,15 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   geneNames <- names(geneID2GO)
   geneList <- factor(as.integer(geneNames %in% geneSet$entrez))
   names(geneList) <- geneNames
-  str(geneList)
   
   print("> Create GO object")
   # create GO object
   GOdata <- new("topGOdata", ontology = term, allGenes = geneList,annot = annFUN.gene2GO, gene2GO = geneID2GO,nodeSize=nodeSize)  
   
-  genes(GOdata)
-  numGenes(GOdata)  
   print(paste("> ",numGenes(GOdata)," out of ",nrow(res)," (from deseqAbs object) genes are included in GOdata object.. for analysis ",sep = ""))  
   
   #significant genes
-  print(paste("> ",numSigGenes(GOdata)," out of ",numGenes(GOdata)," (all with GO terms) genes are in given gene set ",sep = ""))  
+  print(paste("> ",numSigGenes(GOdata)," out of ",numGenes(GOdata)," (all with GO terms) genes are in significant terms ",sep = ""))  
   
   print(graph(GOdata))
   
@@ -127,7 +127,7 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   hist(resultFisher@score,50,xlab = "p-values")
   
   allRes <- GenTable(object = GOdata, classic = resultFisher, ranksOf = "classic", topNodes = length(resultFisher@score)) 
-  head(allRes)
+  print(head(allRes))
   
   return(allRes)
 }
