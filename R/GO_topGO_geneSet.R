@@ -13,33 +13,23 @@
 #' geneSet <- getSignName(x = dabs$test$Default,p=0.01)$up # get upregulated genes
 #' GO_topGO_geneSet(dabs = dabs,org = "hsa",BP=T,MF=F,CC=F,geneSet=geneSet)
 
-
-
-GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize=5) {
+GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize=5,outdir=".") {
   
   if(is.null(geneSet)){
     stop("> ERROR: you need to enter genes to test..")
   }
   
-  # make diffex if not done
-  if(is.null(dabs$test$Default)) {
-    dabs$makeDiffex()
-  }
-  res <- dabs$test$Default
+  geneSet <- data.frame(symbol = geneSet,stringsAsFactors = F)
   
   library(org.Hs.eg.db)
   library(AnnotationDbi)
   # convert symbol to entrez and name
-  res$entrez = mapIds(org.Hs.eg.db,
-                      keys=row.names(res), 
+  geneSet$entrez = mapIds(org.Hs.eg.db,
+                      keys=geneSet$symbol, 
                       column="ENTREZID",
                       keytype="SYMBOL",
                       multiVals="first")
-  res$name =   mapIds(org.Hs.eg.db,
-                      keys=row.names(res), 
-                      column="GENENAME",
-                      keytype="SYMBOL",
-                      multiVals="first")
+  
   
   #source("http://bioconductor.org/biocLite.R")
   #biocLite("topGO")
@@ -49,7 +39,10 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   head(BPterms)
   
   if(is.null(dabs$normCounts)){
-    stop("> ERROR: dabs$normCounts is NULL.. counts should be normalized when creating new deseqAbs object.. Check your data")
+    dabs$makeDESeq()
+    if(is.null(dabs$normCounts)){
+      stop("> ERROR: dabs$normCounts is NULL.. counts should be normalized when creating new deseqAbs object.. Check your data")
+    }  
   }
   
   ## Filter low abundancy genes
@@ -71,7 +64,8 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   
   # Get mapping of all entrez ids to GO terms
   allEntrez <- as.vector(res$entrez)
-  selection <- select(x = PANTHER.db,keytype = "ENTREZ",columns = c("GOSLIM_ID","GOSLIM_TERM"),keys=allEntrez)
+  library(tidyverse)
+  selection <- select(PANTHER.db,keytype = "ENTREZ",columns = c("GOSLIM_ID","GOSLIM_TERM"),keys=allEntrez)
   
   #BP
   ## Select only BP and collapse on entrez ID
@@ -79,16 +73,19 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   goSelection <- selection %>% 
     filter(GOSLIM_TERM==term) %>%
     group_by(ENTREZ) %>%
-    summarise_each(funs(toString))
+    summarise_all(funs(toString))
   
   #make data frame of data
   geneToGO <- data.frame(ENTREZ=goSelection$ENTREZ,GOSLIM_ID=goSelection$GOSLIM_ID)
   
-  if(!dir.exists("GO/topGO")){
-    dir.create("GO/topGO")
+  if(!dir.exists(paste(dir,"/GO/topGO",sep = ""))){
+   if(!dir.exists(paste(dir,"/GO/",sep = ""))){
+     dir.create(paste(dir,"/GO/",sep = ""))
+   }
+    dir.create(paste(dir,"/GO/topGO",sep = ""))
   }
   # write mapping 
-  gene2gofile<-paste("GO/topGO/geneToGO_entrez-panther.",term,".txt",sep = "")
+  gene2gofile<-paste(dir,"/GO/topGO/geneToGO_entrez-panther.",term,".txt",sep = "")
   write.table(x = geneToGO,file = gene2gofile,quote = F,sep="\t",row.names = F,col.names = F)
   
   # read mapping to correct format
@@ -98,7 +95,7 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   
   ## get gene set to be tested
   geneNames <- names(geneID2GO)
-  geneList <- factor(as.integer(geneNames %in% geneSet))
+  geneList <- factor(as.integer(geneNames %in% geneSet$entrez))
   names(geneList) <- geneNames
   str(geneList)
   
@@ -137,5 +134,47 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
 
 
 
+library(DESeq2) 
+library(devtools)
+install_github(repo = "perllb/deseqAbstraction",username = "perllb")
+library(deseqAbstraction)
 
+## FeatureCount raw file
+path <- "~/Dropbox (MN)/Per/PhD/Projects/KRAB-ZNF/Quant_20180423/hg38.s2.multi.Gencode27.Exon.sjdb.txt"
+## Get the sampleFile name header
+header <- read.delim(path,nrows = 1,skip=1,header=T)
+## Define sample names, by removing pre- and suffix 
+samples <- gsub(pattern ="X.projects.fs1.medpvb.backup.projects.ChimpHuman.RNAseq.Aligned_hg38_STAR_mMap.sjdb.genc.v27.hg38.mMap.genc.v27.",replacement = "",gsub(pattern = "Aligned.out.bam",replacement = "",x = names(header)))
+
+#### 1.3 Define metadata
+##### Note that 'condition' and 'samples' are needed here. Conditions define the design of DESeq object, defines what can be tested for and how the data is normalized.
+
+## fix colData
+line <- c(rep(c("pt_iPS_Sandra","hs_iPS_6","h9"),8),c("hs_hIPS_48","hs_hIPS_48","pt_ciPS_PT5","pt_ciPS_PT5"))
+species <- c(rep(c("chimp","human","human"),8),c("human","human","chimp","chimp"))
+time <- c(rep(c(rep("d13",3),rep("d14",3),rep("d15",3),rep("d16",3)),2),rep("d14",4))
+cond <- paste(line,time,sep = "-")
+batch <- c(rep(c("batch_1","batch_2"),each=12),rep("batch_3",4))
+colDat <- data.frame(species=species,time=time,condition=species,line=line,samples=samples[-c(1:6)],batch=batch)
+
+##install_github(repo = "perllb/deseqabstraction",username = "perllb",force=T)
+#library(deseqAbstraction)
+library(devtools)
+
+dabs <- deseqAbs$new("humanChimp",colData=colDat,filename=path)
+dabs$makeDiffex()
+res <- dabs$test$Default
+genes.up <- getSignName(x = res,p = .01,l = .2)$up
+
+GO_topGO_geneSet(dabs = dabs,geneSet = genes.up)
+
+#############
+dabs <- deseqAbs$new("humanChimp",colData=colDat,filename=path)
+dabs$makeDiffex()
+res <- dabs$test$Default
+genes.up <- getSignName(x = res,p = .01,l = .2)$up
+
+dir <- "~/Dropbox (MN)/Per/PhD/Projects/Chimp/Proteome_RNAseq.comparison/plots/"
+
+GO_topGO_geneSet(dabs = dabs,geneSet = genes.up)
 

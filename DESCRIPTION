@@ -17,4 +17,6 @@ Imports: R6,
   AnnotationDbi,
   pathview,
   gage,
-  gageData
+  gageData,
+  genefilter,
+  tidyverse
