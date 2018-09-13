@@ -21,3 +21,6 @@ meanBarGeneric(tab, cond = NULL, points = FALSE, jitter = F,
 \description{
 barplot of gene expression
 }
+\examples{
+meanBarGeneric(table,points=colData$cond,points=T)
+}
