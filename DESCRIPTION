@@ -19,4 +19,5 @@ Imports: R6,
   gage,
   gageData,
   genefilter,
-  tidyverse
+  tidyverse,
+  RCurl

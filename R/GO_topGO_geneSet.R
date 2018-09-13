@@ -18,38 +18,15 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   if(is.null(geneSet)){
     stop("> ERROR: you need to enter genes to test..")
   }
-  
   geneSet <- data.frame(symbol = geneSet,stringsAsFactors = F)
   
+  # Get annotation mapping
+  library(RCurl)
+  mapping <-read.delim(text = getURL("https://raw.githubusercontent.com/perllb/deseqAbstraction/master/data/genenames.org_entrez.genesymbol.ensembl.txt"))
+  mergeGenes <- merge(geneSet$symbol,mapping,by.x=1,by.y=2)
   
-  #install.packages("refGenome")
-  library(refGenome)
-  gtf = ensemblGenome()
-  
-  read.gtf(gtf, filename="~/Documents/bioinformatics/genomicData/hg38/gencode/gencode.gene.v27.annotation.gtf",useBasedir = )
-  
-  genes = gtf@ev$genes[ ,c("gene_id","gene_name")]
-  View(geneSet)
-  keytypes(org.Hs.eg.db)
-  
-  library(org.Hs.eg.db)
-  library(AnnotationDbi)
-  
-  
-  # convert symbol to entrez and name
-  geneSet$entrez = mapIds(org.Hs.eg.db,
-                      keys=geneSet$symbol, 
-                      column="ENTREZID",
-                      keytype="ALIAS",
-                      multiVals="list")
-  
-  library(org.Hs.eg.db)
-  keytypes(org.Hs.eg.db)
-  library(tidyverse)
-  columns(org.Hs.eg.db)
-  select(org.Hs.eg.db, keys="AC136475", columns=c("SYMBOL","ALIAS","ENTREZID"), keytype="ALIAS")
-  
-  
+  # update geneSet with new mapping
+  geneSet <- data.frame(symbol=mergeGenes$x,entrezid=mergeGenes$Entrez.Gene.ID,ensemblid=mergeGenes$Ensembl.ID.supplied.by.Ensembl.,stringsAsFactors = F)
   
   #source("http://bioconductor.org/biocLite.R")
   #biocLite("topGO")
@@ -66,14 +43,11 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   library(genefilter)
   selProbes <- genefilter(dabs$normCounts, filterfun(pOverA(0.20, log2(40)), function(x) (IQR(x) > 0.25)))
   eset <- dabs$normCounts[selProbes, ]
-  eset_entrez = mapIds(org.Hs.eg.db,
-                          keys=rownames(eset), 
-                          column="ENTREZID",
-                          keytype="SYMBOL",
-                          multiVals="list")
+  meset <- merge(rownames(eset),mapping,by.x=1,by.y=2)
+  eset_entrez <- meset$Entrez.Gene.ID
   
-  print(paste("> Filtering low abundance reads: ",nrow(eset)," out of ",nrow(dabs$normCounts)," genes remain..",sep = ""))
-  print(paste("> entrez: ",length(eset_entrez[!is.na(eset_entrez)])," _ symbol: ",nrow(eset)),sep="")
+  print(paste("> Filtering low abundance reads: ",length(eset_entrez)," out of ",nrow(dabs$normCounts)," genes remain..",sep = ""))
+  
   ## panther annotation
   #source("https://bioconductor.org/biocLite.R")
   #biocLite("PANTHER.db")
@@ -91,10 +65,7 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   unloadNamespace("modelr")
   unloadNamespace("broom")
   unloadNamespace("dplyr")
-  
   selection <- select(PANTHER.db,keytype = "ENTREZ",columns = c("GOSLIM_ID","GOSLIM_TERM"),keys=allEntrez)
-  head(selection)
-  length(unique(selection$ENTREZ))
   
   #BP
   ## Select only BP and collapse on entrez ID
@@ -113,6 +84,7 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
    }
     dir.create(paste(outdir,"/GO/topGO",sep = ""))
   }
+  
   # write mapping 
   print("> Gene2GO mapping .. ")
   gene2gofile<-paste(outdir,"/GO/topGO/geneToGO_entrez-panther.",term,".txt",sep = "")
