@@ -21,14 +21,34 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   
   geneSet <- data.frame(symbol = geneSet,stringsAsFactors = F)
   
+  
+  #install.packages("refGenome")
+  library(refGenome)
+  gtf = ensemblGenome()
+  
+  read.gtf(gtf, filename="~/Documents/bioinformatics/genomicData/hg38/gencode/gencode.gene.v27.annotation.gtf",useBasedir = )
+  
+  genes = gtf@ev$genes[ ,c("gene_id","gene_name")]
+  View(geneSet)
+  keytypes(org.Hs.eg.db)
+  
   library(org.Hs.eg.db)
   library(AnnotationDbi)
+  
+  
   # convert symbol to entrez and name
   geneSet$entrez = mapIds(org.Hs.eg.db,
                       keys=geneSet$symbol, 
                       column="ENTREZID",
-                      keytype="SYMBOL",
-                      multiVals="first")
+                      keytype="ALIAS",
+                      multiVals="list")
+  
+  library(org.Hs.eg.db)
+  keytypes(org.Hs.eg.db)
+  library(tidyverse)
+  columns(org.Hs.eg.db)
+  select(org.Hs.eg.db, keys="AC136475", columns=c("SYMBOL","ALIAS","ENTREZID"), keytype="ALIAS")
+  
   
   
   #source("http://bioconductor.org/biocLite.R")
@@ -50,10 +70,10 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
                           keys=rownames(eset), 
                           column="ENTREZID",
                           keytype="SYMBOL",
-                          multiVals="first")
+                          multiVals="list")
   
   print(paste("> Filtering low abundance reads: ",nrow(eset)," out of ",nrow(dabs$normCounts)," genes remain..",sep = ""))
-  
+  print(paste("> entrez: ",length(eset_entrez[!is.na(eset_entrez)])," _ symbol: ",nrow(eset)),sep="")
   ## panther annotation
   #source("https://bioconductor.org/biocLite.R")
   #biocLite("PANTHER.db")
@@ -71,7 +91,10 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   unloadNamespace("modelr")
   unloadNamespace("broom")
   unloadNamespace("dplyr")
+  
   selection <- select(PANTHER.db,keytype = "ENTREZ",columns = c("GOSLIM_ID","GOSLIM_TERM"),keys=allEntrez)
+  head(selection)
+  length(unique(selection$ENTREZ))
   
   #BP
   ## Select only BP and collapse on entrez ID
