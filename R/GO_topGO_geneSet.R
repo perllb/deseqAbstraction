@@ -12,7 +12,7 @@
 #' dabs <- deseqAbs$new(name="drugTest",colData=colDat,file=pathToFeatureCountsOutput)
 #' dabs$makeDiffex
 #' geneSet <- getSignName(x = dabs$test$Default,p=0.01)$up # get upregulated genes
-#' GO_topGO_geneSet(dabs = dabs,org = "hsa",BP=T,MF=F,CC=F,geneSet=geneSet)
+#' GO_topGO_geneSet(dabs = dabs,org = "hsa",BP=T,MF=F,CC=F,geneSet=geneSet,outdir=currdir,nodeSize=3)
 
 GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize=5,outdir=".") {
   
@@ -23,7 +23,7 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   
   # Get annotation mapping
   library(RCurl)
-  mapping <-read.delim(text = getURL("https://raw.githubusercontent.com/perllb/deseqAbstraction/master/data/genenames.org_entrez.genesymbol.ensembl.txt"))
+  mapping <-read.delim(text = getURL("https://raw.githubusercontent.com/perllb/deseqAbstraction/master/data/genenames.org_entrez.genesymbol.ensembl.txt"),header=T)
   mergeGenes <- merge(geneSet$symbol,mapping,by.x=1,by.y=2)
   
   # update geneSet with new mapping
