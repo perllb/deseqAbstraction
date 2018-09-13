@@ -5,6 +5,7 @@
 #' @param term: which go term ("BP" "MF" or "CC")
 #' @param geneSet: list of genes for test
 #' @param nodeSize: Set smallest included node size (number of genes in term) in enrichment test
+#' @param outdir: name of output directory
 #' @title GOanalysis in R - topGO enrichment test terms
 #' @export GO_topGO_geneSet
 #' @examples

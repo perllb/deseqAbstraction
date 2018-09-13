@@ -17,6 +17,8 @@ GO_topGO_geneSet(dabs = NULL, geneSet = NULL, org = "hsa",
 \item{geneSet:}{list of genes for test}
 
 \item{nodeSize:}{Set smallest included node size (number of genes in term) in enrichment test}
+
+\item{outdir:}{name of output directory}
 }
 \description{
 Do GO term enrichement and analysis for a list of genes
