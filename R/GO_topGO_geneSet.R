@@ -88,6 +88,7 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
     dir.create(paste(outdir,"/GO/topGO",sep = ""))
   }
   # write mapping 
+  print("> Gene2GO mapping .. ")
   gene2gofile<-paste(outdir,"/GO/topGO/geneToGO_entrez-panther.",term,".txt",sep = "")
   write.table(x = geneToGO,file = gene2gofile,quote = F,sep="\t",row.names = F,col.names = F)
   
@@ -99,12 +100,14 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   # inverse mappings
   GO2geneID <- inverseList(geneID2GO)
   
+  print("> Defining gene lists.. ")
   ## get gene set to be tested
   geneNames <- names(geneID2GO)
   geneList <- factor(as.integer(geneNames %in% geneSet$entrez))
   names(geneList) <- geneNames
   str(geneList)
   
+  print("> Create GO object")
   # create GO object
   GOdata <- new("topGOdata", ontology = term, allGenes = geneList,annot = annFUN.gene2GO, gene2GO = geneID2GO,nodeSize=nodeSize)  
   
@@ -113,13 +116,11 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   print(paste("> ",numGenes(GOdata)," out of ",nrow(res)," (from deseqAbs object) genes are included in GOdata object.. for analysis ",sep = ""))  
   
   #significant genes
-  sg <- sigGenes(GOdata)
-  numSigGenes(GOdata)
   print(paste("> ",numSigGenes(GOdata)," out of ",numGenes(GOdata)," (all with GO terms) genes are in given gene set ",sep = ""))  
   
   print(graph(GOdata))
   
-  
+  print("> GO Fisher test ..")
   test.stat <- new("classicCount", testStatistic = GOFisherTest, name = "Fisher test")
   resultFisher <- getSigGroups(GOdata, test.stat)
   
