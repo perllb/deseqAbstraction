@@ -92,6 +92,9 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   write.table(x = geneToGO,file = gene2gofile,quote = F,sep="\t",row.names = F,col.names = F)
   
   # read mapping to correct format
+  if(!file.exists(gene2gofile)){
+    stop("> ERROR: No gene2go mapping file written.. ")
+  }
   geneID2GO <- readMappings(file = gene2gofile)
   # inverse mappings
   GO2geneID <- inverseList(geneID2GO)
@@ -116,13 +119,6 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   
   print(graph(GOdata))
   
-  sel.terms <- sample(usedGO(GOdata), 10)
-  termStat(GOdata, sel.terms)  
-  
-  goID <- "GO:0044255"
-  gene.universe <- genes(GOdata)
-  go.genes <- genesInTerm(GOdata, goID)[[1]]
-  sig.genes <- sigGenes(GOdata)
   
   test.stat <- new("classicCount", testStatistic = GOFisherTest, name = "Fisher test")
   resultFisher <- getSigGroups(GOdata, test.stat)
