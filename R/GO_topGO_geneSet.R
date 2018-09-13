@@ -17,7 +17,7 @@
 
 GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize=5) {
   
-  if(is.null(genes)){
+  if(is.null(geneSet)){
     stop("> ERROR: you need to enter genes to test..")
   }
   
