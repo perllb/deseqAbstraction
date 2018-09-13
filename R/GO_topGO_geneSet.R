@@ -81,11 +81,11 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   #make data frame of data
   geneToGO <- data.frame(ENTREZ=goSelection$ENTREZ,GOSLIM_ID=goSelection$GOSLIM_ID)
   
-  if(!dir.exists(paste(dir,"/GO/topGO",sep = ""))){
-   if(!dir.exists(paste(dir,"/GO/",sep = ""))){
-     dir.create(paste(dir,"/GO/",sep = ""))
+  if(!dir.exists(paste(outdir,"/GO/topGO",sep = ""))){
+   if(!dir.exists(paste(outdir,"/GO/",sep = ""))){
+     dir.create(paste(outdir,"/GO/",sep = ""))
    }
-    dir.create(paste(dir,"/GO/topGO",sep = ""))
+    dir.create(paste(outdir,"/GO/topGO",sep = ""))
   }
   # write mapping 
   gene2gofile<-paste(dir,"/GO/topGO/geneToGO_entrez-panther.",term,".txt",sep = "")
