@@ -88,7 +88,7 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
     dir.create(paste(outdir,"/GO/topGO",sep = ""))
   }
   # write mapping 
-  gene2gofile<-paste(dir,"/GO/topGO/geneToGO_entrez-panther.",term,".txt",sep = "")
+  gene2gofile<-paste(outdir,"/GO/topGO/geneToGO_entrez-panther.",term,".txt",sep = "")
   write.table(x = geneToGO,file = gene2gofile,quote = F,sep="\t",row.names = F,col.names = F)
   
   # read mapping to correct format
