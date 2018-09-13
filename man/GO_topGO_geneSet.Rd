@@ -5,7 +5,7 @@
 \title{GOanalysis in R - topGO enrichment test terms}
 \usage{
 GO_topGO_geneSet(dabs = NULL, geneSet = NULL, org = "hsa",
-  term = "BP", nodeSize = 5)
+  term = "BP", nodeSize = 5, outdir = ".")
 }
 \arguments{
 \item{dds:}{deseq object}

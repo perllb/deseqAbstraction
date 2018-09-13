@@ -7,8 +7,7 @@
 #' @param ylab: enter ylab for plot!
 #' @title meanBarGeneric: Barplot of your genes of interest!
 #' @export meanBarGeneric
-#' @example
-#' meanBarGeneric(table,points=deeq$colData$cond,points=T)
+#' @example meanBarGeneric(table,points=deeq$colData$cond,points=T)
 
 meanBarGeneric <- function(tab,cond=NULL,points=FALSE,jitter=F,ylab='') {
   
