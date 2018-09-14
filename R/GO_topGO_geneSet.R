@@ -33,6 +33,7 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   print("> Get annotation mapping symbol to entrezID")
   mapping <- read.delim(text = getURL("https://raw.githubusercontent.com/perllb/deseqabstraction/master/annotation/genenames.org_entrez.genesymbol.ensembl.txt"))
   
+  print("> Mapping file downloaded.. ")
   mergeGenes <- merge(geneSet$symbol,mapping,by.x=1,by.y=2)
   
   # update geneSet with new mapping
