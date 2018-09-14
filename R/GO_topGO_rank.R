@@ -9,7 +9,7 @@
 #' @title GOanalysis in R - topGO enrichment test terms RANK based
 #' @export GO_topGO_rank
 #' @examples
-#' dabs <- deseqAbs$new(name="drugTest",colData=colDat,file=pathToFeatureCountsOutput)
+#' dabs <- deseqAbs$new(name="drugTest",colData=colDat)
 #' dabs$makeDiffex
 #' geneSet <- getSignName(x = dabs$test$Default,p=0.01)$up # get upregulated genes
 #' GO_topGO_geneSet_rank(dabs = dabs,org = "hsa",BP=T,MF=F,CC=F,geneSet=geneSet)

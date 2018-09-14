@@ -6,7 +6,7 @@
 #' @title GOanalysis in R  - pathways
 #' @export GO_pathview
 #' @examples
-#' dabs <- deseqAbs$new(name="drugTest",colData=colDat,file=pathToFeatureCountsOutput)
+#' dabs <- deseqAbs$new(name="drugTest",colData=colDat)
 #' GO_pathview(dabs = dabs,species = "hsa",Npathways = 4)
 
 GO_pathview <- function(dabs=NULL,species="hsa",Npathways=5) {

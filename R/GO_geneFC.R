@@ -9,7 +9,7 @@
 #' @title GOanalysis in R - GO terms
 #' @export GO_geneFC
 #' @examples
-#' dabs <- deseqAbs$new(name="drugTest",colData=colDat,file=pathToFeatureCountsOutput)
+#' dabs <- deseqAbs$new(name="drugTest",colData=colDat)
 #' GO_pathview(dabs = dabs,species = "hsa",BP=T,MF=F,CC=F,sameDir=T)
 
 
