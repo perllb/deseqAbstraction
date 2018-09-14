@@ -70,9 +70,10 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   #BP
   ## Select only BP and collapse on entrez ID
   goSelection <- selection %>% 
-    filter(GOSLIM_TERM==term) %>%
-    group_by(ENTREZ) %>%
-    summarise_all(funs(toString))
+    dplyr::filter(GOSLIM_TERM==term) %>%
+    dplyr::group_by(ENTREZ) %>%
+    dplyr::summarise_all(funs(toString))
+  
   
   #make data frame of data
   geneToGO <- data.frame(ENTREZ=goSelection$ENTREZ,GOSLIM_ID=goSelection$GOSLIM_ID)
