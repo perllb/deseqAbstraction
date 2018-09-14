@@ -21,4 +21,8 @@ Imports: R6,
   gageData,
   genefilter,
   tidyverse,
-  methods
+  methods,
+  RColorBrewer,
+  RCurl,
+  ggplot2,
+  pheatmap

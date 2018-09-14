@@ -3,6 +3,14 @@
 #' @param dabs: deseq object
 #' @param species: only human (hsa) annotation currently supported, mm10 coming soon
 #' @param Npathways: How many pathways to plot
+#' @import topGO
+#' @import PANTHER.db
+#' @import org.Hs.eg.db
+#' @import AnnotationDbi
+#' @import pathview
+#' @import gage
+#' @import gageData
+#' @import genefilter
 #' @title GOanalysis in R  - pathways
 #' @export GO_pathview
 #' @examples

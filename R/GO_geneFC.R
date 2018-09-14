@@ -6,11 +6,19 @@
 #' @param MF: test for molecular function terms
 #' @param CC: test for cellular compartment terms
 #' @param sameDir: test one-directional, terms enriched with genes changed in only same direction 
+#' @import topGO
+#' @import PANTHER.db
+#' @import org.Hs.eg.db
+#' @import AnnotationDbi
+#' @import pathview
+#' @import gage
+#' @import gageData
+#' @import genefilter
 #' @title GOanalysis in R - GO terms
 #' @export GO_geneFC
 #' @examples
 #' 
-#' GO_pathview(dabs = dabs,species = "hsa",BP=T,MF=F,CC=F,sameDir=T)
+#' GO_geneFC(species = "hsa",BP=T,MF=F,CC=F,sameDir=T)
 
 
 GO_geneFC <- function(dabs=NULL,species="hsa",BP=T,MF=F,CC=F,sameDir=T) {

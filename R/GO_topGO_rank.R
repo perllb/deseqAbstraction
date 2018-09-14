@@ -6,24 +6,24 @@
 #' @param nodeSize: Set smallest included node size (number of genes in term) in enrichment test
 #' @param rank: How to rank genes (either "log2fc" or "padj")
 #' @param sigCut: where to cut for sign genes. when rank="log2fc", it is the absolute log2FC. when rank="padj", it is p-adj value..
+#' @import topGO
+#' @import PANTHER.db
+#' @import org.Hs.eg.db
+#' @import AnnotationDbi
+#' @import pathview
+#' @import gage
+#' @import gageData
+#' @import genefilter
 #' @title GOanalysis in R - topGO enrichment test terms RANK based
 #' @export GO_topGO_rank
 #' @examples
 #' 
 #' geneSet <- getSignName(x = dabs$test$Default,p=0.01)$up # get upregulated genes
-#' GO_topGO_geneSet_rank(dabs = dabs,org = "hsa",BP=T,MF=F,CC=F,geneSet=geneSet)
+#' GO_topGO_rank(dabs = dabs,org = "hsa",BP=T,MF=F,CC=F,geneSet=geneSet)
 
 
 
 GO_topGO_rank <- function(dabs=NULL,org="hsa",term="BP",nodeSize=5,rank="log2fc",sigCut=1) {
-  
-  #source("http://bioconductor.org/biocLite.R")
-  #biocLite("topGO")
-  library(topGO)
-  library(dplyr)
-  library(org.Hs.eg.db)
-  library(AnnotationDbi)
-  
   
   if(rank=="padj" && sigCut==1){
     print(">> WARNING: using p-adj as ranking and sigCut is set to 1 (default)! This will select all genes as significant.. better change rank to 'log2fc' or change sigCut to e.g. 0.01")
@@ -60,16 +60,12 @@ GO_topGO_rank <- function(dabs=NULL,org="hsa",term="BP",nodeSize=5,rank="log2fc"
   }
   
   ## Filter low abundancy genes
-  library(genefilter)
   selProbes <- genefilter(dabs$normCounts, filterfun(pOverA(0.20, log2(40)), function(x) (IQR(x) > 0.25)))
   eset <- dabs$normCounts[selProbes, ]
   print(paste("> Filtering low abundance reads: ",nrow(eset)," out of ",nrow(dabs$normCounts)," genes remain..",sep = ""))
   
   ## panther annotation
-  #source("https://bioconductor.org/biocLite.R")
-  #biocLite("PANTHER.db")
-  library(PANTHER.db,quietly=T)
-  
+
   if(org=="hsa") {
     pthOrganisms(PANTHER.db) <- "HUMAN"
   }else {

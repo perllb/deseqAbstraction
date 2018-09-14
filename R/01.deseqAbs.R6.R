@@ -4,10 +4,17 @@ require(DESeq2)
 #'
 #' @docType class
 #' @importFrom R6 R6Class
-#' @importFrom grDevices dev.off png rainbow x11
-#' @importFrom graphics legend axis barplot image par pie abline hist layout lines mtext plot plot.new rect text title
-#' @importFrom stats quantile as.dendrogram density dist hclust median order.dendrogram reorder sd
-#' @importFrom DESeq2 DESeq results DESeqDataSetFromMatrix varianceStabilizingTransformation plotPCA
+#' @import grDevices
+#' @import graphics
+#' @import stats
+#' @import DESeq2
+#' @import dplyr
+#' @import tidyverse
+#' @import methods
+#' @import RColorBrewer
+#' @import RCurl
+#' @import ggplot2
+#' @import pheatmap
 #' @export
 #' @keywords Deseq
 #' @return Object of \code{\link{R6Class}} to store Deseq data.

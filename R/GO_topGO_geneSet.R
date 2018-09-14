@@ -6,13 +6,21 @@
 #' @param geneSet: list of genes for test
 #' @param nodeSize: Set smallest included node size (number of genes in term) in enrichment test
 #' @param outdir: name of output directory
+#' @import topGO
+#' @import PANTHER.db
+#' @import org.Hs.eg.db
+#' @import AnnotationDbi
+#' @import pathview
+#' @import gage
+#' @import gageData
+#' @import genefilter
 #' @title GOanalysis in R - topGO enrichment test terms
 #' @export GO_topGO_geneSet
 #' @examples
 #' 
 #' dabs$makeDiffex
 #' geneSet <- getSignName(x = dabs$test$Default,p=0.01)$up # get upregulated genes
-#' GO_topGO_geneSet(dabs = dabs,org = "hsa",BP=T,MF=F,CC=F,geneSet=geneSet,outdir=currdir,nodeSize=3)
+#' GO_topGO_geneSet(org = "hsa",BP=T,MF=F,CC=F,geneSet=geneSet,outdir=currdir,nodeSize=3)
 
 GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize=5,outdir=".") {
   

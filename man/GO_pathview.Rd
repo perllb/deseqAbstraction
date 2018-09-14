@@ -7,7 +7,7 @@
 GO_pathview(dabs = NULL, species = "hsa", Npathways = 5)
 }
 \arguments{
-\item{dds:}{deseq object}
+\item{dabs:}{deseq object}
 
 \item{species:}{only human (hsa) annotation currently supported, mm10 coming soon}
 
@@ -17,6 +17,6 @@ GO_pathview(dabs = NULL, species = "hsa", Npathways = 5)
 Do GO term enrichement and analysis for a list of genes (pathway analysis and plots)
 }
 \examples{
-dabs <- deseqAbs$new(name="drugTest",colData=colDat)
+
 GO_pathview(dabs = dabs,species = "hsa",Npathways = 4)
 }

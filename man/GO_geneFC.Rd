@@ -8,7 +8,7 @@ GO_geneFC(dabs = NULL, species = "hsa", BP = T, MF = F, CC = F,
   sameDir = T)
 }
 \arguments{
-\item{dds:}{deseq object}
+\item{dabs:}{deseq object}
 
 \item{species:}{only human (hsa) annotation currently supported, mm10 coming soon..}
 
@@ -24,6 +24,6 @@ GO_geneFC(dabs = NULL, species = "hsa", BP = T, MF = F, CC = F,
 Do GO term enrichement and analysis for a list of genes
 }
 \examples{
-dabs <- deseqAbs$new(name="drugTest",colData=colDat)
-GO_pathview(dabs = dabs,species = "hsa",BP=T,MF=F,CC=F,sameDir=T)
+
+GO_geneFC(species = "hsa",BP=T,MF=F,CC=F,sameDir=T)
 }
