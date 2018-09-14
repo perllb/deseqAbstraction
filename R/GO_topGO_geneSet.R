@@ -64,7 +64,7 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   # Get mapping of all entrez ids to GO terms
   allEntrez <- as.vector(eset_entrez)
 
-  selection <- select(PANTHER.db,keytype = "ENTREZ",columns = c("GOSLIM_ID","GOSLIM_TERM"),keys=allEntrez)
+  selection <- AnnotationDbi::select(PANTHER.db,keytype = "ENTREZ",columns = c("GOSLIM_ID","GOSLIM_TERM"),keys=allEntrez)
   
   #BP
   ## Select only BP and collapse on entrez ID
