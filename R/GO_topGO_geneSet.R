@@ -30,18 +30,14 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   geneSet <- data.frame(symbol = geneSet,stringsAsFactors = F)
   
   # Get annotation mapping
-  library(RCurl)
+  print("> Get annotation mapping symbol to entrezID")
   mapping <- read.delim(text = getURL("https://raw.githubusercontent.com/perllb/deseqabstraction/master/annotation/genenames.org_entrez.genesymbol.ensembl.txt"))
   
   mergeGenes <- merge(geneSet$symbol,mapping,by.x=1,by.y=2)
   
   # update geneSet with new mapping
   geneSet <- data.frame(symbol=mergeGenes$x,entrezid=mergeGenes$Entrez.Gene.ID,ensemblid=mergeGenes$Ensembl.ID.supplied.by.Ensembl.,stringsAsFactors = F)
-  
-  #source("http://bioconductor.org/biocLite.R")
-  #biocLite("topGO")
-  library(topGO)
-  
+
   if(is.null(dabs$normCounts)){
     dabs$makeDESeq()
     if(is.null(dabs$normCounts)){
@@ -50,7 +46,6 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   }
   
   ## Filter low abundancy genes
-  library(genefilter)
   selProbes <- genefilter(dabs$normCounts, filterfun(pOverA(0.20, log2(40)), function(x) (IQR(x) > 0.25)))
   eset <- dabs$normCounts[selProbes, ]
   meset <- merge(rownames(eset),mapping,by.x=1,by.y=2)
@@ -58,10 +53,6 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   
   print(paste("> Filtering low abundance reads: ",length(eset_entrez)," out of ",nrow(dabs$normCounts)," genes remain..",sep = ""))
   
-  ## panther annotation
-  #source("https://bioconductor.org/biocLite.R")
-  #biocLite("PANTHER.db")
-  library(PANTHER.db,quietly=T)
   
   if(org=="hsa") {
     pthOrganisms(PANTHER.db) <- "HUMAN"
@@ -79,7 +70,6 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   
   #BP
   ## Select only BP and collapse on entrez ID
-  library(tidyverse)
   goSelection <- selection %>% 
     filter(GOSLIM_TERM==term) %>%
     group_by(ENTREZ) %>%
