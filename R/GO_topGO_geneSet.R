@@ -22,9 +22,9 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   geneSet <- data.frame(symbol = geneSet,stringsAsFactors = F)
   
   # Get annotation mapping
-  library(RCurl)
-  x <- getURL("https://raw.githubusercontent.com/perllb/deseqabstraction/master/data/genenames.org_entrez.genesymbol.ensembl.txt")
-  mapping <- read.csv(x)
+ # library(RCurl)
+ # x <- getURL("https://raw.githubusercontent.com/perllb/deseqASDtraction/master/data/genenames.org_entrez.genesymbol.ensembl.txt")
+#  mapping <- read.csv(x)
   mergeGenes <- merge(geneSet$symbol,mapping,by.x=1,by.y=2)
   
   # update geneSet with new mapping
