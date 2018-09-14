@@ -9,7 +9,7 @@
 #' @title GOanalysis in R - topGO enrichment test terms
 #' @export GO_topGO_geneSet
 #' @examples
-#' dabs <- deseqAbs$new(name="drugTest",colData=colDat,file=pathToFeatureCountsOutput)
+#' dabs <- deseqAbs$new(name="drugTest",colData=colDat)
 #' dabs$makeDiffex
 #' geneSet <- getSignName(x = dabs$test$Default,p=0.01)$up # get upregulated genes
 #' GO_topGO_geneSet(dabs = dabs,org = "hsa",BP=T,MF=F,CC=F,geneSet=geneSet,outdir=currdir,nodeSize=3)
@@ -22,9 +22,9 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   geneSet <- data.frame(symbol = geneSet,stringsAsFactors = F)
   
   # Get annotation mapping
- # library(RCurl)
- # x <- getURL("https://raw.githubusercontent.com/perllb/deseqASDtraction/master/data/genenames.org_entrez.genesymbol.ensembl.txt")
-#  mapping <- read.csv(x)
+  library(RCurl)
+  x <- getURL("https://raw.githubusercontent.com/perllb/deseqabstraction/master/annotation/genenames.org_entrez.genesymbol.ensembl.txt")
+  mapping <- read.csv(x)
   mergeGenes <- merge(geneSet$symbol,mapping,by.x=1,by.y=2)
   
   # update geneSet with new mapping
