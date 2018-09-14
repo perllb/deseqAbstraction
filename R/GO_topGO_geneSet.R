@@ -15,6 +15,7 @@
 #' @import gageData
 #' @import genefilter
 #' @import RCurl
+#' @import tidyverse
 #' @title GOanalysis in R - topGO enrichment test terms
 #' @export GO_topGO_geneSet
 #' @examples
@@ -92,9 +93,9 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   if(!file.exists(gene2gofile)){
     stop("> ERROR: No gene2go mapping file written.. ")
   }
-  geneID2GO <- readMappings(file = gene2gofile)
+  geneID2GO <- topGO::readMappings(file = gene2gofile)
   # inverse mappings
-  GO2geneID <- inverseList(geneID2GO)
+  GO2geneID <- topGO::inverseList(geneID2GO)
   
   print("> Defining gene lists.. ")
   ## get gene set to be tested
