@@ -8,7 +8,7 @@ GO_topGO_rank(dabs = NULL, org = "hsa", term = "BP", nodeSize = 5,
   rank = "log2fc", sigCut = 1)
 }
 \arguments{
-\item{dds:}{deseq object}
+\item{dabs:}{deseq object}
 
 \item{org:}{only hg38 annotation currently supported, mm10 coming soon..}
 
@@ -24,8 +24,7 @@ GO_topGO_rank(dabs = NULL, org = "hsa", term = "BP", nodeSize = 5,
 Do GO term enrichement and analysis for a list of genes
 }
 \examples{
-dabs <- deseqAbs$new(name="drugTest",colData=colDat)
-dabs$makeDiffex
+
 geneSet <- getSignName(x = dabs$test$Default,p=0.01)$up # get upregulated genes
-GO_topGO_geneSet_rank(dabs = dabs,org = "hsa",BP=T,MF=F,CC=F,geneSet=geneSet)
+GO_topGO_rank(dabs = dabs,org = "hsa",BP=T,MF=F,CC=F,geneSet=geneSet)
 }
