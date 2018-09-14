@@ -1,12 +1,12 @@
 #' @name GO_pathview
 #' @description Do GO term enrichement and analysis for a list of genes (pathway analysis and plots)
-#' @param dds: deseq object
+#' @param dabs: deseq object
 #' @param species: only human (hsa) annotation currently supported, mm10 coming soon
 #' @param Npathways: How many pathways to plot
 #' @title GOanalysis in R  - pathways
 #' @export GO_pathview
 #' @examples
-#' dabs <- deseqAbs$new(name="drugTest",colData=colDat)
+#' 
 #' GO_pathview(dabs = dabs,species = "hsa",Npathways = 4)
 
 GO_pathview <- function(dabs=NULL,species="hsa",Npathways=5) {

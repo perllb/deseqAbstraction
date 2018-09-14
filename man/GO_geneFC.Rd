@@ -24,6 +24,6 @@ GO_geneFC(dabs = NULL, species = "hsa", BP = T, MF = F, CC = F,
 Do GO term enrichement and analysis for a list of genes
 }
 \examples{
-dabs <- deseqAbs$new(name="drugTest",colData=colDat,file=pathToFeatureCountsOutput)
+dabs <- deseqAbs$new(name="drugTest",colData=colDat)
 GO_pathview(dabs = dabs,species = "hsa",BP=T,MF=F,CC=F,sameDir=T)
 }

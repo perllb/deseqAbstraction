@@ -1,6 +1,6 @@
 #' @name GO_topGO_geneSet
 #' @description Do GO term enrichement and analysis for a list of genes
-#' @param dds: deseq object
+#' @param dabs: deseq object
 #' @param org: only hg38 annotation currently supported, mm10 coming soon..
 #' @param term: which go term ("BP" "MF" or "CC")
 #' @param geneSet: list of genes for test
@@ -9,7 +9,7 @@
 #' @title GOanalysis in R - topGO enrichment test terms
 #' @export GO_topGO_geneSet
 #' @examples
-#' dabs <- deseqAbs$new(name="drugTest",colData=colDat)
+#' 
 #' dabs$makeDiffex
 #' geneSet <- getSignName(x = dabs$test$Default,p=0.01)$up # get upregulated genes
 #' GO_topGO_geneSet(dabs = dabs,org = "hsa",BP=T,MF=F,CC=F,geneSet=geneSet,outdir=currdir,nodeSize=3)

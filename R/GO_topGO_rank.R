@@ -1,6 +1,6 @@
 #' @name GO_topGO_rank
 #' @description Do GO term enrichement and analysis for a list of genes
-#' @param dds: deseq object
+#' @param dabs: deseq object
 #' @param org: only hg38 annotation currently supported, mm10 coming soon..
 #' @param term: which go term ("BP" "MF" or "CC")
 #' @param nodeSize: Set smallest included node size (number of genes in term) in enrichment test
@@ -9,8 +9,7 @@
 #' @title GOanalysis in R - topGO enrichment test terms RANK based
 #' @export GO_topGO_rank
 #' @examples
-#' dabs <- deseqAbs$new(name="drugTest",colData=colDat)
-#' dabs$makeDiffex
+#' 
 #' geneSet <- getSignName(x = dabs$test$Default,p=0.01)$up # get upregulated genes
 #' GO_topGO_geneSet_rank(dabs = dabs,org = "hsa",BP=T,MF=F,CC=F,geneSet=geneSet)
 

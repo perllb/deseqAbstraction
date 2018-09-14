@@ -1,6 +1,6 @@
 #' @name GO_geneFC
 #' @description Do GO term enrichement and analysis for a list of genes
-#' @param dds: deseq object
+#' @param dabs: deseq object
 #' @param species: only human (hsa) annotation currently supported, mm10 coming soon..
 #' @param BP: test for biological process terms
 #' @param MF: test for molecular function terms
@@ -9,7 +9,7 @@
 #' @title GOanalysis in R - GO terms
 #' @export GO_geneFC
 #' @examples
-#' dabs <- deseqAbs$new(name="drugTest",colData=colDat)
+#' 
 #' GO_pathview(dabs = dabs,species = "hsa",BP=T,MF=F,CC=F,sameDir=T)
 
 
@@ -50,9 +50,7 @@ GO_geneFC <- function(dabs=NULL,species="hsa",BP=T,MF=F,CC=F,sameDir=T) {
   #### GO terms
   fc <- res$log2FoldChange
   names(fc) <- res$entrez
-  
-  data(go.sets.hs)
-  data(go.subs.hs)
+ 
   
   if(!dir.exists(paths = "GO/GageGO")){
     dir.create("GO/GageGO")

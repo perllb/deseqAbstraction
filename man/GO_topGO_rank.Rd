@@ -24,7 +24,7 @@ GO_topGO_rank(dabs = NULL, org = "hsa", term = "BP", nodeSize = 5,
 Do GO term enrichement and analysis for a list of genes
 }
 \examples{
-dabs <- deseqAbs$new(name="drugTest",colData=colDat,file=pathToFeatureCountsOutput)
+dabs <- deseqAbs$new(name="drugTest",colData=colDat)
 dabs$makeDiffex
 geneSet <- getSignName(x = dabs$test$Default,p=0.01)$up # get upregulated genes
 GO_topGO_geneSet_rank(dabs = dabs,org = "hsa",BP=T,MF=F,CC=F,geneSet=geneSet)
