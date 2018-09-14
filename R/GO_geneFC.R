@@ -23,18 +23,6 @@
 
 GO_geneFC <- function(dabs=NULL,species="hsa",BP=T,MF=F,CC=F,sameDir=T) {
   
-  ### Dependencies:
-  #source("https://bioconductor.org/biocLite.R")
-  #biocLite("pathview")
-  #biocLite("gage")
-  #biocLite("gageData")
-  #if(species=="hg38"){ biocLite("org.Hs.eg.db") }
-  
-  library("AnnotationDbi")
-  library("org.Hs.eg.db")
-  library(pathview)
-  library(gage)
-  library(gageData)
   
   # make diffex if not done
   if(is.null(dabs$test$Default)) {

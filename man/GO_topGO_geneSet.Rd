@@ -27,5 +27,5 @@ Do GO term enrichement and analysis for a list of genes
 
 dabs$makeDiffex
 geneSet <- getSignName(x = dabs$test$Default,p=0.01)$up # get upregulated genes
-GO_topGO_geneSet(dabs = dabs,org = "hsa",BP=T,MF=F,CC=F,geneSet=geneSet,outdir=currdir,nodeSize=3)
+GO_topGO_geneSet(org = "hsa",BP=T,MF=F,CC=F,geneSet=geneSet,outdir=currdir,nodeSize=3)
 }
