@@ -35,7 +35,7 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   mapping <- read.delim(text = getURL("https://raw.githubusercontent.com/perllb/deseqabstraction/master/annotation/genenames.org_entrez.genesymbol.ensembl.txt"))
   
   print("> Mapping file downloaded.. ")
-  mergeGenes <- base::merge.data.frame(x=data.frame(geneSet$symbol),y=data.frame(mapping),by.x=1,by.y=2)
+  mergeGenes <- base::merge.data.frame(x=geneSet$symbol,y=data.frame(mapping),by.x=1,by.y=2)
   # update geneSet with new mapping
   geneSet <- data.frame(symbol=mergeGenes$x,entrezid=mergeGenes$Entrez.Gene.ID,ensemblid=mergeGenes$Ensembl.ID.supplied.by.Ensembl.,stringsAsFactors = F)
 
