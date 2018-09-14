@@ -63,10 +63,7 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   
   # Get mapping of all entrez ids to GO terms
   allEntrez <- as.vector(eset_entrez)
-  unloadNamespace("tidyverse")
-  unloadNamespace("modelr")
-  unloadNamespace("broom")
-  unloadNamespace("dplyr")
+
   selection <- select(PANTHER.db,keytype = "ENTREZ",columns = c("GOSLIM_ID","GOSLIM_TERM"),keys=allEntrez)
   
   #BP
