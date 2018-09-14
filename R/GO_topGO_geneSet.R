@@ -14,6 +14,7 @@
 #' @import gage
 #' @import gageData
 #' @import genefilter
+#' @import RCurl
 #' @title GOanalysis in R - topGO enrichment test terms
 #' @export GO_topGO_geneSet
 #' @examples
