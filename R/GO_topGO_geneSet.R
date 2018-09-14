@@ -49,7 +49,7 @@ GO_topGO_geneSet <- function(dabs=NULL,geneSet=NULL,org="hsa",term="BP",nodeSize
   ## Filter low abundancy genes
   selProbes <- genefilter(dabs$normCounts, filterfun(pOverA(0.20, log2(40)), function(x) (IQR(x) > 0.25)))
   eset <- dabs$normCounts[selProbes, ]
-  meset <- base::merge(rownames(eset),mapping,by.x=1,by.y=2)
+  meset <- base::merge.data.frame(x=rownames(eset),y=mapping,by.x=1,by.y=2)
   eset_entrez <- meset$Entrez.Gene.ID
   
   print(paste("> Filtering low abundance reads: ",length(eset_entrez)," out of ",nrow(dabs$normCounts)," genes remain..",sep = ""))
