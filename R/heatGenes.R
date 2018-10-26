@@ -9,6 +9,7 @@
 #' @param sd: standard deviation cutoff for heatmap
 #' @param z: logical operator. if TRUE, normalize by row (z-score). if FALSE (default), then plot normalized expression values
 #' @param cluster_col: logical operator: if TRUE (default), cluster columns, if FALSE do not cluster columns
+#' @param cluster_row: logical operator: if TRUE (default), cluster rows, if FALSE do not cluster 
 #' @param k: number of clusters in k-means
 #' @param cutreeR: number of cuts in rowtree
 #' @param cutreeC: number of cuts in Coltree
@@ -20,7 +21,7 @@
 #' heatGenes(data = assay(vst),genes = genes, sd = 1, a1 = colData$cellLine, a2 = colData$treatment,n1 = "Cell Line",n2 = "Treatment",z = T)
 
 
-heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=.001,z=FALSE,cluster_col=T,k=NA,cutreeR=1,cutreeC=1,redBlue=T,breaks=NA) {
+heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=.001,z=FALSE,cluster_col=T,cluster_row=T,k=NA,cutreeR=1,cutreeC=1,redBlue=T,breaks=NA) {
 
   library(pheatmap)
   library(graphics)
@@ -77,7 +78,7 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=.001,z=FALSE
       mycolors <- list(a = mycolors)
       names(mycolors) <- n1
   
-      pheatmap(plotData, annotation_col = df, breaks = breaks, annotation_colors = mycolors,border_color = NA,kmeans_k=k,cutree_rows=cutreeR,cutree_cols=cutreeC, cluster_rows = T, show_rownames = rowShow, cluster_cols = cluster_col,scale = scale,color = heatScaleCol)
+      pheatmap(plotData, annotation_col = df, breaks = breaks, annotation_colors = mycolors,border_color = NA,kmeans_k=k,cutree_rows=cutreeR,cutree_cols=cutreeC, cluster_rows = cluster_row, show_rownames = rowShow, cluster_cols = cluster_col,cluster_rows = cluster_row,scale = scale,color = heatScaleCol)
 
     } else if (!is.null(a1) & !is.null(a2)) {
 
@@ -95,7 +96,7 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=.001,z=FALSE
       mycolors <- list(a = mycolors,b = mycolors2)
       names(mycolors) <- c(n1,n2)
 
-     pheatmap(plotData, annotation_col = df, annotation_colors = mycolors,border_color = NA,kmeans_k=k,cutree_rows=cutreeR,cutree_cols=cutreeC,cluster_rows = T, show_rownames = rowShow, cluster_cols = cluster_col,scale = scale,color = heatScaleCol,breaks = breaks)
+     pheatmap(plotData, annotation_col = df, annotation_colors = mycolors,border_color = NA,kmeans_k=k,cutree_rows=cutreeR,cutree_cols=cutreeC,cluster_rows = cluster_row, show_rownames = rowShow, cluster_cols = cluster_col,scale = scale,color = heatScaleCol,breaks = breaks)
 
 
     } else if (!is.null(a2) & is.null(a1)) {
@@ -111,10 +112,10 @@ heatGenes <- function(data,genes,a1=NULL,a2=NULL,n1=NULL,n2=NULL,sd=.001,z=FALSE
       mycolors <- list(a = mycolors)
       names(mycolors) <- n1
 
-      pheatmap(plotData, annotation_col = df, annotation_colors = mycolors,border_color = NA,kmeans_k=k,cutree_rows=cutreeR,cutree_cols=cutreeC,cluster_rows = T, show_rownames = rowShow, cluster_cols = cluster_col,scale = scale,color = heatScaleCol,breaks = breaks)
+      pheatmap(plotData, annotation_col = df, annotation_colors = mycolors,border_color = NA,kmeans_k=k,cutree_rows=cutreeR,cutree_cols=cutreeC,cluster_rows = cluster_row, show_rownames = rowShow, cluster_cols = cluster_col,scale = scale,color = heatScaleCol,breaks = breaks)
 
     } else {
-      pheatmap(plotData, cluster_rows = T,  show_rownames = rowShow,border_color = NA,kmeans_k=k,cutree_rows=cutreeR,cutree_cols=cutreeC, cluster_cols = cluster_col,scale = scale,color = heatScaleCol,breaks = breaks)
+      pheatmap(plotData, cluster_rows = cluster_row,  show_rownames = rowShow,border_color = NA,kmeans_k=k,cutree_rows=cutreeR,cutree_cols=cutreeC, cluster_cols = cluster_col,scale = scale,color = heatScaleCol,breaks = breaks)
     }
 
     return(rownames(plotData))
