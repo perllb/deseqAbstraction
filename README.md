@@ -7,7 +7,7 @@
 
 
 
----
+```
 title: "Usage deseqAbstraction"
 author: "Per Ludvik Brattås"
 date: "09/02/2018"
@@ -20,7 +20,7 @@ output:
     number_sections: yes
     toc: yes
     toc_depth: 3
----
+```
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
