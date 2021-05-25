@@ -9,6 +9,10 @@ Easy analysis and visualization of featureCount data in R.
 - More usage tutorials found in usageTutorials/deseqAbs repository!
 
 
+## Usage example:
+usage/Usage.html
+usage/Usage.pdf
+
 ## Setup of workspace
 
 ```{r setup workspace, message = FALSE}
