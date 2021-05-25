@@ -7,8 +7,8 @@ Easy analysis and visualization of featureCount data in R.
 - deseqAbs object to ease and automate every analysis and visualization of RNA-seq data
 
 ## Tutorial:
-usage/Usage.html
-usage/Usage.pdf
+- usage/Usage.html
+- usage/Usage.pdf
 
 
 
