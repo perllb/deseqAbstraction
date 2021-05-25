@@ -1,36 +1,15 @@
-### deseqAbstraction
- - Object-oriented analysis of RNA-seq data in R
- - Wrapper for DESeq2
- - deseqAbs object to ease and automate every analysis and visualization of RNA-seq data
- - <b>Main usage tutorial: Usage.pdf or Usage.html in deseqAbstraction (current) directory. </b>
- - More usage tutorials found in usageTutorials/deseqAbs repository!
+# deseqAbstraction
+
+Easy analysis and visualization of featureCount data in R. 
+
+- Object-oriented analysis of RNA-seq data in R
+- Wrapper for DESeq2
+- deseqAbs object to ease and automate every analysis and visualization of RNA-seq data
+- <b>Main usage tutorial: Usage.pdf or Usage.html in deseqAbstraction (current) directory. </b>
+- More usage tutorials found in usageTutorials/deseqAbs repository!
 
 
-
-```
-title: "Usage deseqAbstraction"
-author: "Per Ludvik Brattås"
-date: "09/02/2018"
-output:
-  html_document:
-    number_sections: yes
-    toc: yes
-    toc_depth: 3
-  pdf_document:
-    number_sections: yes
-    toc: yes
-    toc_depth: 3
-```
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
-
-Tutorial on deseqAbstraction
- 
-Easy analysis and visualization of featureCount 
-
-# Setup of workspace
+## Setup of workspace
 
 ```{r setup workspace, message = FALSE}
 # clean environment
@@ -47,13 +26,14 @@ library(DESeq2)
 ```
 
 
-# Create deseqAbs object 
-## Define path to count file
+## Create deseqAbs object 
+ Define path to count file
 ```{r, create object}
 path <- "/home/pbrattaas//Dropbox (MN)/Per/PhD/Projects/DNAmeth/hNES DNMT1 KO/RNAseq/PairedParam/Quant/hg38.gencode.exon.primary.txt"
 ```
 
 ## Define colData (describe samples)
+`condition` and `samples` needed.
 ```{r }
 colData <- data.frame(condition=c(rep("CTR",3),rep("KO",3)),
                       samples=c(107,108,109,110,111,112))
@@ -64,30 +44,30 @@ colData <- data.frame(condition=c(rep("CTR",3),rep("KO",3)),
 dnmt <- deseqAbs$new(name="DNMT1KO",filename=path,colData = colData)
 ```
 
-# Run DESeq pipeline
+## Run DESeq pipeline
  - You can try to do this in one function $fullAuto(). 
  - Full auto has four main steps:
- (1) - create DEseq object (access with $deseq)
- (2) - Do diffex analysis (access with $test)
- (3) - Do varianceStablizingTransformation (access with $VST)
- (4) - Do RPKM normalization (access with $rpkm)
+ 1. create DEseq object (access with $deseq)
+ 2. Do diffex analysis (access with $test)
+ 3. Do varianceStablizingTransformation (access with $VST)
+ 4. Do RPKM normalization (access with $rpkm)
 
- - However, for this automation, it is critical that your deseqAbs object has
- (1) - the raw featureCount file in the correct format
- (2) - the colData data.frame with at least one column called "condition", which contain the grouping of your samples, that will later be used for diffex anaysis
+However, for this automation, it is critical that your deseqAbs object has
+- the raw featureCount file in the correct format
+- the colData data.frame with at least one column called "condition", which contain the grouping of your samples, that will later be used for diffex anaysis
 
 ```{r, automation }
 # run the automated pipe from creating deseq object to normalization (rpkm, vst) and diffex analysis!
 dnmt$fullAuto()
 ```
 
-# Basic QC 
+## Basic QC 
 ```{r, qc}
 dnmt$sampleQC()
 ```
 
 
-# Custom diffex analysis
+## Custom diffex analysis
 ```{r}
 ## By default, DESeq2 will make diffex test between two conditions in your colData. To see which conditions are tested, type
 dnmt$test$Default
@@ -114,8 +94,8 @@ dnmt$test$KOvsWT
 ## type dnmt$test to get a list of the diffex objects created
 ```
 
-# Visualize data
-## PCA 
+## Visualize data
+### PCA 
 
 ```{r}
 # Default PCA plot 
@@ -128,13 +108,12 @@ PCAplotter(dat = dnmt$VST,title = "NCBI top 5000",ntop = 5000,color = dnmt$colDa
 PCAplotter(dat = dnmt$VST,title = "NCBI top 5000",ntop = 5000,color = dnmt$colData$condition,shape=dnmt$colData$condition,label = dnmt$colData$condition)
 ```
 
-## sample-to-sample distance
+### sample-to-sample distance
 ```{r }
 dnmt$sampleToSample()
 ```
 
-## maPlot
-
+### maPlot
 ```{r}
 # make maPlot: color genes if they have p-adj and log2fc below/above given values (p and l) 
 maPlot(test = dnmt$test$KOvsWT,"DNMT1 KO","CTR",l = .5,p = 1e-5)
@@ -144,7 +123,7 @@ maPlot(test = dnmt$test$KOvsWT,"DNMT1 KO","CTR",l = .5,p = 1e-5,id=T)
 # now click on the points you want, and press ESC when done
 ```
 
-## Volcano plot
+### Volcano plot
 
 ```{r}
 # generate volcanoplot. 
@@ -156,8 +135,8 @@ volcanoPlot(test = dnmt$test$KOvsWT,max = 100,id = T)
 # now click on the points you want, and press ESC when done
 ```
 
-## Heatmaps
-### Most significant genes for a given test
+### Heatmaps
+#### Most significant genes for a given test
 ```{r}
 # plot top significant genes
 mostSignificantHeat(data = assay(dnmt$VST),test = dnmt$test$KOvsWT)
@@ -172,7 +151,7 @@ mostSignificantHeat(data = assay(dnmt$VST),test = dnmt$test$KOvsWT,ntop = 20,a1 
 mostSignificantHeat(data = assay(dnmt$VST),test = dnmt$test$KOvsWT,ntop = 70,a1 = dnmt$colData$condition,n1 = "Treatment",a2 = dnmt$colData$samples,n2 = "sampleNames")
 ```
 
-### Most variable genes (over all conditions)
+#### Most variable genes (over all conditions)
 ```{r }
 # plot most variable genes
 mostVariableHeat(data = assay(dnmt$VST))
@@ -181,7 +160,7 @@ mostVariableHeat(data = assay(dnmt$VST))
 mostVariableHeat(data = assay(dnmt$VST),ntop = 100,a1 = dnmt$colData$condition,n1 = "Treatment")
 ```
 
-### Heat a set of genes
+#### Heat a set of genes
 ```{r}
 genes <- c("LPPR4", "NEFH", "BOC", "TRPC6", "GPRIN1", "ST8SIA2", "PTK2B", "UCHL1", "CTNNA1", "PLCG1", "SEMA6C", "DSCAML1")
 
@@ -190,7 +169,7 @@ heatGenes(data = assay(dnmt$VST),genes = genes,sd = .01,a1 =  dnmt$colData$condi
 
 ```
 
-## Mean Plot (mean of condition A vs B)
+#### Mean Plot (mean of condition A vs B)
 ```{r}
 ## exp: mean normalized reads for each condition
 ## test: diffex test between the conditions
@@ -201,7 +180,7 @@ meanPlot(exp = dnmt$FPKMMean$Mean,test = dnmt$test$Default,c1="DNMT1 KO",c2="CTR
 
 ```
 
-## B barplots
+#### B barplots
 ```{r}
 ## give a vector of any length, with the genes you want to plot
 genes <- c("DNMT1","DNMT3A","TRIM28")
@@ -211,14 +190,14 @@ dnmt$meanBars(genes = genes,FPKM = T )
 
 ```
 
-# Get data 
+## Get data 
 
-## Get normalized expression counts of all genes 
+### Get normalized expression counts of all genes 
 ```{r }
 head(dnmt$normCounts)
 
 ```
-## Get average normalized expression in conditions 
+### Get average normalized expression in conditions 
 ```{r}
 # This is done automatically in $fullAuto(), but can also be done manually like this
 dnmt$getAverage()
@@ -229,7 +208,7 @@ head(dnmt$baseMean$SD)
 head(dnmt$baseMean$SE)
 
 ```
-## Get FPKM
+### Get FPKM
 ```{r }
 # done automatically by fullAuto(), but can be done manually by:
 dnmt$makeFPKM()
@@ -238,7 +217,7 @@ dnmt$makeFPKM()
 head(dnmt$FPKM)
 ```
 
-## Get average FPKM in conditions
+### Get average FPKM in conditions
 ```{r }
 # done automatically by fullAuto(), but can be done manually by:
 dnmt$getAverageFPKM()
@@ -250,8 +229,8 @@ head(dnmt$FPKMMean$SD)
 
 ```
 
-## Get significant genes
-### Get diffex data
+### Get significant genes
+#### Get diffex data
 ```{r}
 # Get diffex-data of genes with p-adj < 0.001 and log2FC more/less than 0.2
 sign <- getSign(x = dnmt$test$KOvsWT,p = .001,l = .2)
@@ -262,7 +241,7 @@ head(up)
 head(down)
 ```
 
-### Get names only
+#### Get names only
 ```{r }
 # Get names of genes with p-adj < 0.01 and log2FC more/less than .1
 signID <- getSignName(x = dnmt$test$KOvsWT,p = .01,l = .2)
@@ -273,7 +252,7 @@ head(upID)
 head(downID)
 ```
 
-## Get most variable genes
+#### Get most variable genes
 ```{r }
 var.50 <- dnmt$getVariable(ntop = 50)
 var.50
