@@ -32,7 +32,7 @@ library(DESeq2)
 ## Create deseqAbs object 
  Define path to count file
 ```{r, create object}
-path <- "/home/pbrattaas//Dropbox (MN)/Per/PhD/Projects/DNAmeth/hNES DNMT1 KO/RNAseq/PairedParam/Quant/hg38.gencode.exon.primary.txt"
+path <- "~/Projects/hNES_DNMT1_KO/RNAseq/PairedParam/Quant/hg38.gencode.exon.primary.txt"
 ```
 
 ## Define colData (describe samples)
